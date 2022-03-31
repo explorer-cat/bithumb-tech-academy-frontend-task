@@ -1,0 +1,96 @@
+
+.wrap_left_aside{
+    width: 270px;
+    height: 100%;
+    padding:12px;
+    float: left;
+}
+
+.aside_title {
+    width: 270px;
+    height: 80px;
+}
+
+.logo {
+    width: 132px;
+    height: 39px;
+    background-image: url(https://www.bithumb.com/resources/img/sprite/sp_main_new.png?v=bithumb.2.0.5);
+    background-repeat: no-repeat;
+}
+
+.aside_menu {
+    width: 100%;
+    height: calc(100% - 150px);
+}
+
+.aside_connector {
+    height: 50px;
+}
+
+.aside_category{
+    width: 220px;
+}
+
+.aside_category_fold{
+    cursor: pointer;
+}
+
+.aside_category_hidden{
+    display: none;
+}
+
+.aside_public_table tbody tr td:hover{
+    cursor: pointer;
+    transition: all 0.7s;
+}
+
+/*menu table*/
+.aside_public_table tbody tr{
+    width: 270px;
+    height: 42px;
+}
+
+.aside_public_table tbody tr:nth-child(1){
+    height: 10px;
+}
+
+.aside_public_table tbody tr td:nth-child(1){
+    padding: 6px;
+}
+.aside_public_table tbody tr td:nth-child(2){
+    text-align: left;
+    width: 210px;
+}
+.aside_public_table tbody tr td:nth-child(3){
+    width: 30px;
+}
+
+.aside_menu:hover{
+    color: var(--color-white) !important;
+}
+
+.text-white {
+    color: var(--color-white) !important;
+}
+
+.select_item {
+    color: white !important;
+    background-color: #384151;
+    border-left: 6px solid #fe9601 !important;
+}
+
+/*노트북 태블릿 화면 */
+@media screen and (max-width: 1280px) {
+    .wrap_left_aside{
+        width: 70px;
+    }
+
+    .aside_category ,
+    .aside_category_fold {
+        display:none;
+    }
+
+    .wrap_header{
+        background-color: #313a46;
+    }
+}
