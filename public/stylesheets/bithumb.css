@@ -191,25 +191,19 @@ body {
     position: relative;
 }
 
-#bithumb_BTC_transaction{
-    box-sizing: border-box;
-    width: 100%;
-    margin-top:8px;
-    margin-bottom:8px;
-    min-height: 200px;
-    border: solid 1px black;
-    border-radius: 4px;
-}
-.transactionTitle{
+
+.transactionTitle,.orderBookTitle{
     width: 100%;
     box-sizing: border-box;
 }
-.transactionTitle > tbody {
+.transactionTitle > tbody, 
+.orderBookTitle > tbody {
    display: block;
     height: 200px;
     overflow: auto;
+    margin-bottom:12px;
 }
-.transactionTitle > thead > tr{
+.transactionTitle > thead > tr {
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -218,9 +212,26 @@ body {
     border-bottom: solid 1px #EFEFEF;
     margin-bottom: 8px;
 }
-.transactionTitle > tbody > tr {
+
+.orderBookTitle > thead > tr{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 20px;
+    border-top: solid 1px #EFEFEF;
+    border-bottom: solid 1px #EFEFEF;
+    margin-bottom: 8px;
+}
+
+.transactionTitle > tbody > tr{
     display: flex;
     justify-content: space-between;
+    font-size: 11px;
+}
+
+.orderBookTitle > tbody > tr {
+    display: flex;
+    justify-content: space-around;
     font-size: 11px;
 }
 
@@ -236,5 +247,6 @@ body {
     text-align: end;
     width: calc(40% - 10px);
 }
+
 
 

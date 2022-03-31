@@ -74,7 +74,10 @@ const getBithumbCryptoInfo = (result) => {
         case "transaction" :
             setTransactionData(data,el);
             break;
-
+        case "orderbookdepth" :
+          //  console.log("order", data.content.list)
+            setOrderBookDepthData(data,el);
+        break;
     }
 }
 
@@ -220,3 +223,8 @@ const setTransactionList = (response,targetid) => {
 }
 
 
+
+const setOrderBookDepthData = (data,el) => {
+    console.log("data", data)
+
+}
