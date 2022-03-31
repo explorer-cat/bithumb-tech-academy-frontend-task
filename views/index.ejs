@@ -1,19 +1,35 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>codestates-bithum-frontend</title>
+    <title>codestates-bithumb-frontend</title>
     <!--css 초기화-->
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/palette.css'/>
-    <link rel='stylesheet' href='/stylesheets/bithum.css'/>
+    <link rel='stylesheet' href='/stylesheets/bithumb.css'/>
     <link rel='stylesheet' href='/stylesheets/common.css'/>
     <link rel='stylesheet' href='/stylesheets/aside.css'/>
     <link rel='stylesheet' href='/stylesheets/blank.css'/>
+    <link rel='stylesheet' href='/stylesheets/font.css'/>
 
     <!--font 초기화-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
+
+    <!--highcharts-->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/annotations.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <!--javascript -->
+    <script src="/javascripts/eventHandler.js"></script>
+    <script src="/javascripts/webSocket.js"></script>
+    <script src="/javascripts/bithumb.js"></script>
+    <script src="/javascripts/chart.js"></script>
+
+
+
   </head>
   <body>
     <div class="public_contents_div">
@@ -69,7 +85,7 @@
                 <input id="close_all_card" type="radio">
                 <label for="close_all_card">카드 모두 접기</label>
             </div>
-            <div class="first-line" style="display: flex;height: calc(100% - 50px);box-sizing: border-box;">
+            <div class="first-line">
                 <div class="flex" style="height: 100%;display: block;">
     
                     <div class="vertical-double-box">
@@ -78,12 +94,22 @@
                                 <div class="card_title font-14b background-font-color margin-b-8">비트코인/BTC
                                 <div class="open_close_card font-12n margin-l-4 flex flex-a-center"></div>
                                 </div>
-                                <div class = "flex" >
-                                    <div id = "bithum_BTC_krw" class="card_title font-20b  flex flex-a-center"></div>
-                                    <div id = "bithum_BTC_signed_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
+                                <div class = "flex margin-b-4" >
+                                    <div id = "bithumb_BTC_krw" class="card_title font-20b  flex flex-a-center"></div>
+                                    <div id = "bithumb_BTC_signed_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
                                 </div>
-                                <div id = "bithum_BTC_acc_trade_volume_24h" class="font-12n flex flex-a-center"></div> 
-                                <div class="font-12n margin-l-4 card_body_gray_color"></div>
+                                <!-- #a4a4a4 -->
+                                <div class="gray_font flex flex-a-center description">24시간 거래량
+                                  <p id = "bithumb_BTC_acc_trade_volume_24h" class = "black_font  margin-l-8" ></p>
+                                </div> 
+                                <div class = "bottom_line"></div>
+                                <div class="gray_font flex flex-a-center margin-r-4 description">24시간 거래금액
+                                  <p id = "bithumb_BTC_acc_trade_value_24h" class = "black_font margin-l-8"></p>
+                                </div> 
+                                <div class = "bottom_line"></div>
+                                <div class="gray_font flex flex-a-center margin-r-4 description">체결 강도
+                                  <p id = "bithumb_BTC_acc_trade_value_24h" class = "black_font margin-l-8"></p>
+                                </div> 
                                 <div id="container" class = "margin-l-4"></div>
                             </div>
                         </div>
@@ -91,14 +117,14 @@
                     <div class="vertical-double-box">
                     <div class="small-card not-detail-card margin-r-12">
                         <div class="work_info_card padding-a-16">
-                            <div class="card_title font-14b background-font-color margin-b-8">이더리움
+                            <div class="card_title font-14b background-font-color margin-b-8">이더리움/ETH
                             <div class="open_close_card font-12n margin-l-4 flex flex-a-center"></div>
                             </div>
-                            <div class = "flex" >
-                                <div id = "bithum_ETH_krw" class="card_title font-20b  flex flex-a-center"></div>
-                                <div id = "bithum_ETH_signed_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
+                            <div class = "flex margin-b-4" >
+                                <div id = "bithumb_ETH_krw" class="card_title font-20b  flex flex-a-center"></div>
+                                <div id = "bithumb_ETH_signed_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
                             </div>
-                            <div id = "bithum_ETH_acc_trade_volume_24h" class="font-12n flex flex-a-center"></div> 
+                            <div id = "bithumb_ETH_acc_trade_volume_24h" class="font-12n flex flex-a-center"></div> 
                             <div class="font-12n margin-l-4 card_body_gray_color"></div>
                         </div>
                     </div>
@@ -106,19 +132,48 @@
                     <div class="vertical-double-box">
                         <div class="small-card not-detail-card margin-r-12">
                             <div class="work_info_card padding-a-16">
-                                <div class="card_title font-14b background-font-color margin-b-8">리플
+                                <div class="card_title font-14b background-font-color margin-b-8">리플/XRP
                                 <div class="open_close_card font-12n margin-l-4 flex flex-a-center"></div>
                                 </div>
-                                <div class = "flex" >
-                                    <div id = "bithum_XRP_krw" class="card_title font-20b  flex flex-a-center"></div>
-                                    <div id = "bithum_XRP_signed_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
+                                <div class = "flex margin-b-4" >
+                                    <div id = "bithumb_XRP_krw" class="card_title font-20b  flex flex-a-center"></div>
+                                    <div id = "bithumb_XRP_signed_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
                                 </div>
-                                <div id = "bithum_XRP_acc_trade_volume_24h" class="font-12n flex flex-a-center"></div> 
+                                <div id = "bithumb_XRP_acc_trade_volume_24h" class="font-12n flex flex-a-center"></div> 
                                 <div class="font-12n margin-l-4 card_body_gray_color"></div>
                             </div>
                         </div>
                     </div>
-
+                    <div class="vertical-double-box">
+                      <div class="small-card not-detail-card margin-r-12">
+                          <div class="work_info_card padding-a-16">
+                              <div class="card_title font-14b background-font-color margin-b-8">비트코인캐시/BCH
+                              <div class="open_close_card font-12n margin-l-4 flex flex-a-center"></div>
+                              </div>
+                              <div class = "flex margin-b-4" >
+                                  <div id = "bithumb_BCH_krw" class="card_title font-20b  flex flex-a-center"></div>
+                                  <div id = "bithumb_BCH_signed_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
+                              </div>
+                              <div id = "bithumb_BCH_acc_trade_volume_24h" class="font-12n flex flex-a-center"></div> 
+                              <div class="font-12n margin-l-4 card_body_gray_color"></div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="vertical-double-box">
+                    <div class="small-card not-detail-card margin-r-12">
+                        <div class="work_info_card padding-a-16">
+                            <div class="card_title font-14b background-font-color margin-b-8">폴리곤/MATIC
+                            <div class="open_close_card font-12n margin-l-4 flex flex-a-center"></div>
+                            </div>
+                            <div class = "flex margin-b-4" >
+                                <div id = "bithumb_MATIC_krw" class="card_title font-20b  flex flex-a-center"></div>
+                                <div id = "bithumb_MATIC_signed_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
+                            </div>
+                            <div id = "bithumb_MATIC_acc_trade_volume_24h" class="font-12n flex flex-a-center"></div> 
+                            <div class="font-12n margin-l-4 card_body_gray_color"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

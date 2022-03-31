@@ -2,6 +2,11 @@ body {
     background-color: var(--background-font-color);
 }
 
+.first-line{
+    height: calc(100% - 50px);
+    box-sizing: border-box;
+}
+
 .card {
     display: inline-flex;
     width: 322px;
@@ -23,24 +28,23 @@ body {
 
 
 
-.small-card{
+.small-card {
     display: inline-flex;
     width: 250px;
     height: 220px;
     background: rgb(255, 255, 255);
-    box-shadow: rgb(222 225 231) 2px 2px 4px;
+    box-shadow: rgb(222 225 231) 2px 2px 2px 4px;
     border-top: 4px solid #fe9601;
     border-radius: 4px;
-    -webkit-transition:width 0.5s, height 0.5s, background-color 0.5s, -webkit-transform 0.5s;
-    transition:width 0.5s, height 0.5s, background-color 0.5s, transform 0.5s;
+    -webkit-transition: width 0.5s, height 0.5s, background-color 0.5s, -webkit-transform 0.5s;
+    transition: width 0.5s, height 0.5s, background-color 0.5s, transform 0.5s;
 }
-
 .small-card:hover{
     display: inline-flex;
     width: 250px;
     height: 100%;
     background: rgb(255, 255, 255);
-    box-shadow: rgb(222 225 231) 2px 2px 4px;
+    box-shadow: rgb(222 225 231) 2px 2px 2px 4px;
     border-top: 4px solid #fe9601;
     border-radius: 4px;
     cursor: pointer;
@@ -48,7 +52,9 @@ body {
     transition:width 0.5s, height 0.5s, background-color 0.5s, transform 0.5s;
 }
 
-
+.work_info_card{
+    width: 100%;
+}
 
 .vertical-double-box {
     display: inline-grid;
@@ -125,9 +131,12 @@ body {
 }
 
 #container {
-    overflow: auto;
+  overflow: auto;
+  position: relative;
+  z-index: 0;
   width: 100%;
   height: 150px;
+  top: -88px;
 }
 
 .highcharts-data-table table {
@@ -165,3 +174,9 @@ body {
 .highcharts-data-table tr:hover {
   background: #f1f7ff;
 }
+
+.description {
+    position: relative;
+}
+
+
