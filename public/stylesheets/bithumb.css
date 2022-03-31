@@ -196,13 +196,19 @@ body {
     width: 100%;
     box-sizing: border-box;
 }
-.transactionTitle > tbody, 
-.orderBookTitle > tbody {
+.transactionTitle > tbody{
    display: block;
     height: 200px;
     overflow: auto;
     margin-bottom:12px;
 }
+
+.orderBookTitle > tbody {
+    display: block;
+     height: 250px;
+     overflow: auto;
+     margin-bottom:12px;
+ }
 .transactionTitle > thead > tr {
     display: flex;
     justify-content: space-between;

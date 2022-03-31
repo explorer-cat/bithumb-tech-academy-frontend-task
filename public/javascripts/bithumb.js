@@ -128,6 +128,8 @@ const setTickerData = (data,el) => {
             element.bithumbXRP.VOLUMEPOWER.innerHTML = ` ${Number(resTicker.volumePower)}%`; 
             
             //현재(종가)가격이 시가 보다 낮은 경우
+            console.log("resTicker.closePrice", resTicker.closePrice)
+            console.log("resTicker.openPrice", resTicker.openPrice)
             if(resTicker.closePrice < resTicker.openPrice) {
                 setChangeToColor("down", element.bithumbXRP.KRW)
                 setChangeToColor("down", element.bithumbXRP.RATE)
