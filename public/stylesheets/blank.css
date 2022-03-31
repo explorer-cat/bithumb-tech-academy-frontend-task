@@ -449,7 +449,7 @@
 
 .bottom_line {
     margin-top:4px;
-    border-bottom: 1px solid #EFEFEF;
+    /* border-bottom: 1px solid #EFEFEF; */
 }
 
 /*float*/

@@ -40,7 +40,7 @@ body {
     transition: width 0.5s, height 0.5s, background-color 0.5s, transform 0.5s;
 }
 .small-card:hover{
-    display: inline-flex;
+    /* display: inline-flex; */
     width: 250px;
     height: 100%;
     background: rgb(255, 255, 255);
@@ -52,8 +52,17 @@ body {
     transition:width 0.5s, height 0.5s, background-color 0.5s, transform 0.5s;
 }
 
+.small-card:hover #container_BTC,
+.small-card:hover #container_ETH,
+.small-card:hover #container_XRP,
+.small-card:hover #container_BCH,
+.small-card:hover #container_MATIC {
+    display: none;
+}
+
 .work_info_card{
     width: 100%;
+    overflow: hidden;
 }
 
 .vertical-double-box {
@@ -122,7 +131,8 @@ body {
     display: none;
 }
 
-#container,
+#container_BTC,#container_ETH,
+#container_XRP,#container_BCH,#container_MATIC,
 .highcharts-data-table table {
   min-width: 230px;
   max-width: 800px;
@@ -130,7 +140,8 @@ body {
   margin: 1em auto;
 }
 
-#container {
+#container_BTC,#container_ETH,
+#container_XRP,#container_BCH,#container_MATIC {
   overflow: auto;
   position: relative;
   z-index: 0;
@@ -176,7 +187,54 @@ body {
 }
 
 .description {
+    z-index: 1;
     position: relative;
+}
+
+#bithumb_BTC_transaction{
+    box-sizing: border-box;
+    width: 100%;
+    margin-top:8px;
+    margin-bottom:8px;
+    min-height: 200px;
+    border: solid 1px black;
+    border-radius: 4px;
+}
+.transactionTitle{
+    width: 100%;
+    box-sizing: border-box;
+}
+.transactionTitle > tbody {
+   display: block;
+    height: 200px;
+    overflow: auto;
+}
+.transactionTitle > thead > tr{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 20px;
+    border-top: solid 1px #EFEFEF;
+    border-bottom: solid 1px #EFEFEF;
+    margin-bottom: 8px;
+}
+.transactionTitle > tbody > tr {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+}
+
+.transactionTitle > tbody > tr > td:nth-child(1) {
+    width: calc(40% - 10px);
+}
+
+.transactionTitle > tbody > tr > td:nth-child(2) {
+    width: 31%;
+}
+
+.transactionTitle > tbody > tr > td:nth-child(3) {
+    text-align: end;
+    width: calc(40% - 10px);
 }
 
 

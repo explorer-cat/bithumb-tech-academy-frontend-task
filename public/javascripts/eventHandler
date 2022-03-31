@@ -1,4 +1,0 @@
-const setAllCardOpenClose = (event) => {
-    console.log("event!")
-}
-

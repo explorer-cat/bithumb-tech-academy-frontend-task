@@ -1,4 +1,4 @@
-function getMiniChart() {
+function getMiniChart(id) {
     // Data generated from http://www.bikeforums.net/professional-cycling-fans/1113087-2017-tour-de-france-gpx-tcx-files.html
 var elevationData = [
     [0.0, 225],
@@ -1883,7 +1883,7 @@ var elevationData = [
   ];
   
   // Now create the chart
-  Highcharts.chart('container', {
+  Highcharts.chart(id, {
     exporting: {
         enabled: false
       },
