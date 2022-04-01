@@ -29,6 +29,12 @@ window.onload = async function () {
     document.getElementById("open_all_card").addEventListener("click", setAllCardOpenClose)
     document.getElementById("close_all_card").addEventListener("click", setAllCardOpenClose)
 
+    let chart = document.querySelectorAll(".chart_open");
+
+    for(const el of chart) {
+        el.addEventListener("click", setChart);
+    }
+
     /* response 정보를 받아옵니다. */
     connectWS(async function (result) {
         getBithumbCryptoInfo(result);
@@ -39,6 +45,8 @@ window.onload = async function () {
     getMiniChart("container_XRP");
     getMiniChart("container_BCH");
     getMiniChart("container_MATIC");
+
+    //비트코인 차트 생성
 }
 /* socket response 정보를 받아 swiching 시켜 화면을 구성 요청*/
 const getBithumbCryptoInfo = (result) => {
@@ -104,6 +112,20 @@ const setTickerData = (data, el) => {
 
     switch (resTicker.symbol) {
         case "BTC_KRW" :
+            //open high low close
+            let BTC_chartData = {
+                open : resTicker.openPrice,
+                high : resTicker.highPrice,
+                low : resTicker.lowPrice,
+                close : resTicker.closePrice,
+                name : "비트코인 일봉"
+            }
+            //차트 생성
+            if(document.querySelector(".btc_chart").style.getPropertyValue("display") !== "none") {
+                makeBTCChart(BTC_chartData);
+            }
+
+     
             bitcoin_global_price = Number(resTicker.closePrice);
 
             element.bithumbBTC.KRW.innerHTML = `${(Number(resTicker.closePrice).toLocaleString())}원`;
@@ -122,6 +144,20 @@ const setTickerData = (data, el) => {
 
             break;
         case "ETH_KRW" :
+
+            let ETH_chartData = {
+                open : resTicker.openPrice,
+                high : resTicker.highPrice,
+                low : resTicker.lowPrice,
+                close : resTicker.closePrice,
+                name : "이더리움 일봉"
+            }
+            //차트 생성
+
+            if(document.querySelector(".eth_chart").style.getPropertyValue("display") !== "none") {
+                makeETHChart(ETH_chartData);
+            }
+
             element.bithumbETH.KRW.innerHTML = `${(Number(resTicker.closePrice).toLocaleString())}원`;
             element.bithumbETH.RATE.innerHTML = `전일대비 ${resTicker.chgRate}%`;
             element.bithumbETH.VOLUME.innerHTML = `${(Number(resTicker.volume).toFixed(2))} ETH`;
@@ -138,6 +174,20 @@ const setTickerData = (data, el) => {
 
             break;
         case "XRP_KRW" :
+
+            let XRP_chartData = {
+                open : resTicker.openPrice,
+                high : resTicker.highPrice,
+                low : resTicker.lowPrice,
+                close : resTicker.closePrice,
+                name : "리플 일봉"
+            }
+            if(document.querySelector(".xrp_chart").style.getPropertyValue("display") !== "none") {
+                makeXRPChart(XRP_chartData);
+            }
+
+
+
             element.bithumbXRP.KRW.innerHTML = `${(Number(resTicker.closePrice).toLocaleString())}원`;
             element.bithumbXRP.RATE.innerHTML = `전일대비 ${resTicker.chgRate}%`;
             element.bithumbXRP.VOLUME.innerHTML = `${(Number(resTicker.volume).toFixed(2))} XRP`;
@@ -155,6 +205,18 @@ const setTickerData = (data, el) => {
             }
             break;
         case "BCH_KRW" :
+
+            let BCH_chartData = {
+                open : resTicker.openPrice,
+                high : resTicker.highPrice,
+                low : resTicker.lowPrice,
+                close : resTicker.closePrice,
+                name : "비트코인 캐시 일봉"
+            }
+            if(document.querySelector(".bch_chart").style.getPropertyValue("display") !== "none") {
+                makeBCHChart(BCH_chartData);
+            }
+
             element.bithumbBCH.KRW.innerHTML = `${(Number(resTicker.closePrice).toLocaleString())}원`;
             element.bithumbBCH.RATE.innerHTML = `전일대비 ${resTicker.chgRate}%`;
             element.bithumbBCH.VOLUME.innerHTML = `${(Number(resTicker.volume).toFixed(2))} BCH`;
@@ -170,6 +232,17 @@ const setTickerData = (data, el) => {
             }
             break;
         case "MATIC_KRW" :
+            let MATIC_chartData = {
+                open : resTicker.openPrice,
+                high : resTicker.highPrice,
+                low : resTicker.lowPrice,
+                close : resTicker.closePrice,
+                name : "폴리곤 일봉"
+            }
+            if(document.querySelector(".matic_chart").style.getPropertyValue("display") !== "none") {
+                makeMATICChart(MATIC_chartData);
+            }
+
             element.bithumbMATIC.KRW.innerHTML = `${(Number(resTicker.closePrice).toLocaleString())}원`;
             element.bithumbMATIC.RATE.innerHTML = `전일대비 ${resTicker.chgRate}%`;
             element.bithumbMATIC.VOLUME.innerHTML = `${(Number(resTicker.volume).toFixed(2))} MATIC`;

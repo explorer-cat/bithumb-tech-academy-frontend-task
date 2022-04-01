@@ -76,12 +76,12 @@ body {
 }
 
 
-.open_close_card {
+.chart_open {
     color : #ff8435;
     font-size: 14px;
 }
 
-.open_close_card:hover {
+.chart_open:hover {
     opacity: 0.8;
     cursor: pointer;
     font-weight: bold;
@@ -272,3 +272,13 @@ body {
 #matic_bid {
     background-color: rgb(247, 84, 103)
 }
+
+/* .chart_modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 50%;
+    height: 50%;
+    overflow: hidden;
+} */
