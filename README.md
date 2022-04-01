@@ -9,11 +9,11 @@
 > noe start bin/www
 
 ## 사용한 스택 목록
-> nodejs
-> expressjs 
-> javascript
-> css3
-> websocket
+- nodejs
+- expressjs 
+- javascript
+- css3
+- websocket
 
 ## 구현한 기능 목록 (Software Requirement Specification)
 >
