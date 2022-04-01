@@ -129,7 +129,7 @@ const setTickerData = (data, el) => {
             bitcoin_global_price = Number(resTicker.closePrice);
 
             element.bithumbBTC.KRW.innerHTML = `${(Number(resTicker.closePrice).toLocaleString())}원`;
-            element.bithumbBTC.RATE.innerHTML = `전일대비 ${resTicker.chgRate}%`;
+            element.bithumbBTC.RATE.innerHTML = `24시간 ${resTicker.chgRate}%`;
             element.bithumbBTC.VOLUME.innerHTML = `${(Number(resTicker.volume).toFixed(2))} BTC`;
             element.bithumbBTC.VALUE.innerHTML = ` ${numberToKorean(Number(resTicker.value).toFixed(0))}원`;
             element.bithumbBTC.VOLUMEPOWER.innerHTML = ` ${Number(resTicker.volumePower)}%`;
@@ -159,7 +159,7 @@ const setTickerData = (data, el) => {
             }
 
             element.bithumbETH.KRW.innerHTML = `${(Number(resTicker.closePrice).toLocaleString())}원`;
-            element.bithumbETH.RATE.innerHTML = `전일대비 ${resTicker.chgRate}%`;
+            element.bithumbETH.RATE.innerHTML = `24시간 ${resTicker.chgRate}%`;
             element.bithumbETH.VOLUME.innerHTML = `${(Number(resTicker.volume).toFixed(2))} ETH`;
             element.bithumbETH.VALUE.innerHTML = ` ${numberToKorean(Number(resTicker.value).toFixed(0))}원`;
             element.bithumbETH.VOLUMEPOWER.innerHTML = ` ${Number(resTicker.volumePower)}%`;
@@ -189,15 +189,13 @@ const setTickerData = (data, el) => {
 
 
             element.bithumbXRP.KRW.innerHTML = `${(Number(resTicker.closePrice).toLocaleString())}원`;
-            element.bithumbXRP.RATE.innerHTML = `전일대비 ${resTicker.chgRate}%`;
+            element.bithumbXRP.RATE.innerHTML = `24시간 ${resTicker.chgRate}%`;
             element.bithumbXRP.VOLUME.innerHTML = `${(Number(resTicker.volume).toFixed(2))} XRP`;
             element.bithumbXRP.VALUE.innerHTML = ` ${numberToKorean(Number(resTicker.value).toFixed(0))}원`;
             element.bithumbXRP.VOLUMEPOWER.innerHTML = ` ${Number(resTicker.volumePower)}%`;
 
             //현재(종가)가격이 시가 보다 낮은 경우
-            console.log("resTicker.closePrice", resTicker.closePrice)
-            console.log("resTicker.openPrice", resTicker.openPrice)
-            if (resTicker.closePrice < resTicker.openPrice) {
+            if (resTicker.closePrice < parseFloat(resTicker.openPrice)) {
                 setChangeToColor("down", element.bithumbXRP.KRW)
                 setChangeToColor("down", element.bithumbXRP.RATE)
             } else {
@@ -218,7 +216,7 @@ const setTickerData = (data, el) => {
             }
 
             element.bithumbBCH.KRW.innerHTML = `${(Number(resTicker.closePrice).toLocaleString())}원`;
-            element.bithumbBCH.RATE.innerHTML = `전일대비 ${resTicker.chgRate}%`;
+            element.bithumbBCH.RATE.innerHTML = `24시간 ${resTicker.chgRate}%`;
             element.bithumbBCH.VOLUME.innerHTML = `${(Number(resTicker.volume).toFixed(2))} BCH`;
             element.bithumbBCH.VALUE.innerHTML = ` ${numberToKorean(Number(resTicker.value).toFixed(0))}원`;
             element.bithumbBCH.VOLUMEPOWER.innerHTML = ` ${Number(resTicker.volumePower)}%`;
@@ -244,7 +242,7 @@ const setTickerData = (data, el) => {
             }
 
             element.bithumbMATIC.KRW.innerHTML = `${(Number(resTicker.closePrice).toLocaleString())}원`;
-            element.bithumbMATIC.RATE.innerHTML = `전일대비 ${resTicker.chgRate}%`;
+            element.bithumbMATIC.RATE.innerHTML = `24시간 ${resTicker.chgRate}%`;
             element.bithumbMATIC.VOLUME.innerHTML = `${(Number(resTicker.volume).toFixed(2))} MATIC`;
             element.bithumbMATIC.VALUE.innerHTML = ` ${numberToKorean(Number(resTicker.value).toFixed(0))}원`;
             element.bithumbMATIC.VOLUMEPOWER.innerHTML = ` ${Number(resTicker.volumePower)}%`;

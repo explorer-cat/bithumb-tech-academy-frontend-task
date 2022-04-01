@@ -28,7 +28,6 @@
  // 웹소켓 연결 해제
  function closeWS() {
      if(socket != undefined){
-         console.log("closing requested");
          socket.close();
          socket = undefined;
      }	
