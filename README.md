@@ -5,8 +5,8 @@
 >
 
 ## 프로젝트 실행 방법
-> npm install express.js  or npm install
-> noe start bin/www
+- npm install express.js  or npm install
+- node start bin/www
 
 ## 사용한 스택 목록
 - nodejs
