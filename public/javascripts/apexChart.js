@@ -3,8 +3,6 @@
             document.querySelector("#chart").remove();
          }
          let target = document.querySelector(".btc_chart");
-         console.log("target", target)
-
          let chartjs = document.createElement("div");
          chartjs.id = "chart";
          chartjs.style.width = "100%";
@@ -67,7 +65,7 @@
            document.querySelector("#chart").remove();
         }
         let target = document.querySelector(".eth_chart");
-        console.log("target", target)
+
 
         let chartjs = document.createElement("div");
         chartjs.id = "chart";
@@ -131,8 +129,6 @@
            document.querySelector("#chart").remove();
         }
         let target = document.querySelector(".xrp_chart");
-        console.log("target", target)
-
         let chartjs = document.createElement("div");
         chartjs.id = "chart";
         chartjs.style.width = "100%";
@@ -195,7 +191,6 @@
            document.querySelector("#chart").remove();
         }
         let target = document.querySelector(".bch_chart");
-        console.log("target", target)
 
         let chartjs = document.createElement("div");
         chartjs.id = "chart";
@@ -259,7 +254,6 @@
            document.querySelector("#chart").remove();
         }
         let target = document.querySelector(".matic_chart");
-        console.log("target", target)
 
         let chartjs = document.createElement("div");
         chartjs.id = "chart";
