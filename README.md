@@ -39,6 +39,7 @@ https://explorer-cat.github.io/codestates-bithumb-frontend-publish/
 - 빗썸 홈페이지를 최소한 참고하여 다른 색다른 형태의 코인정보화면을 구현하기 위해 노력했습니다.
 - 소켓 데이터를 VIEW 화면으로 callback 하여 데이터의 Type 을 스위칭 하는 방식으로 화면을 구성했습니다.
 - response 된 소켓 데이터를 chart 에 전송하여 일봉 차트를 구성하였습니다.
+- 짧은 과제 제출기간상 아직 익숙하지않은 React 대신 회사업무로 주력으로 사용중인 vanilla.js 로 개발한게 아쉬웠습니다.
 
 > 구현하면서 어려웠던 점
 - chart 라이브러리를 사용하다보니 chart option 만으로는 원하는 차트를 도출하기 힘들었습니다.
