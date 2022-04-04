@@ -51,6 +51,7 @@ https://explorer-cat.github.io/codestates-bithumb-frontend-publish/
 ## 성능 최적화에 대해서 고민하고 개선한 방법
 - 실시간 데이터를 빠르게 화면에 보여지기 위해 가능한 병렬처리된 코드를 작성하기 위해 노력했습니다.
 - loop문에서의 성능저하를 최소화 하기 위해 Set과 Map을 사용하여 데이터를 처리했습니다.
+- 최대한 다중 DOM 접근을 막고 렌더링을 최소화 하기 위해 최초 Dom 변수에 저장 후 사용합니다.
 
 
 ## 정보
