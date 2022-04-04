@@ -45,7 +45,7 @@ https://explorer-cat.github.io/codestates-bithumb-frontend-publish/
 - chart 라이브러리를 사용하다보니 chart option 만으로는 원하는 차트를 도출하기 힘들었습니다.
 - 중복된 호가 정보 orderbookDepth 정보를 가공하는게 어려웠습니다. 
 - 자유로운 UI/UX 이다보니, 레이아웃과 기능 기획단계부터 많은 시간이 들었습니다.
-빗썸 시그니처 생삭과 background를 사용하여 빗썸 느낌의 또 다른 UI/UX를 구성했습니다.
+빗썸 시그니처 색상과 background를 사용하여 빗썸 느낌의 또 다른 UI/UX를 구성했습니다.
 
 
 ## 성능 최적화에 대해서 고민하고 개선한 방법
