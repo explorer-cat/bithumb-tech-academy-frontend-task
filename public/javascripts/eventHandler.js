@@ -28,7 +28,7 @@ const setDetailView = (event) => {
 
 const setAllCardOpenClose = (event) => {
     const code = ["BTC", "ETH", "XRP", "BCH", "MATIC"]
-    let allCard = document.querySelectorAll(".small-card");
+    let allCard = document.querySelectorAll(".content-card");
 
 
     if (event.target.id === "open_all_card") {

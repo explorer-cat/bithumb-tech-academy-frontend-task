@@ -26,27 +26,21 @@ let maticMapBid = new Map();
 
 window.onload = async function () {
     /* 카드 고정하기 버튼 이벤트 */
-    document.getElementById("open_all_card").addEventListener("click", setAllCardOpenClose)
-    document.getElementById("close_all_card").addEventListener("click", setAllCardOpenClose)
+    // document.getElementById("open_all_card").addEventListener("click", setAllCardOpenClose)
+    // document.getElementById("close_all_card").addEventListener("click", setAllCardOpenClose)
 
-    let chart = document.querySelectorAll(".chart_open");
+    // let chart = document.querySelectorAll(".chart_open");
 
-    for(const el of chart) {
-        el.addEventListener("click", setChart);
-    }
+    // for(const el of chart) {
+    //     el.addEventListener("click", setChart);
+    // }
 
     /* response 정보를 받아옵니다. */
     connectWS(async function (result) {
-        getBithumbCryptoInfo(result);
+        await getBithumbCryptoInfo(result);
     });
-
-    getMiniChart("container_ETH");
-    getMiniChart("container_BTC");
-    getMiniChart("container_XRP");
-    getMiniChart("container_BCH");
-    getMiniChart("container_MATIC");
-
-    //비트코인 차트 생성
+    
+    await getMiniChart("container_BTC");
 }
 /* socket response 정보를 받아 swiching 시켜 화면을 구성 요청*/
 const getBithumbCryptoInfo = (result) => {
@@ -121,9 +115,9 @@ const setTickerData = (data, el) => {
                 name : "비트코인 일봉"
             }
             //차트 생성
-            if(document.querySelector(".btc_chart").style.getPropertyValue("display") !== "none") {
-                makeBTCChart(BTC_chartData);
-            }
+            // if(document.querySelector(".btc_chart").style.getPropertyValue("display") !== "none") {
+            //     makeBTCChart(BTC_chartData);
+            // }
 
      
             bitcoin_global_price = Number(resTicker.closePrice);
@@ -267,18 +261,18 @@ const setTransactionData = (data, el) => {
         case "BTC_KRW" :
             setTransactionList(response, "BTC_transaction")
             break;
-        case "ETH_KRW" :
-            setTransactionList(response, "ETH_transaction")
-            break;
-        case "XRP_KRW" :
-            setTransactionList(response, "XRP_transaction")
-            break;
-        case "BCH_KRW" :
-            setTransactionList(response, "BCH_transaction")
-            break;
-        case "MATIC_KRW" :
-            setTransactionList(response, "MATIC_transaction")
-            break;
+        // case "ETH_KRW" :
+        //     setTransactionList(response, "ETH_transaction")
+        //     break;
+        // case "XRP_KRW" :
+        //     setTransactionList(response, "XRP_transaction")
+        //     break;
+        // case "BCH_KRW" :
+        //     setTransactionList(response, "BCH_transaction")
+        //     break;
+        // case "MATIC_KRW" :
+        //     setTransactionList(response, "MATIC_transaction")
+        //     break;
     }
 }
 
