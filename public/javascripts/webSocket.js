@@ -13,9 +13,9 @@
      }
      socket = new WebSocket("wss://pubwss.bithumb.com/pub/ws");
      socket.onopen 	= function(e){
-          filterRequest('{"type":"ticker","symbols":["BTC_KRW","ETH_KRW","XRP_KRW","BCH_KRW","MATIC_KRW"],"tickTypes":["24H"]}');
-          filterRequest('{"type":"transaction","symbols":["BTC_KRW","ETH_KRW","XRP_KRW","BCH_KRW","MATIC_KRW"],"tickTypes":["24H"]}');
-          filterRequest('{"type":"orderbookdepth", "symbols":["BTC_KRW" , "ETH_KRW" ,"XRP_KRW","BCH_KRW","MATIC_KRW"]}');
+          filterRequest('{"type":"ticker","symbols":["BTC_KRW"],"tickTypes":["24H"]}');
+          filterRequest('{"type":"transaction","symbols":["BTC_KRW"],"tickTypes":["24H"]}');
+          filterRequest('{"type":"orderbookdepth", "symbols":["BTC_KRW"]}');
           }
      socket.onclose = function(e){
             socket = undefined;
