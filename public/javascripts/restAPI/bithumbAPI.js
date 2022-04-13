@@ -132,3 +132,55 @@ const setOrderBookAPI = async (page, order, payment) => {
     }
 
 }
+
+
+const setCandleStick = async(page,order,payment) => {
+    let result = {
+        success: false,
+    }
+    let request = await axios.request(
+        {
+            method: 'POST',
+            url: `api/candlestick`,
+            headers: { 'Content-Type': 'application/json' },
+            data : {
+                order : order,
+                payment : payment,
+            }
+        });
+
+    try {
+        if(!request.data.data)return
+
+        let obData = request.data.data;
+
+        if(page === "tradeView") {
+            //미니차트를 그리기 위한 최근 1500분간  10분단위의 거래 내역
+            let miniChartData = obData.slice( obData.length - 150, obData.length);
+
+            console.log("miniChartData", new Date(miniChartData[0][0]).toLocaleTimeString())
+            console.log("miniChartData", new Date(miniChartData[19][0]).toLocaleTimeString())
+
+            getMiniChart("container_BTC", miniChartData)
+        }
+
+
+
+    } catch (e) {
+
+    }
+
+}
+
+
+function convertHMS(value) {
+    const sec = parseInt(value, 10); // convert value to number if it's string
+    let hours   = Math.floor(sec / 3600); // get hours
+    let minutes = Math.floor((sec - (hours * 3600)) / 60); // get minutes
+    let seconds = sec - (hours * 3600) - (minutes * 60); //  get seconds
+    // add 0 if value < 10; Example: 2 => 02
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return hours+':'+minutes+':'+seconds; // Return is HH : MM : SS
+}

@@ -33,14 +33,14 @@ window.onload = async function () {
     await setTickerAPI(page, order , payment)
     await setOrderBookAPI(page, order , payment)
     await setTransactionAPI(page, order , payment)
-
+    await setCandleStick(page,order,payment)
         
     connectWS(async function (result) {
         getBithumbCryptoInfo(result);
      });
 
 
-    getMiniChart("container_BTC");
+  //  getMiniChart("container_BTC");
 }
 /* socket response 정보를 받아 swiching 시켜 화면을 구성 요청*/
 const getBithumbCryptoInfo = (result) => {

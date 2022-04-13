@@ -44,4 +44,15 @@ router.post('/api/transaction', async function(req, res, next) {
 
 
 
+router.post('/api/candlestick', async function(req, res, next) {
+  try {
+    let {order,payment} = req.body
+    let result = await axios.request({ method: 'GET', url: `https://api.bithumb.com/public/candlestick/${order}_${payment}/10m`, headers: {'Content-Type': 'application/json'} });
+    res.send(result.data);
+  } catch(e) {
+
+  }
+})
+
+
 module.exports = router;

@@ -1,4 +1,4 @@
-function getMiniChart(id) {
+function getMiniChart(id,data) {
     // Data generated from http://www.bikeforums.net/professional-cycling-fans/1113087-2017-tour-de-france-gpx-tcx-files.html
   var elevationData = [
     [0.0, 225],
@@ -1881,6 +1881,43 @@ function getMiniChart(id) {
     [187.7, 1167],
     [187.8, 1170]
   ];
+
+  console.log("data", data)
+
+  let time = []
+  let priceData = []
+  console.log("data.length",data)
+
+  //그래프의 min max 를 구하기위해 최근 200분가 최저가와 최고가를 찾아야함.
+
+  //시간과 거래량을 잘라낸 가격만 있는 순수 오브젝트
+  let slicePriceData = []
+
+  //기본적으로 첫번째 들어오는 값을 기본으로 세팅하고 반복돌면서 최저 최고값 찾을수있게.
+  let min  = Number(data[0][4]);
+  let max  = Number(data[0][3]);;
+  
+  for(let i = 0; i < data.length; i++) {
+    time.push(new Date(data[i][0]).toLocaleTimeString())
+    priceData.push(Number(data[i][2]))
+
+    //최저가와 최저가를 찾아보자
+    if(min > Math.min.apply(null, data[i].slice(1,4))) {
+      min = Math.min.apply(null, data[i].slice(1,4))
+    }
+  
+
+    if(max < Math.max.apply(null, data[i].slice(1,4))) {
+      max = Math.max.apply(null, data[i].slice(1,4))
+    }
+    
+  }
+
+  console.log("min", min)
+  console.log("min", max)
+
+
+
   
   // Now create the chart
   Highcharts.chart(id, {
@@ -1907,51 +1944,42 @@ function getMiniChart(id) {
     },
 
     xAxis: {
+      categories: time,
+      //tickPositions: [0,1,2,3,4,5,6,7],
+      visible: false,
       labels: {
-        format: '{value} km'
-      },
-      minRange: 5,
-      title: {
-        text: ''
-      },
-      accessibility: {
-        rangeDescription: 'Range: 0 to 187.8km.'
-      },
-      visible: false
+        style: {
+            color: 'red'
+        }
+    }
     },
-  
+
     yAxis: {
+      min : min,
+      max : max,
       startOnTick: true,
-      endOnTick: false,
-      maxPadding: 0.35,
+      endOnTick: true,
+      // maxPadding: 0.35,
       title: {
         text: null
       },
       labels: {
         format: '{value} m'
       },
-      accessibility: {
-        description: 'Elevation',
-        rangeDescription: 'Range: 0 to 1,553 meters'
-      },
       visible:false
     },
   
-
     legend: {
       enabled: false
     },
 
+
     series: [{
-      data: elevationData,
+      data: priceData,
       lineColor: "#5580F6",
       color: "#003EE9",
       fillOpacity: 0.2,
-      name: 'Elevation',
-      marker: {
-        enabled: false
-      },
-      threshold: null
+      name: '종가',
     }]
   
   });
