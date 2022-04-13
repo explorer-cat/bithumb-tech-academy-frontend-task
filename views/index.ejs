@@ -1,170 +1,214 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>codestates-bithumb-frontend</title>
-    <!--css 초기화-->
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel='stylesheet' href='/stylesheets/palette.css'/>
-    <link rel='stylesheet' href='/stylesheets/bithumb.css'/>
-    <link rel='stylesheet' href='/stylesheets/common.css'/>
-    <link rel='stylesheet' href='/stylesheets/aside.css'/>
-    <link rel='stylesheet' href='/stylesheets/blank.css'/>
-    <link rel='stylesheet' href='/stylesheets/font.css'/>
 
-    <!--font 초기화-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
+<head>
+  <title>codestates-bithumb-frontend</title>
+  <!--css 초기화-->
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel='stylesheet' href='/stylesheets/palette.css' />
+  <link rel='stylesheet' href='/stylesheets/bithumb.css' />
+  <link rel='stylesheet' href='/stylesheets/common.css' />
+  <link rel='stylesheet' href='/stylesheets/aside.css' />
+  <link rel='stylesheet' href='/stylesheets/blank.css' />
+  <link rel='stylesheet' href='/stylesheets/font.css' />
 
-    <!--highcharts-->
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/annotations.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+  <!--font 초기화-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
 
-    <!--apexcharts-->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <!--highcharts-->
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/annotations.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
-    <!--javascript -->
-    <script src="/javascripts/eventHandler.js"></script>
-    <script src="/javascripts/webSocket.js"></script>
-    <script src="/javascripts/bithumb.js"></script>
-    <script src="/javascripts/chart.js"></script>
-    <script src="/javascripts/utils.js"></script>
-    <script src="/javascripts/apexChart.js"></script>
+  <!--apexcharts-->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+  <!--library-->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/jquery/1.12.4/jquery.min.js"></script>
+
+  <!--javascript -->
+  <script src="/javascripts/restAPI/bithumbAPI.js"></script>
+  <script src="/javascripts/eventHandler.js"></script>
+  <script src="/javascripts/webSocket.js"></script>
+  <script src="/javascripts/bithumb.js"></script>
+  <script src="/javascripts/chart.js"></script>
+  <script src="/javascripts/utils.js"></script>
+  <script src="/javascripts/apexChart.js"></script>
 
 
 
-  </head>
-  <body>
-    <div class="public_contents_div">
+</head>
+
+<body>
+  <div class="public_contents_div">
 
 
-        <div class="wrap_left_aside" id="left_aside_menu">
-            <div class="aside_title flex flex-j-center flex-a-center">
-                <div class="logo">
-                </div>
-            </div>
-            <div class="aside_menu">
-                <table class="aside_public_table aside_menu_content" id="clovine_app_categori">
-                    <thead></thead>
-                    <tbody>
-                    <tr></tr>
-                      <tr class="select_item">
-                          <td class="clovine_trend_icon margin-lr-16"></td>
-                          <td class="font-14b aside_menu text-white">거래소</td>
-                          <td class="font-14b basic-font-color"></td>
-                      </tr>
-                      <tr>
-                        <td class="clovine_trend_icon margin-lr-16"></td>
-                        <td class="font-14b basic-font-color aside_menu">빗썸캐시</td>
-                        <td class="font-14b basic-font-color"></td>
-                    </tr>
-                    <tr>
-                      <td class="clovine_trend_icon margin-lr-16"></td>
-                      <td class="font-14b basic-font-color aside_menu">상품/서비스</td>
-                      <td class="font-14b basic-font-color"></td>
-                  </tr>
-                  <tr>
-                    <td class="clovine_trend_icon margin-lr-16"></td>
-                    <td class="font-14b basic-font-color aside_menu">제품/입점</td>
-                    <td class="font-14b basic-font-color"></td>
-                </tr>
-                    </tbody>
-                </table>
-                <div class="aside_category_div flex margin-t-40">
-                    <div class="aside_category font-14b white-color margin-l-16 flex flex-a-center">NFT</div>
-                    <div class="aside_category_fold fold_category_icon" id="heaventree_app_categori_arrowbtn"></div>
-                </div>
-                <div class="aside_connector">
-                </div>
-            </div>
+    <div class="wrap_left_aside" id="left_aside_menu">
+      <div class="aside_title flex flex-j-center flex-a-center">
+        <div class="logo">
         </div>
-    
+      </div>
+      <div class="aside_menu">
+        <table class="aside_public_table aside_menu_content" id="clovine_app_categori">
+          <thead></thead>
+          <tbody>
+            <tr></tr>
+            <tr class="select_item">
+              <td class="clovine_trend_icon margin-lr-16"></td>
+              <td class="font-14b aside_menu text-white">거래소</td>
+              <td class="font-14b basic-font-color"></td>
+            </tr>
+            <tr>
+              <td class="clovine_trend_icon margin-lr-16"></td>
+              <td class="font-14b basic-font-color aside_menu">빗썸캐시</td>
+              <td class="font-14b basic-font-color"></td>
+            </tr>
+            <tr>
+              <td class="clovine_trend_icon margin-lr-16"></td>
+              <td class="font-14b basic-font-color aside_menu">상품/서비스</td>
+              <td class="font-14b basic-font-color"></td>
+            </tr>
+            <tr>
+              <td class="clovine_trend_icon margin-lr-16"></td>
+              <td class="font-14b basic-font-color aside_menu">제품/입점</td>
+              <td class="font-14b basic-font-color"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="aside_category_div flex margin-t-40">
+          <div class="aside_category font-14b white-color margin-l-16 flex flex-a-center">NFT</div>
+          <div class="aside_category_fold fold_category_icon" id="heaventree_app_categori_arrowbtn"></div>
+        </div>
+        <div class="aside_connector">
+        </div>
+      </div>
+    </div>
 
-    
-    
-        <div class="main_body_content">
-          <div class = "eth_chart" style = "width: 50%; display:none" >
 
-          </div>
-          <div class = "xrp_chart" style = "width: 50%; display:none" >
 
-          </div>
-          <div class = "bch_chart" style = "width: 50%; display:none" >
 
-          </div>
-          <div class = "matic_chart" style = "width: 50%; display:none" >
+    <div class="main_body_content">
+      <div class="eth_chart" style="width: 50%; display:none">
 
-          </div>
-            <!-- <div id = "all_openclose_card" class="view_button_toggle">
+      </div>
+      <div class="xrp_chart" style="width: 50%; display:none">
+
+      </div>
+      <div class="bch_chart" style="width: 50%; display:none">
+
+      </div>
+      <div class="matic_chart" style="width: 50%; display:none">
+
+      </div>
+      <!-- <div id = "all_openclose_card" class="view_button_toggle">
                 <input id="close_all_card" type="radio" checked="">
                 <label for="close_all_card">카드 모두 접기</label>
                 <input id="open_all_card" type="radio">
                 <label for="open_all_card">카드 모두 열기</label>
             </div> -->
-                <!-- <div class="flex" style="height: 100%;display: block;overflow: hidden;"> -->
-    
-                    <div class="vertical-double-box">
-                        <div class="content-card margin: 16px;">
-                            <div class = "chart" style = "width: 100%; height: 40%; background-color: red;">
-                            </div>
-                            <div class = "flex margin-t-16 margin-l-16" >
-                              <div id = "bithumb_BTC_krw" class="card_title font-20b flex flex-a-center"></div>
-                              <div id = "bithumb_BTC_signed_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
-                            </div>
-                            <div class = "crypto_content_info_layount">
-                              <div class="crypto_content_info_box padding-a-16 margin-r-8" style = "
-                              width: 400px;
-                              display: flex;">
-                                <table class="left_info_table">
-                                  <tbody>
-                                    <tr>
-                                      <th>거래량 24H</th>
-                                      <td class="tx_r"><span id="unitsTraded24H">3,709.4555BTC</span></td>
-                                    </tr>
-                                    <tr>
-                                      <th>거래금액 24H</th>
-                                      <td class="tx_r"><span id="priceTraded24H">1,871.1</span>
-                                        <span id="priceTradedUnit24H"> 억</span></td>
-                                    </tr>
-                                    <tr>
-                                      <th>체결강도</th>
-                                      <td class="tx_r color_red" id="contractStrength">196.26%</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                                <table class="right_info_table">
-                                  <tbody>
-                                    <tr>
-                                      <th>거래량 24H </th>
-                                      <td><span id="unitsTraded24H">3,709.4555BTC</span></td>
-                                    </tr>
-                                    <tr>
-                                      <th>거래금액 24H</th>
-                                      <td><span id="priceTraded24H">1,871.1</span><span id="priceTradedUnit24H"> 억</span></td>
-                                    </tr>
-                                    <tr>
-                                      <th>체결강도</th>
-                                      <td id="contractStrength">196.26%</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
+      <!-- <div class="flex" style="height: 100%;display: block;overflow: hidden;"> -->
 
+      <div class="vertical-double-box">
+        <div class="content-card margin: 16px;">
+          <div class="chart" style="width: 100%; height: 40%; background-color: red;">
+          </div>
+          <div class="flex margin-t-16 margin-l-16">
+            <div id="tr_krw" class="card_title font-20b flex flex-a-center"></div>
+            <div id="tr_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
+          </div>
+          <div style = "    width: 100%;
+          display: flex;
+          height: 100%;">
+            <div class="crypto_content_info_layount padding-a-16 margin-r-8">
+              <div class="margin-r-8">
+                <!-- 코인 기본 정보 시작 -->
+                <div class="crypto_content_info_box">
+                  <table class="left_info_table">
+                    <tbody>
+                      <tr>
+                        <th>거래량 24H</th>
+                        <td><span id="tr_volume"></span></td>
+                      </tr>
+                      <tr>
+                        <th>거래금액 24H</th>
+                        <td><span id="tr_value"></span>
+                      </tr>
+                      <tr>
+                        <th>체결강도</th>
+                        <td id="tr_power"></td>
+                      </tr>
+                    </tbody>
+                  </table>
 
-                              </div>
-                              <div class="crypto_orderbook_info_box padding-a-16 margin-r-8" style = "
-                              width: 360px;
-                              display: flex; background-color: aquamarine;">
-                              </div>
-                              <div class="crypto_order_info_box padding-a-16" style = "
-                              width: 360px;
-                              display: flex;  background-color: red">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                                <!-- <div class="card_title font-14b background-font-color margin-b-8">비트코인/BTC</div>
+                  <table class="right_info_table">
+                    <tbody>
+                      <tr>
+                        <th>고가(24H)</th>
+                        <td><span id="tr_low"></span></td>
+                      </tr>
+                      <tr>
+                        <th>저가(24H)</th>
+                        <td><span id="tr_high"></span><span id="priceTradedUnit24H"></span></td>
+                      </tr>
+                      <tr>
+                        <th>전일종가</th>
+                        <td id="tr_finish"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!--미니차트탭-->
+                <div class="chart_info_category margin-t-16">
+                  <ul>
+                    <li title="차트" class="flex tab_selected">
+                      차트
+                    </li>
+                    <li title="BTC 정보" class="flex">
+                      정보
+                    </li>
+                  </ul>
+                  <div id="container_BTC" class="margin-l-4">
+
+                  </div>
+                </div>
+                <!--채결내역 시세 -->
+                <div class="transition_info_category  margin-t-16">
+                  <ul>
+                    <li title="차트" class="flex tab_selected">
+                      체결내역
+                    </li>
+                    <li title="BTC 정보" class="flex">
+                      세계시세
+                    </li>
+                  </ul>
+                  <table class="transactionTitle">
+                    <thead>
+                      <tr>
+                        <td>시간</td>
+                        <td>가격</td>
+                        <td>수량</td>
+                      </tr>
+                    </thead>
+                    <tbody id="BTC_transaction">
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class = "crypto_orderbook_info_layout margin-lr-16"></div>
+            <div class = "crypto_order_info_layout  margin-lr-16"></div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="card_title font-14b background-font-color margin-b-8">비트코인/BTC</div>
                                 <div class = "flex margin-b-4" >
                                     <div id = "bithumb_BTC_krw" class="card_title font-20b  flex flex-a-center"></div>
                                     <div id = "bithumb_BTC_signed_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
@@ -184,10 +228,10 @@
                                   <p id = "bithumb_BTC_acc_trade_volumePower_24h" class = "black_font margin-l-8"></p>
                                 </div>  -->
 
-                              <!-- 미니차트 -->
-                       <!-- 미니차트 -->
-                                <!-- <div class = "bottom_line"></div> -->
-                                <!-- <div class="gray_font flex flex-a-center margin-tb-8 description">오더북</div>
+    <!-- 미니차트 -->
+    <!-- 미니차트 -->
+    <!-- <div class = "bottom_line"></div> -->
+    <!-- <div class="gray_font flex flex-a-center margin-tb-8 description">오더북</div>
                                 <table id = "orderBook_BTC_ask" class ="orderBookTitle">
                                   <thead>
                                   <tr>
@@ -224,8 +268,8 @@
 
                                   </tbody>
                                 </table> -->
-                            <!-- </div> -->
-                    <!-- <div class="vertical-double-box">
+    <!-- </div> -->
+    <!-- <div class="vertical-double-box">
                     <div class="small-card not-detail-card margin-r-12">
                         <div class="work_info_card padding-a-16">
                             <div class="card_title font-14b background-font-color margin-b-8">이더리움/ETH
@@ -413,9 +457,9 @@
                       </div>
                   </div>
                   <div class="vertical-double-box"> -->
-                    <!-- <div class="small-card not-detail-card margin-r-12"> -->
-                        <!-- <div class="work_info_card padding-a-16"> -->
-                            <!-- <div class="card_title font-14b background-font-color margin-b-8">폴리곤/MATIC
+    <!-- <div class="small-card not-detail-card margin-r-12"> -->
+    <!-- <div class="work_info_card padding-a-16"> -->
+    <!-- <div class="card_title font-14b background-font-color margin-b-8">폴리곤/MATIC
                               <div id = "matic_chart" class="chart_open font-12n margin-l-4 flex flex-a-center">일봉 차트</div>
                             </div>
                             <div class = "flex margin-b-4" >
@@ -472,9 +516,10 @@
                               </tbody>
                             </table>
                         </div> -->
-            </div>
-        </div>
-    </div>
+  </div>
+  </div>
+  </div>
 
-    </body>
+</body>
+
 </html>

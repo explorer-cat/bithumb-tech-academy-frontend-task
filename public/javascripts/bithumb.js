@@ -25,65 +25,67 @@ let maticMapBid = new Map();
 
 
 window.onload = async function () {
-    /* 카드 고정하기 버튼 이벤트 */
-    // document.getElementById("open_all_card").addEventListener("click", setAllCardOpenClose)
-    // document.getElementById("close_all_card").addEventListener("click", setAllCardOpenClose)
 
-    // let chart = document.querySelectorAll(".chart_open");
-
-    // for(const el of chart) {
-    //     el.addEventListener("click", setChart);
-    // }
-
-    /* response 정보를 받아옵니다. */
-    connectWS(async function (result) {
-        await getBithumbCryptoInfo(result);
-    });
+    const page = "tradeView";
+    const order = "BTC"; 
+    const payment = "KRW"; 
     
-    await getMiniChart("container_BTC");
+    await setTickerAPI(page, order , payment)
+    await setOrderBookAPI(page, order , payment)
+    await setTransactionAPI(page, order , payment)
+
+        
+    connectWS(async function (result) {
+        getBithumbCryptoInfo(result);
+     });
+
+
+    getMiniChart("container_BTC");
 }
 /* socket response 정보를 받아 swiching 시켜 화면을 구성 요청*/
 const getBithumbCryptoInfo = (result) => {
     const data = JSON.parse(result);
     const el = [{
         bithumbBTC: {
-            "KRW": document.getElementById('bithumb_BTC_krw'),
-            "RATE": document.getElementById('bithumb_BTC_signed_change_rate'),
-            "VOLUME": document.getElementById('bithumb_BTC_acc_trade_volume_24h'),
-            "VALUE": document.getElementById('bithumb_BTC_acc_trade_value_24h'),
-            "VOLUMEPOWER": document.getElementById('bithumb_BTC_acc_trade_volumePower_24h'),
+            "KRW": document.getElementById('tr_krw'),
+            "RATE": document.getElementById('tr_change_rate'),
+            "VOLUME": document.getElementById('tr_volume'),
+            "VALUE": document.getElementById('tr_value'),
+            "POWER" : document.getElementById('tr_power'),
+            "LOW": document.getElementById('tr_low'),
+            "HIGH": document.getElementById('tr_high'),
+            "FINISH": document.getElementById('tr_finish'),  
         },
-        bithumbETH: {
-            "KRW": document.getElementById('bithumb_ETH_krw'),
-            "RATE": document.getElementById('bithumb_ETH_signed_change_rate'),
-            "VOLUME": document.getElementById('bithumb_ETH_acc_trade_volume_24h'),
-            "VALUE": document.getElementById('bithumb_ETH_acc_trade_value_24h'),
-            "VOLUMEPOWER": document.getElementById('bithumb_ETH_acc_trade_volumePower_24h'),
-        },
-        bithumbXRP: {
-            "KRW": document.getElementById('bithumb_XRP_krw'),
-            "RATE": document.getElementById('bithumb_XRP_signed_change_rate'),
-            "VOLUME": document.getElementById('bithumb_XRP_acc_trade_volume_24h'),
-            "VALUE": document.getElementById('bithumb_XRP_acc_trade_value_24h'),
-            "VOLUMEPOWER": document.getElementById('bithumb_XRP_acc_trade_volumePower_24h'),
-        },
-        bithumbBCH: {
-            "KRW": document.getElementById('bithumb_BCH_krw'),
-            "RATE": document.getElementById('bithumb_BCH_signed_change_rate'),
-            "VOLUME": document.getElementById('bithumb_BCH_acc_trade_volume_24h'),
-            "VALUE": document.getElementById('bithumb_BCH_acc_trade_value_24h'),
-            "VOLUMEPOWER": document.getElementById('bithumb_BCH_acc_trade_volumePower_24h'),
-        },
-        bithumbMATIC: {
-            "KRW": document.getElementById('bithumb_MATIC_krw'),
-            "RATE": document.getElementById('bithumb_MATIC_signed_change_rate'),
-            "VOLUME": document.getElementById('bithumb_MATIC_acc_trade_volume_24h'),
-            "VALUE": document.getElementById('bithumb_MATIC_acc_trade_value_24h'),
-            "VOLUMEPOWER": document.getElementById('bithumb_MATIC_acc_trade_volumePower_24h'),
+        // bithumbETH: {
+        //     "KRW": document.getElementById('bithumb_ETH_krw'),
+        //     "RATE": document.getElementById('bithumb_ETH_signed_change_rate'),
+        //     "VOLUME": document.getElementById('bithumb_ETH_acc_trade_volume_24h'),
+        //     "VALUE": document.getElementById('bithumb_ETH_acc_trade_value_24h'),
+        //     "VOLUMEPOWER": document.getElementById('bithumb_ETH_acc_trade_volumePower_24h'),
+        // },
+        // bithumbXRP: {
+        //     "KRW": document.getElementById('bithumb_XRP_krw'),
+        //     "RATE": document.getElementById('bithumb_XRP_signed_change_rate'),
+        //     "VOLUME": document.getElementById('bithumb_XRP_acc_trade_volume_24h'),
+        //     "VALUE": document.getElementById('bithumb_XRP_acc_trade_value_24h'),
+        //     "VOLUMEPOWER": document.getElementById('bithumb_XRP_acc_trade_volumePower_24h'),
+        // },
+        // bithumbBCH: {
+        //     "KRW": document.getElementById('bithumb_BCH_krw'),
+        //     "RATE": document.getElementById('bithumb_BCH_signed_change_rate'),
+        //     "VOLUME": document.getElementById('bithumb_BCH_acc_trade_volume_24h'),
+        //     "VALUE": document.getElementById('bithumb_BCH_acc_trade_value_24h'),
+        //     "VOLUMEPOWER": document.getElementById('bithumb_BCH_acc_trade_volumePower_24h'),
+        // },
+        // bithumbMATIC: {
+        //     "KRW": document.getElementById('bithumb_MATIC_krw'),
+        //     "RATE": document.getElementById('bithumb_MATIC_signed_change_rate'),
+        //     "VOLUME": document.getElementById('bithumb_MATIC_acc_trade_volume_24h'),
+        //     "VALUE": document.getElementById('bithumb_MATIC_acc_trade_value_24h'),
+        //     "VOLUMEPOWER": document.getElementById('bithumb_MATIC_acc_trade_volumePower_24h'),
 
-        }
+        // }
     }]
-
 
     switch (data.type) {
         case "ticker" :
@@ -106,27 +108,15 @@ const setTickerData = (data, el) => {
 
     switch (resTicker.symbol) {
         case "BTC_KRW" :
-            //open high low close
-            let BTC_chartData = {
-                open : resTicker.openPrice,
-                high : resTicker.highPrice,
-                low : resTicker.lowPrice,
-                close : resTicker.closePrice,
-                name : "비트코인 일봉"
-            }
-            //차트 생성
-            // if(document.querySelector(".btc_chart").style.getPropertyValue("display") !== "none") {
-            //     makeBTCChart(BTC_chartData);
-            // }
-
-     
-            bitcoin_global_price = Number(resTicker.closePrice);
-
             element.bithumbBTC.KRW.innerHTML = `${(Number(resTicker.closePrice).toLocaleString())}원`;
             element.bithumbBTC.RATE.innerHTML = `24시간 ${resTicker.chgRate}%`;
             element.bithumbBTC.VOLUME.innerHTML = `${(Number(resTicker.volume).toFixed(2))} BTC`;
             element.bithumbBTC.VALUE.innerHTML = ` ${numberToKorean(Number(resTicker.value).toFixed(0))}원`;
-            element.bithumbBTC.VOLUMEPOWER.innerHTML = ` ${Number(resTicker.volumePower)}%`;
+            element.bithumbBTC.POWER.innerHTML = ` ${Number(resTicker.volumePower)}%`;
+            element.bithumbBTC.LOW.innerHTML = ` ${numberToKorean(Number(resTicker.lowPrice))}`;
+            element.bithumbBTC.HIGH.innerHTML = ` ${numberToKorean(Number(resTicker.highPrice))}`;
+            element.bithumbBTC.FINISH.innerHTML = ` ${numberToKorean(Number(resTicker.closePrice))}`;
+
 
             //현재(종가)가격이 시가 보다 낮은 경우
             if (resTicker.closePrice < resTicker.openPrice) {
@@ -278,6 +268,8 @@ const setTransactionData = (data, el) => {
 
 
 const setTransactionList = (response, targetid) => {
+
+    console.log("response",response)
     const time = new Date(response.contDtm);
     const color = response.buySellGb;
 
@@ -303,7 +295,7 @@ const setTransactionList = (response, targetid) => {
     response.contQty
     tr.appendChild(transactionCount)
 
-    target.appendChild(tr)
+    target.prepend(tr)
 }
 
 
@@ -645,3 +637,4 @@ const setOrderBookDepthData = (data) => {
             break;
     }
 }
+
