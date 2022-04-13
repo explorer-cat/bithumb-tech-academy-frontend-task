@@ -38,9 +38,8 @@ const setAllCardOpenClose = (event) => {
             document.getElementById("container_" + item).style.display = "none"
             allCard[index].classList.add("fixed_open_card")
         })
+    } else if (event.target.id === "close_all_card") {
 
-    }
-    else if (event.target.id === "close_all_card") {
         document.querySelector("#open_all_card").checked = false;
 
         code.forEach(function (item, index) {

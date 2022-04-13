@@ -1937,17 +1937,16 @@ function getMiniChart(id) {
       visible:false
     },
   
-  
+
     legend: {
       enabled: false
     },
-  
 
     series: [{
       data: elevationData,
-      lineColor: "#EFEFEF",
-      color: "#EFEFEF",
-      fillOpacity: 0.5,
+      lineColor: "#5580F6",
+      color: "#003EE9",
+      fillOpacity: 0.2,
       name: 'Elevation',
       marker: {
         enabled: false
