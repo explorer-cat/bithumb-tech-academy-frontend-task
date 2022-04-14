@@ -31,14 +31,13 @@
   <script src="https://cdn.jsdelivr.net/jquery/1.12.4/jquery.min.js"></script>
 
   <!--javascript -->
-  <script src="/javascripts/restAPI/bithumbAPI.js"></script>
   <script src="/javascripts/eventHandler.js"></script>
   <script src="/javascripts/webSocket.js"></script>
   <script src="/javascripts/bithumb.js"></script>
   <script src="/javascripts/chart.js"></script>
   <script src="/javascripts/utils.js"></script>
   <script src="/javascripts/apexChart.js"></script>
-
+  <script src="/javascripts/restAPI/bithumbAPI.js"></script>
 
 
 </head>
@@ -122,7 +121,7 @@
           </div>
           <div style = "    width: 100%;
           display: flex;
-          height: 100%;">
+          height: 594px;">
             <div class="crypto_content_info_layount padding-a-16 margin-r-8">
               <div class="margin-r-8">
                 <!-- 코인 기본 정보 시작 -->
@@ -164,17 +163,15 @@
                 <!--미니차트탭-->
                 <div class="chart_info_category margin-t-16">
                   <ul>
-                    <li title="차트" class="flex tab_selected">
+                    <li title="차트" class="flex tab_selected" id = "mini_chart">
                       차트
                     </li>
-                    <li title="BTC 정보" class="flex">
+                    <li title="BTC 정보" class="flex" id = "crypto_info">
                       정보
                     </li>
                   </ul>
-                  <div id="container_BTC" class="margin-l-4">
-
-                  </div>
                 </div>
+                
                 <!--채결내역 시세 -->
                 <div class="transition_info_category  margin-t-16">
                   <ul>
@@ -200,8 +197,32 @@
                 </div>
               </div>
             </div>
+            <div class = "crypto_orderbook_info_layout margin-lr-16">
+              <table id = "orderBook_BTC_ask" class ="orderBookTitle">
+                <thead>
+                <tr>
+                    <td>가격</td>
+                    <td>매도 잔량</td>
+                </tr>
+                </thead>
+                <tbody id = "bit_ask">
 
-            <div class = "crypto_orderbook_info_layout margin-lr-16"></div>
+                </tbody>
+            </table>
+              <!-- <table id = "orderBook_BTC_bid" class ="orderBookTitle">
+                  <thead>
+                  <tr>
+                      <td>가격</td>
+                      <td>매수 잔량</td>
+                  </tr>
+                  </thead>
+                  <tbody id = "bit_bid">
+              
+                  </tbody>
+              </table> -->
+            </div>
+
+
             <div class = "crypto_order_info_layout  margin-lr-16"></div>
 
           </div>

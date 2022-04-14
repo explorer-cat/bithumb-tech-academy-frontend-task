@@ -127,6 +127,36 @@ const setChart = (event) => {
             break;
 
     }
+}
 
+/*미니 차트 생성*/
+const setMiniChart = (event) => {
+
+   
+}
+
+const getCrpytoInfo = (event) => {
+
+    let target = document.getElementsByClassName("chart_info_category")[0];
+    //차트 지우고
+    if(!target.querySelector("ul > li:nth-child(2)").classList.contains("tab_selected")) {
+        target.querySelector("ul > li:nth-child(1)").classList.remove("tab_selected")
+        target.querySelector("ul > li:nth-child(2)").classList.add("tab_selected")
+        document.getElementsByClassName("mini_crypto_info")[0].style.display = "";
+        document.getElementById("container_BTC").style.display = "none";
+      } else if(!document.getElementsByClassName("mini_crypto_info")[0]) {
+        let coinInfoDiv = document.createElement("div");
+        coinInfoDiv.classList.add("mini_crypto_info");
+        target.appendChild(coinInfoDiv);
+    
+        let title = document.createElement("div")
+        title.innerHTML = "비트코인에 관련한 정보가 들어올곳.";
+        title.classList.add("padding-a-8")
+        coinInfoDiv.appendChild(title)
+    
+      }
+
+
+    
 
 }

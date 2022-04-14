@@ -26,7 +26,9 @@ const setTickerAPI = async (page, order, payment) => {
 
         let tkData = request.data.data;
         console.log("tkData", tkData)
+        bitcoin_global_price = tkData.prev_closing_price;
 
+        console.log("bitcoin_global_price",bitcoin_global_price)
         let dom = {
             "KRW": document.getElementById('tr_krw'),
             "RATE": document.getElementById('tr_change_rate'),
@@ -48,6 +50,7 @@ const setTickerAPI = async (page, order, payment) => {
         dom.HIGH.innerHTML = `${numberToKorean(Number(tkData.max_price))}`;
         dom.FINISH.innerHTML = `${numberToKorean(Number(tkData.prev_closing_price))}`;
 
+        return request.data.data;
     } catch (e) {
 
     }
@@ -107,7 +110,7 @@ const setTransactionAPI = async (page, order, payment) => {
 }
 
 
-const setOrderBookAPI = async (page, order, payment) => {
+const setOrderBookAPI = async (page, order, payment,ticker) => {
     let result = {
         success: false,
     }
@@ -124,9 +127,57 @@ const setOrderBookAPI = async (page, order, payment) => {
 
     try {
         if(!request.data.data)return
-
+     //   let bit_ask = document.getElementById("bit_ask")
         let obData = request.data.data;
         console.log("obData", obData)
+        let tr;
+        let price;
+        let count;
+        
+
+        for await (const asks of obData.asks) {
+            tr = document.createElement("tr")
+            price = document.createElement("td")
+            count = document.createElement("td")
+            percent = document.createElement("td")
+
+           price.innerHTML = Number(asks.price).toLocaleString();
+           percent.innerHTML = `${((Number(asks.price) - Number(ticker.prev_closing_price)) / Number(asks.price) * 100).toFixed(2)} %`
+           count.innerHTML = Number(asks.quantity).toFixed(4)
+           tr.style.backgroundColor = "#eef6ff"
+           tr.appendChild(price);
+           tr.appendChild(percent);
+           tr.appendChild(count);
+           
+           bit_ask.prepend(tr);
+        }
+
+
+        for await (const bids of obData.bids) {
+            tr = document.createElement("tr")
+            price = document.createElement("td")
+            percent = document.createElement("td")
+            count = document.createElement("td")
+
+           price.innerHTML = Number(bids.price).toLocaleString();
+
+           percent.innerHTML = `${((Number(bids.price) - Number(ticker.prev_closing_price)) / Number(bids.price) * 100).toFixed(2)} %`
+
+           count.innerHTML = Number(bids.quantity).toFixed(4)
+           tr.style.backgroundColor = "#fff0ef"
+           tr.appendChild(price);
+           tr.appendChild(percent);
+           tr.appendChild(count);
+           bit_ask.appendChild(tr);
+        }
+
+
+        const special= document.getElementById("bit_ask");
+
+        console.log("special" , special.offsetHeight)
+        //23px 짜리 td 가 40개니까 - margin padding 빼기
+        special.scrollTo( 0, 900/2 );
+
     } catch (e) {
 
     }
@@ -135,9 +186,11 @@ const setOrderBookAPI = async (page, order, payment) => {
 
 
 const setCandleStick = async(page,order,payment) => {
+    console.log(this)
     let result = {
         success: false,
     }
+
     let request = await axios.request(
         {
             method: 'POST',
@@ -161,11 +214,13 @@ const setCandleStick = async(page,order,payment) => {
             console.log("miniChartData", new Date(miniChartData[0][0]).toLocaleTimeString())
             console.log("miniChartData", new Date(miniChartData[19][0]).toLocaleTimeString())
 
+
+            let target = document.getElementsByClassName("chart_info_category")[0];
+            let chart = document.createElement("div")
+            chart.id = "container_BTC"
+            target.appendChild(chart)
             getMiniChart("container_BTC", miniChartData)
         }
-
-
-
     } catch (e) {
 
     }

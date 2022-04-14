@@ -30,14 +30,22 @@ window.onload = async function () {
     const order = "BTC"; 
     const payment = "KRW"; 
     
-    await setTickerAPI(page, order , payment)
-    await setOrderBookAPI(page, order , payment)
-    await setTransactionAPI(page, order , payment)
-    await setCandleStick(page,order,payment)
+    let tickerInfo = await setTickerAPI(page, order, payment)
+
+
+    setOrderBookAPI(page, order, payment, tickerInfo)
+
+    setTransactionAPI(page, order, payment)
+
+    setCandleStick(page, order,payment)
+
+    document.getElementById("mini_chart").addEventListener("click", getMiniChart);
+    document.getElementById("crypto_info").addEventListener("click", getCrpytoInfo);
+
         
-    connectWS(async function (result) {
-        getBithumbCryptoInfo(result);
-     });
+    // connectWS(async function (result) {
+    //     getBithumbCryptoInfo(result);
+    //  });
 
 
   //  getMiniChart("container_BTC");
@@ -56,35 +64,6 @@ const getBithumbCryptoInfo = (result) => {
             "HIGH": document.getElementById('tr_high'),
             "FINISH": document.getElementById('tr_finish'),  
         },
-        // bithumbETH: {
-        //     "KRW": document.getElementById('bithumb_ETH_krw'),
-        //     "RATE": document.getElementById('bithumb_ETH_signed_change_rate'),
-        //     "VOLUME": document.getElementById('bithumb_ETH_acc_trade_volume_24h'),
-        //     "VALUE": document.getElementById('bithumb_ETH_acc_trade_value_24h'),
-        //     "VOLUMEPOWER": document.getElementById('bithumb_ETH_acc_trade_volumePower_24h'),
-        // },
-        // bithumbXRP: {
-        //     "KRW": document.getElementById('bithumb_XRP_krw'),
-        //     "RATE": document.getElementById('bithumb_XRP_signed_change_rate'),
-        //     "VOLUME": document.getElementById('bithumb_XRP_acc_trade_volume_24h'),
-        //     "VALUE": document.getElementById('bithumb_XRP_acc_trade_value_24h'),
-        //     "VOLUMEPOWER": document.getElementById('bithumb_XRP_acc_trade_volumePower_24h'),
-        // },
-        // bithumbBCH: {
-        //     "KRW": document.getElementById('bithumb_BCH_krw'),
-        //     "RATE": document.getElementById('bithumb_BCH_signed_change_rate'),
-        //     "VOLUME": document.getElementById('bithumb_BCH_acc_trade_volume_24h'),
-        //     "VALUE": document.getElementById('bithumb_BCH_acc_trade_value_24h'),
-        //     "VOLUMEPOWER": document.getElementById('bithumb_BCH_acc_trade_volumePower_24h'),
-        // },
-        // bithumbMATIC: {
-        //     "KRW": document.getElementById('bithumb_MATIC_krw'),
-        //     "RATE": document.getElementById('bithumb_MATIC_signed_change_rate'),
-        //     "VOLUME": document.getElementById('bithumb_MATIC_acc_trade_volume_24h'),
-        //     "VALUE": document.getElementById('bithumb_MATIC_acc_trade_value_24h'),
-        //     "VOLUMEPOWER": document.getElementById('bithumb_MATIC_acc_trade_volumePower_24h'),
-
-        // }
     }]
 
     switch (data.type) {

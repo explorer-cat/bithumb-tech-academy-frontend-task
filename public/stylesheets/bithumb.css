@@ -159,11 +159,17 @@ body {
   margin: 1em auto;
 }
 
-#container_BTC,#container_ETH,
-#container_XRP,#container_BCH,#container_MATIC {
+#container_BTC {
     width: 400px;
     height: 170px;
     border-top: solid 1px #ebebeb;
+}
+
+.mini_crypto_info {
+    width: 400px;
+    height: 170px;
+    overflow: auto;
+    border-top: solid 1px #ebebeb; 
 }
 
 .highcharts-data-table table {
@@ -210,7 +216,7 @@ body {
 
 .transactionTitle,.orderBookTitle{
     width: 100%;
-    height: 200px;
+    height: 100%;
     box-sizing: border-box;
 }
 .transactionTitle > tbody{
@@ -222,8 +228,7 @@ body {
 
 .orderBookTitle > tbody {
     display: block;
-     height: 180px;
-     overflow: auto;
+    height: 100%;
      margin-bottom:12px;
  }
 .transactionTitle > thead > tr {
@@ -255,7 +260,8 @@ body {
 .orderBookTitle > tbody > tr {
     display: flex;
     justify-content: space-around;
-    font-size: 11px;
+    font-size: 13px;
+    padding: 2px 0px;
 }
 
 .transactionTitle > tbody > tr > td:nth-child(1) {
@@ -278,7 +284,7 @@ body {
 #xrp_ask,
 #bch_ask,
 #matic_ask {
-    background-color: rgb(67, 134, 249)
+    overflow: auto;
 }
 
 #bit_bid,
@@ -312,9 +318,7 @@ body {
 }
 
 .crypto_orderbook_info_layout {
-    background-color: gray;
-    display: flex;
-    width: 400px;
+    width: 300px;
     height: 100%;
 }
 
@@ -361,4 +365,27 @@ body {
     border-bottom: 3px solid black ;
     font-weight: bold;
     cursor: pointer;
+}
+
+#bit_ask > tr > td:nth-child(1) {
+    width: 40%;
+    margin-left: 24px;
+    text-align: left;
+
+}
+#bit_ask > tr > td:nth-child(2) {
+    width: 15%;
+    margin: auto;
+    text-align: right;
+
+}
+#bit_ask > tr > td:nth-child(3) {
+    width: 30%;
+    margin-right: 24px;
+    text-align: right;
+}
+
+#bit_ask > tr:hover{
+    cursor: pointer;;
+    background-color: #fed9da!important;
 }
