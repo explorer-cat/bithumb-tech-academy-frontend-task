@@ -26,18 +26,23 @@
   <!--apexcharts-->
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+  <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script>
+
+
   <!--library-->
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/jquery/1.12.4/jquery.min.js"></script>
 
   <!--javascript -->
+    <script src="/javascripts/restAPI/bithumbAPI.js"></script>
   <script src="/javascripts/eventHandler.js"></script>
   <script src="/javascripts/webSocket.js"></script>
   <script src="/javascripts/bithumb.js"></script>
   <script src="/javascripts/chart.js"></script>
   <script src="/javascripts/utils.js"></script>
   <script src="/javascripts/apexChart.js"></script>
-  <script src="/javascripts/restAPI/bithumbAPI.js"></script>
+  <script src="/javascripts/tradeChart.js"></script>
 
 
 </head>
@@ -113,7 +118,10 @@
 
       <div class="vertical-double-box">
         <div class="content-card margin: 16px;">
-          <div class="chart" style="width: 100%; height: 40%; background-color: red;">
+          <div class="chart">
+            <!-- <button id="setDay">1일봉</button>
+            <button id="setWeek">7일봉</button> -->
+            <div id="chartContainer" style="height: 500px; width: 100%;"></div>
           </div>
           <div class="flex margin-t-16 margin-l-16">
             <div id="tr_krw" class="card_title font-20b flex flex-a-center"></div>

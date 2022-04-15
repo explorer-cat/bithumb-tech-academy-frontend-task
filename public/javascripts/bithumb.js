@@ -34,18 +34,16 @@ window.onload = async function () {
 
 
     setOrderBookAPI(page, order, payment, tickerInfo)
-
     setTransactionAPI(page, order, payment)
-
     setCandleStick(page, order,payment)
 
     document.getElementById("mini_chart").addEventListener("click", getMiniChart);
     document.getElementById("crypto_info").addEventListener("click", getCrpytoInfo);
 
-        
-    // connectWS(async function (result) {
-    //     getBithumbCryptoInfo(result);
-    //  });
+    tradeChart();
+    connectWS(async function (result) {
+        getBithumbCryptoInfo(result);
+     });
 
 
   //  getMiniChart("container_BTC");
@@ -87,6 +85,9 @@ const setTickerData = (data, el) => {
 
     switch (resTicker.symbol) {
         case "BTC_KRW" :
+            //일봉을 만들어주기위한 차트 데이터 전송
+            tradeChart(data);
+
             element.bithumbBTC.KRW.innerHTML = `${(Number(resTicker.closePrice).toLocaleString())}원`;
             element.bithumbBTC.RATE.innerHTML = `24시간 ${resTicker.chgRate}%`;
             element.bithumbBTC.VOLUME.innerHTML = `${(Number(resTicker.volume).toFixed(2))} BTC`;

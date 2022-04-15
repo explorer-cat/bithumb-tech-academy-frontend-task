@@ -374,7 +374,7 @@ body {
 
 }
 #bit_ask > tr > td:nth-child(2) {
-    width: 15%;
+    width: 20%;
     margin: auto;
     text-align: right;
 
@@ -388,4 +388,20 @@ body {
 #bit_ask > tr:hover{
     cursor: pointer;;
     background-color: #fed9da!important;
+}
+ .canvasjs-navigator-panel,
+.canvasjs-chart-credit{
+}
+/*
+.canvasjs-chart-canvas {
+    position: static!important;
+    cursor: pointer!important;
+    user-select:auto!important;
+}
+
+.canvasjs-chart-canvas:hover {
+    position: static!important;
+    cursor: pointer!important;
+    user-select:auto!important; */
+
 }
