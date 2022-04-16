@@ -30,6 +30,11 @@
   <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script>
 
 
+  <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+
   <!--library-->
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/jquery/1.12.4/jquery.min.js"></script>
@@ -231,7 +236,37 @@
             </div>
 
 
-            <div class = "crypto_order_info_layout  margin-lr-16"></div>
+            <div class = "crypto_order_info_layout  margin-lr-16">
+              <div class = "crpto_list_box">
+                  <!-- <div class = "crpyto_list_search_box">
+                      <input id ="find_crpyto"  class = "public_search" type = "text" placeholder="코인 이름으로 찾기">검색</input>
+                  </div> -->
+                  <ul>
+                    <li title="원화" class="flex tab_selected padding-a-16" id = "mini_chart">
+                      원화 마켓
+                    </li>
+                    <li title="BTC" class="flex padding-a-16" id = "crypto_info">
+                      BTC 마켓
+                    </li>
+                  </ul>
+                  <table class ="crypto_list_set" id = "crypto_list_table">
+                    <thead>
+                    <tr class = "list_title">
+                       <td style = "margin-top: 8px;"></td>
+                        <td style = "margin-top: 8px;">가상자산명</td>
+                        <td style = "margin-top: 8px;">현재가</td>
+                        <td style = "margin-top: 8px">변동률</td>
+                        <td style = "margin-top: 8px">거래대금</td>
+                    </tr>
+                    <tbody>
+                      
+                    </tbody>
+                    </thead>
+               
+                </table>
+              </div>
+            </div>
+            
 
           </div>
         </div>

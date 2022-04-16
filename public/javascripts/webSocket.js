@@ -7,16 +7,18 @@
  var socket; // 소켓
 
  // 웹소켓 연결
- function connectWS(callback) {
+ function connectWS({page,order,payment},callback) {
      if(socket != undefined){
          socket.close();
      }
      socket = new WebSocket("wss://pubwss.bithumb.com/pub/ws");
      socket.onopen 	= function(e){
-          filterRequest('{"type":"ticker","symbols":["BTC_KRW"],"tickTypes":["24H"]}');
-          filterRequest('{"type":"transaction","symbols":["BTC_KRW"],"tickTypes":["24H"]}');
-          filterRequest('{"type":"orderbookdepth", "symbols":["BTC_KRW"]}');
+
+          filterRequest(`{"type":"ticker","symbols":["${order}_${payment}"],"tickTypes":["24H"]}`);
+          filterRequest(`{"type":"transaction","symbols":["${order}_${payment}"],"tickTypes":["24H"]}`);
+          filterRequest(`{"type":"orderbookdepth", "symbols":["${order}_${payment}"]}`);
           }
+
      socket.onclose = function(e){
             socket = undefined;
           }
@@ -28,6 +30,7 @@
  // 웹소켓 연결 해제
  function closeWS() {
      if(socket != undefined){
+         console.log("s*******소켓 연결 해제 **********")
          socket.close();
          socket = undefined;
      }	

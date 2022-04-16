@@ -110,7 +110,7 @@ const setTransactionAPI = async (page, order, payment) => {
 }
 
 
-const setOrderBookAPI = async (page, order, payment,ticker) => {
+const setOrderBookAPI = async (page, order, payment, ticker) => {
     let result = {
         success: false,
     }
@@ -127,13 +127,15 @@ const setOrderBookAPI = async (page, order, payment,ticker) => {
 
     try {
         if(!request.data.data)return
-     //   let bit_ask = document.getElementById("bit_ask")
+
+        console.log("ticker", ticker)
         let obData = request.data.data;
-        console.log("obData", obData)
         let tr;
         let price;
         let count;
-        
+
+
+
 
         for await (const asks of obData.asks) {
             tr = document.createElement("tr")
@@ -144,11 +146,15 @@ const setOrderBookAPI = async (page, order, payment,ticker) => {
            price.innerHTML = Number(asks.price).toLocaleString();
            percent.innerHTML = `${((Number(asks.price) - Number(ticker.prev_closing_price)) / Number(asks.price) * 100).toFixed(2)} %`
            count.innerHTML = Number(asks.quantity).toFixed(4)
+
            tr.style.backgroundColor = "#eef6ff"
+            console.log("push!!")
+
+
            tr.appendChild(price);
            tr.appendChild(percent);
            tr.appendChild(count);
-           
+        
            bit_ask.prepend(tr);
         }
 
@@ -165,10 +171,14 @@ const setOrderBookAPI = async (page, order, payment,ticker) => {
 
            count.innerHTML = Number(bids.quantity).toFixed(4)
            tr.style.backgroundColor = "#fff0ef"
+
            tr.appendChild(price);
            tr.appendChild(percent);
            tr.appendChild(count);
            bit_ask.appendChild(tr);
+
+           
+
         }
 
 

@@ -155,8 +155,36 @@ const getCrpytoInfo = (event) => {
         coinInfoDiv.appendChild(title)
     
       }
+}
 
+async function moveToPage() {
 
-    
+    await closeWS();
+
+    let AskTR = document.querySelectorAll("#bit_ask > tr");
+
+    bitMapAsk = new Map();
+    bitMapBid = new Map();
+
+    for await (const tr of AskTR) {
+        tr.remove();
+    }
+
+    let targetId = event.target.parentNode.id;
+
+    switch(targetId) {
+        case "crypto_btc":
+            setCookie("page","tradeView","1")
+            setCookie("order","BTC","1")
+            setCookie("payment","KRW","1")
+            initPage();
+            break;
+        case "crypto_eth":
+            setCookie("page","tradeView","1")
+            setCookie("order","ETH","1")
+            setCookie("payment","KRW","1")
+            initPage();
+            break;
+    }
 
 }

@@ -246,8 +246,7 @@ body {
     justify-content: space-around;
     width: 100%;
     height: 20px;
-    border-top: solid 1px #EFEFEF;
-    border-bottom: solid 1px #EFEFEF;
+    background: #EFEFEF;
     margin-bottom: 8px;
 }
 
@@ -323,7 +322,6 @@ body {
 }
 
 .crypto_order_info_layout {
-    background-color: green;
     display: flex;
     width: 400px;
     height: 100%;
@@ -347,7 +345,8 @@ body {
 }
 
 .chart_info_category ul li,
-.transition_info_category ul li {
+.transition_info_category ul li,
+.crpto_list_box ul li {
     padding: 0 8px 0 8px;
     font-size: 15px;
     float: left;
@@ -361,11 +360,14 @@ body {
 }
 
 .chart_info_category ul li.tab_selected,
-.transition_info_category ul li.tab_selected {
+.transition_info_category ul li.tab_selected,
+.crpto_list_box ul li.tab_selected {
     border-bottom: 3px solid black ;
     font-weight: bold;
     cursor: pointer;
 }
+
+
 
 #bit_ask > tr > td:nth-child(1) {
     width: 40%;
@@ -389,19 +391,64 @@ body {
     cursor: pointer;;
     background-color: #fed9da!important;
 }
- .canvasjs-navigator-panel,
-.canvasjs-chart-credit{
-}
-/*
-.canvasjs-chart-canvas {
-    position: static!important;
-    cursor: pointer!important;
-    user-select:auto!important;
+
+
+.crpto_list_box{
+    width: 100%;
+    /* display: flex; */
+    display: flex;
+    flex-direction: column;
 }
 
-.canvasjs-chart-canvas:hover {
-    position: static!important;
-    cursor: pointer!important;
-    user-select:auto!important; */
+.crpyto_list_search_box{
+    width: 100%;
+}
 
+
+
+.crypto_list_set{
+    width: 100%;
+}
+
+
+.list_title{
+    height: 40px;
+}
+
+.list_title > td:nth-child(1) {
+    margin-top: 8px;
+}
+
+
+
+.crypto_list_set > thead > tr > td:nth-child(2),
+.crypto_list_set > thead > tr > td:nth-child(3),
+.crypto_list_set > thead > tr > td:nth-child(4),
+.crypto_list_set > thead > tr > td:nth-child(5) {
+    text-align: center;
+    height: 40px;
+    background: #EFEFEF;
+    margin-bottom: 8px;
+}
+
+.crypto_list_set > thead > tr > td:nth-child(1) {
+    text-align: center;
+    width: 10%;
+    height: 40px;
+    background: #EFEFEF;
+    margin-bottom: 8px;
+}
+
+
+
+.crypto_list_set > tbody > tr {
+    text-align: center;
+    height: 40px;
+    margin-bottom: 8px;
+    border: solid 1px #eee;
+}
+
+.crypto_list_set > tbody > tr:hover {
+    cursor: pointer;
+    background-color: #f8f8f8;
 }

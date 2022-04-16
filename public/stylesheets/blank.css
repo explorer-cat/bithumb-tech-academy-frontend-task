@@ -461,4 +461,14 @@
 }
 
 
-
+.public_search {
+    width: 120px;
+    height: 30px;
+    border-radius: 6px;
+    --tw-text-opacity: 1;
+    color: rgba(148,163,184,var(--tw-text-opacity));
+    --tw-bg-opacity: 1;
+    background-color: rgba(241,245,249,var(--tw-bg-opacity));
+    --tw-border-opacity: 1;
+    border-color: rgba(241,245,249,var(--tw-border-opacity));
+}
