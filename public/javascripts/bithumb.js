@@ -1,7 +1,13 @@
 
 let whaleAleartCount = 0;
+/*현재가 전역*/
 let bitcoin_global_price;
 let eth_global_price;
+
+/*종가 전역*/
+let bit_global_prev;
+let eth_global_prev;
+
 //매수 주문
 let orderbookDataBid = new Map();
 //매도 주문
@@ -48,6 +54,8 @@ async function initPage() {
 
     setTransactionAPI(page, order, payment)
     setCandleStick(page, order, payment)
+    setOrderBookAPI(page,order,payment ,tickerInfo)
+    
 
     //기본 차트
     tradeChart();
@@ -66,9 +74,9 @@ async function initPage() {
     document.getElementById("crypto_info").addEventListener("click", getCrpytoInfo);
 
 
-    connectWS(({ page, order, payment }), async function (result) {
-        await getBithumbCryptoInfo(result);
-    });
+    // connectWS(({ page, order, payment }), async function (result) {
+    //     await getBithumbCryptoInfo(result);
+    // });
 }
 
 window.onload = async function () {
@@ -118,10 +126,10 @@ const setTickerData = (data, el) => {
 
     switch(resTicker.symbol) {
         case "BTC_KRW" :
-           bitcoin_global_price = resTicker.closePrice;
+           bitcoin_global_price = resTicker.prevClosePrice;
            break;
        case "ETH_KRW":
-           eth_global_price = resTicker.closePrice;
+           eth_global_price = resTicker.prevClosePrice;
            break;
        }
 
@@ -247,6 +255,8 @@ const setOrderBookDepthData = (data, ticker) => {
                 let count = document.createElement("td")
                 let percent = document.createElement("td")
 
+                let count_bg = document.createElement("p")
+
 
 
                 price.innerHTML = Number(key).toLocaleString();
@@ -257,11 +267,14 @@ const setOrderBookDepthData = (data, ticker) => {
                 }
                 count.innerHTML = Number(value).toFixed(4)
                 tr.style.backgroundColor = "#eef6ff"
+                count_bg.classList.add("count_bg")
+                count.appendChild(count_bg)
 
                 tr.appendChild(price);
                 tr.appendChild(percent);
                 tr.appendChild(count);
                 bit_ask.appendChild(tr);
+
             }
         });
 
@@ -302,7 +315,7 @@ const setOrderBookDepthData = (data, ticker) => {
         });
 
         let special = document.getElementById("bit_ask");
-        special.scrollTo(0, 900 / 2);
+        // special.scrollTo(0, 900 / 2);
 
     }
 }

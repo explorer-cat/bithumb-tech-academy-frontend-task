@@ -162,6 +162,8 @@ const setOrderBookAPI = async (page, order, payment, ticker) => {
         let tr;
         let price;
         let count;
+        let bg;
+
 
 
 
@@ -171,13 +173,17 @@ const setOrderBookAPI = async (page, order, payment, ticker) => {
             price = document.createElement("td")
             count = document.createElement("td")
             percent = document.createElement("td")
+            bg = document.createElement("p");
 
            price.innerHTML = Number(asks.price).toLocaleString();
            percent.innerHTML = `${((Number(asks.price) - Number(ticker.prev_closing_price)) / Number(asks.price) * 100).toFixed(2)} %`
            count.innerHTML = Number(asks.quantity).toFixed(4)
 
+           bg.classList.add("count_bg")
+
            tr.style.backgroundColor = "#eef6ff"
             console.log("push!!")
+            count.appendChild(bg)
 
 
            tr.appendChild(price);
@@ -194,6 +200,7 @@ const setOrderBookAPI = async (page, order, payment, ticker) => {
             percent = document.createElement("td")
             count = document.createElement("td")
 
+            
            price.innerHTML = Number(bids.price).toLocaleString();
 
            percent.innerHTML = `${((Number(bids.price) - Number(ticker.prev_closing_price)) / Number(bids.price) * 100).toFixed(2)} %`
