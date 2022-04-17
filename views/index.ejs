@@ -73,17 +73,7 @@
             </tr>
             <tr>
               <td class="clovine_trend_icon margin-lr-16"></td>
-              <td class="font-14b basic-font-color aside_menu">빗썸캐시</td>
-              <td class="font-14b basic-font-color"></td>
-            </tr>
-            <tr>
-              <td class="clovine_trend_icon margin-lr-16"></td>
-              <td class="font-14b basic-font-color aside_menu">상품/서비스</td>
-              <td class="font-14b basic-font-color"></td>
-            </tr>
-            <tr>
-              <td class="clovine_trend_icon margin-lr-16"></td>
-              <td class="font-14b basic-font-color aside_menu">제품/입점</td>
+              <td class="font-14b basic-font-color aside_menu">트레이딩뷰</td>
               <td class="font-14b basic-font-color"></td>
             </tr>
           </tbody>
@@ -122,21 +112,58 @@
       <!-- <div class="flex" style="height: 100%;display: block;overflow: hidden;"> -->
 
       <div class="vertical-double-box">
+
+        <div class = "crypto_order_info_layout">
+          <div class = "crpto_list_box">
+              <!-- <div class = "crpyto_list_search_box">
+                  <input id ="find_crpyto"  class = "public_search" type = "text" placeholder="코인 이름으로 찾기">검색</input>
+              </div> -->
+              <ul>
+                <li title="원화" class="flex tab_selected padding-a-16" id = "mini_chart">
+                  원화 마켓
+                </li>
+                <li title="BTC" class="flex padding-a-16" id = "crypto_info">
+                  BTC 마켓
+                </li>
+              </ul>
+              <table class ="crypto_list_set" id = "crypto_list_table">
+                <thead>
+                <tr class = "list_title">
+                   <td style = "margin-top: 8px;"></td>
+                    <td style = "margin-top: 8px;">가상자산명</td>
+                    <td style = "margin-top: 8px;">현재가</td>
+                    <td style = "margin-top: 8px">변동률</td>
+                    <td style = "margin-top: 8px">거래대금</td>
+                </tr>
+                <tbody>
+                  <tr id = "btc_info">
+
+                  </tr>
+                  <tr id = "eth_info">
+                    
+                  </tr>
+                </tbody>
+                </thead>
+           
+            </table>
+          </div>
+        </div>
+        
         <div class="content-card margin: 16px;">
           <div class="chart">
             <!-- <button id="setDay">1일봉</button>
             <button id="setWeek">7일봉</button> -->
             <div id="chartContainer" style="height: 500px; width: 100%;"></div>
           </div>
-          <div class="flex margin-t-16 margin-l-16">
+          <div class="flex crpyto_title">
             <div id="tr_krw" class="card_title font-20b flex flex-a-center"></div>
             <div id="tr_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
           </div>
           <div style = "    width: 100%;
           display: flex;
           height: 594px;">
-            <div class="crypto_content_info_layount padding-a-16 margin-r-8">
-              <div class="margin-r-8">
+            <div class="crypto_content_info_layount">
+              <div class="crypto_info_box">
                 <!-- 코인 기본 정보 시작 -->
                 <div class="crypto_content_info_box">
                   <table class="left_info_table">
@@ -210,7 +237,7 @@
                 </div>
               </div>
             </div>
-            <div class = "crypto_orderbook_info_layout margin-lr-16">
+            <div class = "crypto_orderbook_info_layout padding-a-16 crypto_info_box">
               <table id = "orderBook_BTC_ask" class ="orderBookTitle">
                 <thead>
                 <tr>
@@ -236,37 +263,6 @@
             </div>
 
 
-            <div class = "crypto_order_info_layout  margin-lr-16">
-              <div class = "crpto_list_box">
-                  <!-- <div class = "crpyto_list_search_box">
-                      <input id ="find_crpyto"  class = "public_search" type = "text" placeholder="코인 이름으로 찾기">검색</input>
-                  </div> -->
-                  <ul>
-                    <li title="원화" class="flex tab_selected padding-a-16" id = "mini_chart">
-                      원화 마켓
-                    </li>
-                    <li title="BTC" class="flex padding-a-16" id = "crypto_info">
-                      BTC 마켓
-                    </li>
-                  </ul>
-                  <table class ="crypto_list_set" id = "crypto_list_table">
-                    <thead>
-                    <tr class = "list_title">
-                       <td style = "margin-top: 8px;"></td>
-                        <td style = "margin-top: 8px;">가상자산명</td>
-                        <td style = "margin-top: 8px;">현재가</td>
-                        <td style = "margin-top: 8px">변동률</td>
-                        <td style = "margin-top: 8px">거래대금</td>
-                    </tr>
-                    <tbody>
-                      
-                    </tbody>
-                    </thead>
-               
-                </table>
-              </div>
-            </div>
-            
 
           </div>
         </div>

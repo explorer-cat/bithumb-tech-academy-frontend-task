@@ -7,17 +7,22 @@
  var socket; // 소켓
 
  // 웹소켓 연결
- function connectWS({page,order,payment},callback) {
+ async function connectWS({page,order,payment},callback) {
      if(socket != undefined){
-         socket.close();
+         await socket.close();
      }
+
      socket = new WebSocket("wss://pubwss.bithumb.com/pub/ws");
      socket.onopen 	= function(e){
-
-          filterRequest(`{"type":"ticker","symbols":["${order}_${payment}"],"tickTypes":["24H"]}`);
-          filterRequest(`{"type":"transaction","symbols":["${order}_${payment}"],"tickTypes":["24H"]}`);
-          filterRequest(`{"type":"orderbookdepth", "symbols":["${order}_${payment}"]}`);
-          }
+         console.log("socket", socket);
+            // filterRequest(`{"type":"ticker","symbols":["${order}_${payment}"],"tickTypes":["24H"]}`);
+            // filterRequest(`{"type":"transaction","symbols":["${order}_${payment}"],"tickTypes":["24H"]}`);
+            // filterRequest(`{"type":"orderbookdepth", "symbols":["${order}_${payment}"]}`);
+            filterRequest(`{"type":"ticker","symbols":["BTC_KRW","ETH_KRW"],"tickTypes":["24H"]}`);
+            filterRequest(`{"type":"transaction","symbols":["BTC_KRW","ETH_KRW"],"tickTypes":["24H"]}`);
+            filterRequest(`{"type":"orderbookdepth", "symbols":["BTC_KRW","ETH_KRW"]}`);
+         
+     }
 
      socket.onclose = function(e){
             socket = undefined;
@@ -29,7 +34,7 @@
  
  // 웹소켓 연결 해제
  function closeWS() {
-     if(socket != undefined){
+    if(socket != undefined){
          console.log("s*******소켓 연결 해제 **********")
          socket.close();
          socket = undefined;

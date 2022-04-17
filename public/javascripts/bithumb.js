@@ -1,5 +1,7 @@
+
 let whaleAleartCount = 0;
 let bitcoin_global_price;
+let eth_global_price;
 //매수 주문
 let orderbookDataBid = new Map();
 //매도 주문
@@ -21,19 +23,24 @@ let orderMap = [];
 
 async function initPage() {
     //소켓 존재하면 끊어!
-    await  closeWS()
+
+    /*첫 접근시 쿠키가 없다면 기본 쿠키정보로 세팅 */
+    if (!getCookie("page") || !getCookie("order") || !getCookie("payment")) {
+        setCookie("page", "tradeView", 1);
+        setCookie("order", "BTC", 1);
+        setCookie("payment", "KRW", 1);
+    }
 
     const page = getCookie("page");
     const order = getCookie("order");
     const payment = getCookie("payment");
 
-    
+    /* 오더 주문 리스트 초기화 */
     let AskTR = document.querySelectorAll("#bit_ask > tr");
-
     bitMapAsk = new Map();
     bitMapBid = new Map();
 
-    for await (const tr of AskTR) {
+    for (const tr of AskTR) {
         tr.remove();
     }
 
@@ -42,8 +49,9 @@ async function initPage() {
     setTransactionAPI(page, order, payment)
     setCandleStick(page, order, payment)
 
-    await tradeChart();
-    await setCryptoListComponent();
+    //기본 차트
+    tradeChart();
+
 
     if (document.getElementById("container_BTC")) {
         document.getElementById("container_BTC").remove();
@@ -57,15 +65,9 @@ async function initPage() {
     document.getElementById("crypto_info").removeEventListener("click", getCrpytoInfo);
     document.getElementById("crypto_info").addEventListener("click", getCrpytoInfo);
 
-    document.getElementById("crypto_btc").removeEventListener("click", moveToPage);
-    document.getElementById("crypto_btc").addEventListener("click", moveToPage);
-
-    document.getElementById("crypto_eth").removeEventListener("click", moveToPage);
-    document.getElementById("crypto_eth").addEventListener("click", moveToPage);
-
 
     connectWS(({ page, order, payment }), async function (result) {
-        getBithumbCryptoInfo(result);
+        await getBithumbCryptoInfo(result);
     });
 }
 
@@ -96,7 +98,6 @@ const getBithumbCryptoInfo = (result) => {
             setTransactionData(data, el);
             break;
         case "orderbookdepth":
-            // setOrderBookAPI("tradeView","BTC","KRW",data);
             setOrderBookDepthData(data);
             break;
     }
@@ -108,29 +109,57 @@ const setTickerData = (data, el) => {
 
     let resTicker = data.content
 
+    let status = `${getCookie("order")}_${getCookie("payment")}`
 
-    //일봉을 만들어주기위한 차트 데이터 전송
-    //tradeChart(data);
-    bitcoin_global_price = resTicker.closePrice;
-    element.bithumbBTC.KRW.innerHTML = `${(Number(resTicker.closePrice).toLocaleString())}원`;
-    element.bithumbBTC.RATE.innerHTML = `24시간 ${resTicker.chgRate}%`;
-    element.bithumbBTC.VOLUME.innerHTML = `${(Number(resTicker.volume).toFixed(2))} BTC`;
-    element.bithumbBTC.VALUE.innerHTML = ` ${numberToKorean(Number(resTicker.value).toFixed(0))}원`;
-    element.bithumbBTC.POWER.innerHTML = ` ${Number(resTicker.volumePower)}%`;
-    element.bithumbBTC.LOW.innerHTML = ` ${numberToKorean(Number(resTicker.lowPrice))}`;
-    element.bithumbBTC.HIGH.innerHTML = ` ${numberToKorean(Number(resTicker.highPrice))}`;
-    element.bithumbBTC.FINISH.innerHTML = ` ${numberToKorean(Number(resTicker.closePrice))}`;
+    //페이지 쿠키와 동일한 정보만 가져와
+
+    console.log("ticker", resTicker)
 
 
-    //현재(종가)가격이 시가 보다 낮은 경우
-    if (resTicker.closePrice < resTicker.openPrice) {
-        setChangeToColor("down", element.bithumbBTC.KRW)
-        setChangeToColor("down", element.bithumbBTC.RATE)
-    } else {
-        setChangeToColor("up", element.bithumbBTC.KRW)
+    switch(resTicker.symbol) {
+        case "BTC_KRW" :
+           bitcoin_global_price = resTicker.closePrice;
+           break;
+       case "ETH_KRW":
+           eth_global_price = resTicker.closePrice;
+           break;
+       }
+
+           //실시간 정보를 받아서 우측 리스트박스 세팅
+    setCryptoListComponent(resTicker);
+
+
+
+    if (status === resTicker.symbol) {
+        element.bithumbBTC.KRW.innerHTML = `${(Number(resTicker.closePrice).toLocaleString())}원`;
+        element.bithumbBTC.VOLUME.innerHTML = `${(Number(resTicker.volume).toFixed(2))} ${getCookie("order")}`;
+        element.bithumbBTC.VALUE.innerHTML = ` ${numberToKorean(Number(resTicker.value).toFixed(0))}원`;
+        element.bithumbBTC.POWER.innerHTML = ` ${Number(resTicker.volumePower)}%`;
+        element.bithumbBTC.LOW.innerHTML = ` ${numberToKorean(Number(resTicker.lowPrice))}`;
+        element.bithumbBTC.HIGH.innerHTML = ` ${numberToKorean(Number(resTicker.highPrice))}`;
+        element.bithumbBTC.FINISH.innerHTML = ` ${numberToKorean(Number(resTicker.prevClosePrice))}`;
+
+
+        //현재(종가)가격이 시가 보다 낮은 경우
+        console.log("resTicker", resTicker)
+        if (resTicker.prevClosePrice > resTicker.closePrice) {
+            setChangeToColor("down", element.bithumbBTC.KRW)
+            setChangeToColor("down", element.bithumbBTC.RATE)
+
+            element.bithumbBTC.RATE.innerHTML = `${resTicker.chgRate}%`;
+
+            document.getElementById("tr_change_rate").classList.add("bg_down");
+
+        } else {
+            setChangeToColor("up", element.bithumbBTC.KRW)
+            setChangeToColor("up", element.bithumbBTC.RATE)
+
+            element.bithumbBTC.RATE.innerHTML = `+${resTicker.chgRate}%`;
+            
+            document.getElementById("tr_change_rate").classList.add("bg_up");
+        }
+
     }
-
-
 }
 
 
@@ -138,39 +167,44 @@ const setTransactionData = (data, el) => {
     const element = el[0];
     const response = data.content.list[data.content.list.length - 1];
     setTransactionList(response, "BTC_transaction")
-         
+
 }
 
 
 const setTransactionList = (response, targetid) => {
 
-    console.log("response", response)
     const time = new Date(response.contDtm);
     const color = response.buySellGb;
 
-    let target = document.getElementById(targetid)
+    let status = `${getCookie("order")}_${getCookie("payment")}`
 
-    let tr = document.createElement("tr")
-    tr.classList.add("transactionContent")
-    tr.id = "BTC_transaction"
+    //페이지 쿠키와 동일한 정보만 가져와
+
+    if (status === response.symbol) {
+        let target = document.getElementById(targetid)
+
+        let tr = document.createElement("tr")
+        tr.classList.add("transactionContent")
+        tr.id = "BTC_transaction"
 
 
-    color === "1" ? tr.style.color = "#f75467 " : tr.style.color = "#4386f9";
+        color === "1" ? tr.style.color = "#f75467 " : tr.style.color = "#4386f9";
 
-    let transactionTime = document.createElement("td")
-    transactionTime.innerHTML = time.toLocaleTimeString();
-    tr.appendChild(transactionTime)
+        let transactionTime = document.createElement("td")
+        transactionTime.innerHTML = time.toLocaleTimeString();
+        tr.appendChild(transactionTime)
 
-    let transactionPrice = document.createElement("td")
-    transactionPrice.innerHTML = `${Number(response.contPrice).toLocaleString()}원`;
-    tr.appendChild(transactionPrice);
+        let transactionPrice = document.createElement("td")
+        transactionPrice.innerHTML = `${Number(response.contPrice).toLocaleString()}원`;
+        tr.appendChild(transactionPrice);
 
-    let transactionCount = document.createElement("td")
-    transactionCount.innerHTML = `${Number(response.contQty).toFixed(3)}개`;
-    response.contQty
-    tr.appendChild(transactionCount)
+        let transactionCount = document.createElement("td")
+        transactionCount.innerHTML = `${Number(response.contQty).toFixed(3)}개`;
+        response.contQty
+        tr.appendChild(transactionCount)
 
-    target.prepend(tr)
+        target.prepend(tr)
+    }
 }
 
 
@@ -182,106 +216,224 @@ const setOrderBookDepthData = (data, ticker) => {
 
     list = data.content.list;
 
+    console.log("list", list)
 
+    let status = `${getCookie("order")}_${getCookie("payment")}`
+    //페이지 쿠키와 동일한 정보만 가져와
+    if (status === list[0].symbol) {
 
-
-    for (const data of list) {
-        if (data.orderType === "ask") {
-            bitMapAsk.set(data.price, data.quantity);
-        } else {
-            bitMapBid.set(data.price, data.quantity);
+        for (const data of list) {
+            if (data.orderType === "ask") {
+                bitMapAsk.set(data.price, data.quantity);
+            } else {
+                bitMapBid.set(data.price, data.quantity);
+            }
         }
-    }
 
-    let tempSortAsk = new Map([...bitMapAsk.entries()].sort());
-    let askMap = new Map([...tempSortAsk.entries()].reverse())
-
-
-    let AskTR = document.querySelectorAll("#orderBook_BTC_ask > tbody > tr");
-
-    for (const tr of AskTR) {
-        tr.remove();
-    }
-
-    askMap.forEach((value, key, map) => {
-        if (Number(value).toFixed(4) !== "0.0000") {
-            let tr = document.createElement("tr")
-            let price = document.createElement("td")
-            let count = document.createElement("td")
-            let percent = document.createElement("td")
+        let tempSortAsk = new Map([...bitMapAsk.entries()].sort());
+        let askMap = new Map([...tempSortAsk.entries()].reverse())
 
 
+        let AskTR = document.querySelectorAll("#orderBook_BTC_ask > tbody > tr");
 
-            price.innerHTML = Number(key).toLocaleString();
-            percent.innerHTML = `${((Number(key) - Number(bitcoin_global_price)) / Number(key) * 100).toFixed(2)} %`
-            count.innerHTML = Number(value).toFixed(4)
-            tr.style.backgroundColor = "#eef6ff"
-
-            tr.appendChild(price);
-            tr.appendChild(percent);
-            tr.appendChild(count);
-            bit_ask.appendChild(tr);
+        for (const tr of AskTR) {
+            tr.remove();
         }
-    });
+
+        askMap.forEach((value, key, map) => {
+            if (Number(value).toFixed(4) !== "0.0000") {
+                let tr = document.createElement("tr")
+                let price = document.createElement("td")
+                let count = document.createElement("td")
+                let percent = document.createElement("td")
 
 
 
-    let tempSortBid = new Map([...bitMapBid.entries()].sort());
-    let BidMap = new Map([...tempSortBid.entries()].reverse())
+                price.innerHTML = Number(key).toLocaleString();
+                if(getCookie("order") === "BTC") {
+                    percent.innerHTML = `${((Number(key) - Number(bitcoin_global_price)) / Number(key) * 100).toFixed(2)} %`
+                } else if (getCookie("order") === "ETH") {
+                    percent.innerHTML = `${((Number(key) - Number(eth_global_price)) / Number(key) * 100).toFixed(2)} %`
+                }
+                count.innerHTML = Number(value).toFixed(4)
+                tr.style.backgroundColor = "#eef6ff"
+
+                tr.appendChild(price);
+                tr.appendChild(percent);
+                tr.appendChild(count);
+                bit_ask.appendChild(tr);
+            }
+        });
 
 
-    let BidTR = document.querySelectorAll("#orderBook_BTC_bid > tbody > tr");
 
-    for (const tr of BidTR) {
-        tr.remove();
-    }
+        let tempSortBid = new Map([...bitMapBid.entries()].sort());
+        let BidMap = new Map([...tempSortBid.entries()].reverse())
 
-    BidMap.forEach((value, key, map) => {
-        if (Number(value).toFixed(4) !== "0.0000") {
-            let tr = document.createElement("tr")
-            let price = document.createElement("td")
-            let count = document.createElement("td")
-            let percent = document.createElement("td")
 
-            price.innerHTML = Number(key).toLocaleString();
-            percent.innerHTML = `${((Number(key) - Number(bitcoin_global_price)) / Number(key) * 100).toFixed(2)} %`
-            count.innerHTML = Number(value).toFixed(4)
-            tr.style.backgroundColor = "#fff0ef"
-            tr.appendChild(price);
-            tr.appendChild(percent);
-            tr.appendChild(count);
-            bit_ask.appendChild(tr);
+        let BidTR = document.querySelectorAll("#orderBook_BTC_bid > tbody > tr");
+
+        for (const tr of BidTR) {
+            tr.remove();
         }
-    });
 
-    let special = document.getElementById("bit_ask");
-    console.log("special.offsetHeight", special.offsetHeight)
-    special.scrollTo(0, 900 / 2);
+        BidMap.forEach((value, key, map) => {
+            if (Number(value).toFixed(4) !== "0.0000") {
+                let tr = document.createElement("tr")
+                let price = document.createElement("td")
+                let count = document.createElement("td")
+                let percent = document.createElement("td")
 
+                price.innerHTML = Number(key).toLocaleString();
 
+                if(getCookie("order") === "BTC") {
+                    percent.innerHTML = `${((Number(key) - Number(bitcoin_global_price)) / Number(key) * 100).toFixed(2)} %`
+                } else if (getCookie("order") === "ETH") {
+                    percent.innerHTML = `${((Number(key) - Number(eth_global_price)) / Number(key) * 100).toFixed(2)} %`
+                }
+
+                count.innerHTML = Number(value).toFixed(4)
+                tr.style.backgroundColor = "#fff0ef"
+                tr.appendChild(price);
+                tr.appendChild(percent);
+                tr.appendChild(count);
+                bit_ask.appendChild(tr);
+            }
+        });
+
+        let special = document.getElementById("bit_ask");
+        special.scrollTo(0, 900 / 2);
+
+    }
 }
 
 
-/*코인 리스트*/
+/* 초기 코인 리스트 정적 */
+const initCryptoListComponent = (data) => {
+
+    let target_btc = document.querySelector("#btc_info")
+    let target_eth = document.querySelector("#eth_info")
+
+    let btc_append = "";
+    let eth_append = ""
+    // console.log("data" ,data[`${getCookie("order")}`])
+
+    btc_append += '<td class = "star_fill"></td>'
+    btc_append += '<td>비트코인 </td>'
+    console.log("data123123", data.BTC)
+    if(data.BTC.closing_price > data.BTC.prev_closing_price) {
+        btc_append += `<td class ="up_red_color">${Number(data.BTC.closing_price).toLocaleString()}</td>` 
+        btc_append += `<td class ="up_red_color">+${data.BTC.fluctate_rate_24H}%</td>`
+    } else {
+        btc_append += `<td class = "down_blue_color">${Number(data.BTC.closing_price).toLocaleString()}</td>` 
+        btc_append += `<td class ="down_blue_color">${data.BTC.fluctate_rate_24H}%</td>`
+    }      
+      btc_append += `<td>${numberToKorean(Number(data.BTC.acc_trade_value_24H).toFixed(0))}</td>`
+   
+    target_btc.innerHTML = btc_append
+
+    eth_append += '<td class = "star_fill"></td>'
+    eth_append += '<td>이더리움 </td>'
+    if(data.ETH.closing_price > data.ETH.prev_closing_price) {
+        eth_append += `<td class ="up_red_color ">${Number(data.ETH.closing_price).toLocaleString()}</td>` 
+        eth_append += `<td class ="up_red_color">+${data.ETH.fluctate_rate_24H}%</td>`
+    } else {
+        eth_append += `<td class = "down_blue_color">${Number(data.ETH.closing_price).toLocaleString()}</td>` 
+        eth_append += `<td class ="down_blue_color">-${data.ETH.fluctate_rate_24H}%</td>`
+    }
+    eth_append += `<td>${numberToKorean(Number(data.ETH.acc_trade_value_24H).toFixed(0))}</td>`
+    target_eth.innerHTML = eth_append
+
+    document.getElementById("btc_info").removeEventListener("click", moveToPage);
+    document.getElementById("btc_info").addEventListener("click", moveToPage);
+
+    document.getElementById("eth_info").removeEventListener("click", moveToPage);
+    document.getElementById("eth_info").addEventListener("click", moveToPage);
+
+}
+
+/* 초기 코인 리스트 정적 */
 const setCryptoListComponent = (data) => {
-    let target = document.querySelector("#crypto_list_table > tbody")
 
-    let append = "";
-    append += '<tr id ="crypto_btc">'
-    append += '<td>즐찾</td>'
-    append += '<td>비트코인 </td>'
-    append += '<td>50,560,000</td>'
-    append += '<td> + 2.2%</td>'
-    append += '<td> 6020만</td>'
-    append += '</tr>'
-    append += '<tr id ="crypto_eth">'
-    append += '<td>즐찾</td>'
-    append += '<td>이더리움 </td>'
-    append += '<td>3,560,000</td>'
-    append += '<td> + 4.2%</td>'
-    append += '<td> 2020만</td>'
-    append += '</tr>'
+    let target_btc = document.querySelector("#btc_info")
+    let target_eth = document.querySelector("#eth_info")
 
-    target.innerHTML = append
+    let btc_append = "";
+    let eth_append = ""
+
+    console.log("data", data)
+    // console.log("data" ,data[`${getCookie("order")}`])
+    if(data.symbol === "BTC_KRW") {
+        console.log("bit?")
+        console.log("data.prevClosePrice",data.closePrice)
+        btc_append += '<td class="star_fill"></td>'
+        btc_append += '<td>비트코인 </td>'
+        if(data.closePrice >= data.prevClosePrice) {
+            btc_append += `<td class ="up_red_color up_box">${Number(data.closePrice).toLocaleString()}</td>` 
+            btc_append += `<td class ="up_red_color">+${data.chgRate}%</td>`
+            
+        } else {
+            btc_append += `<td class = "down_blue_color down_box">${Number(data.closePrice).toLocaleString()}</td>` 
+            btc_append += `<td class ="down_blue_color">${data.chgRate}%</td>`
+        }
+        btc_append += `<td>${numberToKorean(Number(data.value).toFixed(0))}</td>`
+        target_btc.innerHTML = btc_append
+
+        setTimeout(function() { 
+            if( target_btc.getElementsByClassName("up_box")[0]) {
+                target_btc.getElementsByClassName("up_box")[0].classList.remove("up_box");   
+            } 
+        
+            if(target_btc.getElementsByClassName("down_box")[0]) {
+                target_btc.getElementsByClassName("down_box")[0].classList.remove("down_box");
+            }
+        }, 300);
+
+
+        // for (const down of animation_down) {
+        //     console.log("down",down)
+        //    // down.classList.remove("down_box")
+        // }
+        //  animation_down[0].classList.remove("down_box");
+        //  animation_down[1].classList.remove("down_box");
+    }
+    //chgRate
+
+    if(data.symbol === "ETH_KRW") {
+        eth_append += '<td class = "star_fill"></td>'
+        eth_append += '<td>이더리움 </td>'
+        if(data.closePrice >= data.prevClosePrice) {
+            eth_append += `<td class = "up_red_color up_box"> ${Number(data.closePrice).toLocaleString()}</td>` 
+            eth_append += `<td class ="up_red_color" down_box>+${data.chgRate}%</td>`
+        } else {
+            eth_append += `<td class = "down_blue_color"> ${Number(data.closePrice).toLocaleString()}</td>` 
+            eth_append += `<td class ="down_blue_color">-${data.chgRate}%</td>`
+        }
+        eth_append += `<td>${numberToKorean(Number(data.value).toFixed(0))}</td>`
+        target_eth.innerHTML = eth_append
+
+
+
+        setTimeout(function() { 
+            if( target_eth.getElementsByClassName("up_box")[0]) {
+                target_eth.getElementsByClassName("up_box")[0].classList.remove("up_box");   
+            } 
+        
+            if(target_eth.getElementsByClassName("down_box")[0]) {
+                target_eth.getElementsByClassName("down_box")[0].classList.remove("down_box");
+            }
+        }, 300);
+
+
+    }
+
+    
+
+
+    document.getElementById("btc_info").removeEventListener("click", moveToPage);
+    document.getElementById("btc_info").addEventListener("click", moveToPage);
+
+    document.getElementById("eth_info").removeEventListener("click", moveToPage);
+    document.getElementById("eth_info").addEventListener("click", moveToPage);
 
 }

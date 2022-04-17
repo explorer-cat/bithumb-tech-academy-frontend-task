@@ -1,22 +1,23 @@
 
 .wrap_left_aside{
-    width: 270px;
+    width: 50px;
     height: 100%;
+    border-right: 1px solid #EFEFEF;
     padding:12px;
     float: left;
-}
+}f
 
 .aside_title {
-    width: 270px;
+    width: 30px;
     height: 80px;
 }
 
-.logo {
+/* .logo {
     width: 150px;
     height: 39px;
     background-image: url(https://www.bithumb.com/resources/img/sprite/sp_main_new.png?v=bithumb.2.0.5);
     background-repeat: no-repeat;
-}
+} */
 
 .aside_menu {
     width: 100%;
@@ -75,6 +76,6 @@
 
 .select_item {
     color: white !important;
-    background-color: #384151;
+    /* background-color: #384151; */
     border-left: 6px solid #fe9601 !important;
 }

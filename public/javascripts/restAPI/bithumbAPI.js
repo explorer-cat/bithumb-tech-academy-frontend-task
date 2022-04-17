@@ -15,7 +15,7 @@ const setTickerAPI = async (page, order, payment) => {
             url: `api/ticker`,
             headers: { 'Content-Type': 'application/json' },
             data : {
-                order : order,
+                order : "All",
                 payment : payment,
             }
         })
@@ -24,11 +24,22 @@ const setTickerAPI = async (page, order, payment) => {
     try {
         if(!request.data.data)return
 
-        let tkData = request.data.data;
-        console.log("tkData", tkData)
-        bitcoin_global_price = tkData.prev_closing_price;
 
-        console.log("bitcoin_global_price",bitcoin_global_price)
+
+
+        //코인리스트 컴포넌트 세팅
+
+        let tkData = request.data.data[`${order}`];
+   //     console.log("tkData", tkData[`${order}`])
+
+        //실시간 정보를 받아서 우측 리스트박스 세팅 리스트는 전체 정보를 다보내줘서 처리
+        bitcoin_global_price = request.data.data.BTC.prev_closing_price;
+        eth_global_price =  request.data.data.ETH.prev_closing_price;
+        
+        initCryptoListComponent(request.data.data);
+        
+
+
         let dom = {
             "KRW": document.getElementById('tr_krw'),
             "RATE": document.getElementById('tr_change_rate'),
@@ -42,13 +53,31 @@ const setTickerAPI = async (page, order, payment) => {
 
         // div : crypto_content_info_box
         dom.KRW.innerHTML = `${numberToKorean(Number(tkData.closing_price))}원`;
-        dom.RATE.innerHTML = `24시간 ${Number(tkData.fluctate_rate_24H)} %`;
-        dom.VOLUME.innerHTML = `${Number(tkData.units_traded_24H).toFixed(2)} BTC`;
-        dom.VALUE.innerHTML = `${numberToKorean(Number(tkData.acc_trade_value_24H).toFixed(0))} BTC`;
+        // dom.RATE.innerHTML = `${Number(tkData.fluctate_rate_24H)} %`;
+        dom.VOLUME.innerHTML = `${Number(tkData.units_traded_24H).toFixed(2)} ${getCookie("order")}`;
+        dom.VALUE.innerHTML = `${numberToKorean(Number(tkData.acc_trade_value_24H).toFixed(0))}원`;
         dom.POWER.innerHTML = `${Number()}`;
         dom.LOW.innerHTML = `${numberToKorean(Number(tkData.min_price))}`;
         dom.HIGH.innerHTML = `${numberToKorean(Number(tkData.max_price))}`;
         dom.FINISH.innerHTML = `${numberToKorean(Number(tkData.prev_closing_price))}`;
+
+        if (tkData.prev_closing_price > tkData.closing_price) {
+            setChangeToColor("down", dom.KRW)
+            setChangeToColor("down", dom.RATE)
+
+            dom.RATE.innerHTML = `-${tkData.fluctate_rate_24H}%`;
+            document.getElementById("tr_change_rate").classList.add("bg_down");
+
+        } else {
+            setChangeToColor("up", dom.KRW)
+            setChangeToColor("up", dom.RATE)
+
+            dom.RATE.innerHTML = `+${tkData.fluctate_rate_24H}%`;
+            
+            document.getElementById("tr_change_rate").classList.add("bg_up");
+        }
+
+
 
         return request.data.data;
     } catch (e) {

@@ -159,8 +159,6 @@ const getCrpytoInfo = (event) => {
 
 async function moveToPage() {
 
-    await closeWS();
-
     let AskTR = document.querySelectorAll("#bit_ask > tr");
 
     bitMapAsk = new Map();
@@ -170,16 +168,18 @@ async function moveToPage() {
         tr.remove();
     }
 
+    closeWS();
+
     let targetId = event.target.parentNode.id;
 
     switch(targetId) {
-        case "crypto_btc":
+        case "btc_info":
             setCookie("page","tradeView","1")
             setCookie("order","BTC","1")
             setCookie("payment","KRW","1")
             initPage();
             break;
-        case "crypto_eth":
+        case "eth_info":
             setCookie("page","tradeView","1")
             setCookie("order","ETH","1")
             setCookie("payment","KRW","1")
