@@ -54,7 +54,7 @@ async function initPage() {
 
     setTransactionAPI(page, order, payment)
     setCandleStick(page, order, payment)
-    setOrderBookAPI(page,order,payment ,tickerInfo)
+    // setOrderBookAPI(page,order,payment ,tickerInfo)
     
 
     //기본 차트
@@ -74,9 +74,9 @@ async function initPage() {
     document.getElementById("crypto_info").addEventListener("click", getCrpytoInfo);
 
 
-    // connectWS(({ page, order, payment }), async function (result) {
-    //     await getBithumbCryptoInfo(result);
-    // });
+    connectWS(({ page, order, payment }), async function (result) {
+        await getBithumbCryptoInfo(result);
+    });
 }
 
 window.onload = async function () {
@@ -255,20 +255,31 @@ const setOrderBookDepthData = (data, ticker) => {
                 let count = document.createElement("td")
                 let percent = document.createElement("td")
 
-                let count_bg = document.createElement("p")
+                let count_bg_down = document.createElement("p")
 
 
 
                 price.innerHTML = Number(key).toLocaleString();
-                if(getCookie("order") === "BTC") {
-                    percent.innerHTML = `${((Number(key) - Number(bitcoin_global_price)) / Number(key) * 100).toFixed(2)} %`
-                } else if (getCookie("order") === "ETH") {
-                    percent.innerHTML = `${((Number(key) - Number(eth_global_price)) / Number(key) * 100).toFixed(2)} %`
-                }
                 count.innerHTML = Number(value).toFixed(4)
                 tr.style.backgroundColor = "#eef6ff"
-                count_bg.classList.add("count_bg")
-                count.appendChild(count_bg)
+                count_bg_down.classList.add("count_bg_down")
+
+                let width;
+
+                if(getCookie("order") === "BTC") {
+                    percent.innerHTML = `${((Number(key) - Number(bitcoin_global_price)) / Number(key) * 100).toFixed(2)} %`
+                    width = (Number(value).toFixed(4) / 10) * 10;
+                } else if (getCookie("order") === "ETH") {
+                    percent.innerHTML = `${((Number(key) - Number(eth_global_price)) / Number(key) * 100).toFixed(2)} %`
+                    width = (Number(value).toFixed(4) / 10)
+                }
+
+
+
+                count_bg_down.style.width = width + "%"
+                
+
+                count.appendChild(count_bg_down)
 
                 tr.appendChild(price);
                 tr.appendChild(percent);
@@ -290,23 +301,40 @@ const setOrderBookDepthData = (data, ticker) => {
             tr.remove();
         }
 
+        let tempCount;
         BidMap.forEach((value, key, map) => {
             if (Number(value).toFixed(4) !== "0.0000") {
+
                 let tr = document.createElement("tr")
                 let price = document.createElement("td")
                 let count = document.createElement("td")
                 let percent = document.createElement("td")
 
+                let count_bg_up = document.createElement("p")
+
                 price.innerHTML = Number(key).toLocaleString();
 
+
+                let width;
+                
                 if(getCookie("order") === "BTC") {
                     percent.innerHTML = `${((Number(key) - Number(bitcoin_global_price)) / Number(key) * 100).toFixed(2)} %`
+                    width = (Number(value).toFixed(4) / 10) * 10;
                 } else if (getCookie("order") === "ETH") {
                     percent.innerHTML = `${((Number(key) - Number(eth_global_price)) / Number(key) * 100).toFixed(2)} %`
+                    width = (Number(value).toFixed(4) / 10)
                 }
+
+
+                count_bg_up.style.width = width + "%"
+
 
                 count.innerHTML = Number(value).toFixed(4)
                 tr.style.backgroundColor = "#fff0ef"
+                count_bg_up.classList.add("count_bg_up")
+
+
+                count.appendChild(count_bg_up)
                 tr.appendChild(price);
                 tr.appendChild(percent);
                 tr.appendChild(count);
