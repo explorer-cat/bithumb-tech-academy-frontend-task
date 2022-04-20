@@ -2,5 +2,8 @@
 # dependencies
 /node_modules
 restAPI/
-javascripts/chart.js
-javascripts/apexChart.js
+public/javascripts/chart.js
+public/javascripts/apexChart.js
+public/javascripts/bithumb.js
+public/javascripts/tradeView.js
+public/javascripts/tradeChart.js
