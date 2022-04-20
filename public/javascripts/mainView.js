@@ -12,6 +12,8 @@ const initMainView = async () => {
     for(let i = 0; i < sample.length; i++) {
         let candleInfo = await setCandleStick("mainView", sample[i]);
         candleInfo = candleInfo.slice( candleInfo.length - 150, candleInfo.length);
+        
+        console.log("candleInfo", candleInfo)
         if(candleInfo) {
             getMainMiniChart("container_"+sample[i], candleInfo)
         }

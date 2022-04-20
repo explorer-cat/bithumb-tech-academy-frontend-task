@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>codestates-bithumb-frontend</title>
+  <!--css 초기화-->
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel='stylesheet' href='/stylesheets/palette.css' />
+  <link rel='stylesheet' href='/stylesheets/bithumb.css' />
+  <link rel='stylesheet' href='/stylesheets/common.css' />
+  <link rel='stylesheet' href='/stylesheets/aside.css' />
+  <link rel='stylesheet' href='/stylesheets/blank.css' />
+  <link rel='stylesheet' href='/stylesheets/font.css' />
+
+  <!--font 초기화-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
+
+  <!--highcharts-->
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/annotations.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+  <!--apexcharts-->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+  <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script>
+
+
+  <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+
+  <!--library-->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/jquery/1.12.4/jquery.min.js"></script>
+
+  <!--javascript -->
+  <script src="/javascripts/restAPI/bithumbAPI.js"></script>
+  <script src="/javascripts/eventHandler.js"></script>
+  <script src="/javascripts/webSocket.js"></script>
+  <script src="/javascripts/bithumb.js"></script>
+  <script src="/javascripts/chart.js"></script>
+  <script src="/javascripts/utils.js"></script>
+  <script src="/javascripts/apexChart.js"></script>
+  <script src="/javascripts/tradeChart.js"></script>
+
+
+</head>
+
+<body>
+  <div class="public_contents_div">
+
+
+    <div class="wrap_left_aside" id="left_aside_menu">
+      <div class="aside_title flex flex-j-center flex-a-center">
+        <div class="logo">
+        </div>
+      </div>
+      <div class="aside_menu">
+        <table class="aside_public_table" id="clovine_app_categori">
+          <thead></thead>
+          <tbody>
+            <tr class="font-14b">
+              <td class="font-14b">거래소</td>
+            </tr>
+            <tr class="font-14b">
+              <td class="font-14b">트레이딩</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+
+
+    <div class="main_body_content">
+      <div class="eth_chart" style="width: 50%; display:none">
+
+      </div>
+      <div class="xrp_chart" style="width: 50%; display:none">
+
+      </div>
+      <div class="bch_chart" style="width: 50%; display:none">
+
+      </div>
+      <div class="matic_chart" style="width: 50%; display:none">
+
+      </div>
+      <!-- <div id = "all_openclose_card" class="view_button_toggle">
+                <input id="close_all_card" type="radio" checked="">
+                <label for="close_all_card">카드 모두 접기</label>
+                <input id="open_all_card" type="radio">
+                <label for="open_all_card">카드 모두 열기</label>
+            </div> -->
+      <!-- <div class="flex" style="height: 100%;display: block;overflow: hidden;"> -->
+
+      <div class="vertical-double-box">
+
+        <div class = "crypto_order_info_layout">
+          <div class = "crpto_list_box">
+              <!-- <div class = "crpyto_list_search_box">
+                  <input id ="find_crpyto"  class = "public_search" type = "text" placeholder="코인 이름으로 찾기">검색</input>
+              </div> -->
+              <ul>
+                <li title="원화" class="flex tab_selected padding-a-16" id = "mini_chart">
+                  원화 마켓
+                </li>
+                <li title="BTC" class="flex padding-a-16" id = "crypto_info">
+                  BTC 마켓
+                </li>
+              </ul>
+              <table class ="crypto_list_set" id = "crypto_list_table">
+                <thead>
+                <tr class = "list_title">
+                   <td style = "margin-top: 8px;"></td>
+                    <td style = "margin-top: 8px;">가상자산명</td>
+                    <td style = "margin-top: 8px;">현재가</td>
+                    <td style = "margin-top: 8px">변동률</td>
+                    <td style = "margin-top: 8px">거래대금</td>
+                </tr>
+                <tbody>
+                  <tr id = "btc_info">
+
+                  </tr>
+                  <tr id = "eth_info">
+                    
+                  </tr>
+                </tbody>
+                </thead>
+           
+            </table>
+          </div>
+        </div>
+        
+        <div class="content-card margin: 16px;">
+          <div class="flex crpyto_title">
+            <div class = "coinName font-14b margin-l-4 flex flex-a-center margin-r-12">비트코인</div>
+            <div id="tr_krw" class="card_title font-20b flex flex-a-center"></div>
+            <div id="tr_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
+          </div>
+          <div class="chart">
+            <!-- <button id="setDay">1일봉</button>
+            <button id="setWeek">7일봉</button> -->
+            <div id="chartContainer" style="height: 500px; width: 100%;"></div>
+          </div>
+          <div style = "    width: 100%;
+          display: flex;
+          height: 594px;
+          margin-top:8px;">
+            <div class="crypto_content_info_layount">
+              <div class="crypto_info_box">
+                <!-- 코인 기본 정보 시작 -->
+                <div class="crypto_content_info_box">
+                  <table class="left_info_table">
+                    <tbody>
+                      <tr>
+                        <th>거래량 24H</th>
+                        <td><span id="tr_volume"></span></td>
+                      </tr>
+                      <tr>
+                        <th>거래금액 24H</th>
+                        <td><span id="tr_value"></span>
+                      </tr>
+                      <tr>
+                        <th>체결강도</th>
+                        <td id="tr_power"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <table class="right_info_table">
+                    <tbody>
+                      <tr>
+                        <th>고가(24H)</th>
+                        <td><span id="tr_low"></span></td>
+                      </tr>
+                      <tr>
+                        <th>저가(24H)</th>
+                        <td><span id="tr_high"></span><span id="priceTradedUnit24H"></span></td>
+                      </tr>
+                      <tr>
+                        <th>전일종가</th>
+                        <td id="tr_finish"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!--미니차트탭-->
+                <div class="chart_info_category margin-t-16">
+                  <ul>
+                    <li title="차트" class="flex tab_selected" id = "mini_chart">
+                      차트
+                    </li>
+                    <li title="BTC 정보" class="flex" id = "crypto_info">
+                      정보
+                    </li>
+                  </ul>
+                </div>
+                
+                <!--채결내역 시세 -->
+                <div class="transition_info_category  margin-t-16">
+                  <ul>
+                    <li title="차트" class="flex tab_selected">
+                      체결내역
+                    </li>
+                    <li title="BTC 정보" class="flex">
+                      세계시세
+                    </li>
+                  </ul>
+                  <table class="transactionTitle">
+                    <thead>
+                      <tr>
+                        <td>시간</td>
+                        <td>가격</td>
+                        <td>수량</td>
+                      </tr>
+                    </thead>
+                    <tbody id="BTC_transaction">
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class = "crypto_orderbook_info_layout padding-a-16 crypto_info_box">
+              <table id = "orderBook_BTC_ask" class ="orderBookTitle">
+                <thead>
+                <tr>
+                    <td>가격</td>
+                    <td>매도 잔량</td>
+                </tr>
+                </thead>
+                <tbody id = "bit_ask">
+
+                </tbody>
+            </table>
+              <!-- <table id = "orderBook_BTC_bid" class ="orderBookTitle">
+                  <thead>
+                  <tr>
+                      <td>가격</td>
+                      <td>매수 잔량</td>
+                  </tr>
+                  </thead>
+                  <tbody id = "bit_bid">
+              
+                  </tbody>
+              </table> -->
+            </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="card_title font-14b background-font-color margin-b-8">비트코인/BTC</div>
+                                <div class = "flex margin-b-4" >
+                                    <div id = "bithumb_BTC_krw" class="card_title font-20b  flex flex-a-center"></div>
+                                    <div id = "bithumb_BTC_signed_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
+                                </div>
+                                <div class="gray_font flex flex-a-center description">24시간 거래량
+                                  <p id = "bithumb_BTC_acc_trade_volume_24h" class = "black_font  margin-l-8" ></p>
+                                </div> 
+                                <div class = "bottom_line"></div>
+                                <div class="gray_font flex flex-a-center margin-r-4 description">24시간 거래금액
+                                  <p id = "bithumb_BTC_acc_trade_value_24h" class = "black_font margin-l-8"></p>
+                                </div> 
+                                <div class = "bottom_line"></div>
+                                <div class="gray_font flex flex-a-center margin-r-4 description">체결 강도
+                                  <p id = "bithumb_BTC_acc_trade_volumePower_24h" class = "black_font margin-l-8"></p>
+                                </div> 
+                                <div class="gray_font flex flex-a-center margin-r-4 description">체결 강도
+                                  <p id = "bithumb_BTC_acc_trade_volumePower_24h" class = "black_font margin-l-8"></p>
+                                </div>  -->
+
+    <!-- 미니차트 -->
+    <!-- 미니차트 -->
+    <!-- <div class = "bottom_line"></div> -->
+    <!-- <div class="gray_font flex flex-a-center margin-tb-8 description">오더북</div>
+                                <table id = "orderBook_BTC_ask" class ="orderBookTitle">
+                                  <thead>
+                                  <tr>
+                                      <td>가격</td>
+                                      <td>매도 잔량</td>
+                                  </tr>
+                                  </thead>
+                                  <tbody id = "bit_ask">
+
+                                  </tbody>
+                              </table>
+                                <table id = "orderBook_BTC_bid" class ="orderBookTitle">
+                                    <thead>
+                                    <tr>
+                                        <td>가격</td>
+                                        <td>매수 잔량</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id = "bit_bid">
+                                
+                                    </tbody>
+                                </table>
+                                <div class = "bottom_line"></div>
+                                <div class="gray_font flex flex-a-center margin-tb-8 description">체결 내역</div> 
+                                <table class ="transactionTitle">
+                                  <thead>
+                                    <tr>
+                                      <td>시간</td>
+                                      <td>가격</td>
+                                      <td>수량</td>
+                                    </tr>
+                                  </thead>
+                                  <tbody id = "BTC_transaction">
+
+                                  </tbody>
+                                </table> -->
+    <!-- </div> -->
+    <!-- <div class="vertical-double-box">
+                    <div class="small-card not-detail-card margin-r-12">
+                        <div class="work_info_card padding-a-16">
+                            <div class="card_title font-14b background-font-color margin-b-8">이더리움/ETH
+                              <div id = "eth_chart" class="chart_open font-12n margin-l-4 flex flex-a-center">일봉 차트</div>
+                            </div>
+                            <div class = "flex margin-b-4" >
+                                <div id = "bithumb_ETH_krw" class="card_title font-20b  flex flex-a-center"></div>
+                                <div id = "bithumb_ETH_signed_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
+                            </div>
+                            <div class="gray_font flex flex-a-center description">24시간 거래량
+                              <p id = "bithumb_ETH_acc_trade_volume_24h" class = "black_font  margin-l-8" ></p>
+                            </div> 
+                            <div class = "bottom_line"></div>
+                            <div class="gray_font flex flex-a-center margin-r-4 description">24시간 거래금액
+                              <p id = "bithumb_ETH_acc_trade_value_24h" class = "black_font margin-l-8"></p>
+                            </div> 
+                            <div class = "bottom_line"></div>
+                              <div class="gray_font flex flex-a-center margin-r-4 description">체결 강도
+                                <p id = "bithumb_ETH_acc_trade_volumePower_24h" class = "black_font margin-l-8"></p>
+                              </div> 
+                            <div id="container_ETH" class = "margin-l-4"></div>
+                            <div class="gray_font flex flex-a-center margin-tb-8 description">오더북</div> 
+                            <table id = "orderBook_ETH_ask" class ="orderBookTitle">
+                              <thead>
+                              <tr>
+                                  <td>가격</td>
+                                  <td>매도 잔량</td>
+                              </tr>
+                              </thead>
+                              <tbody id = "eth_ask">
+
+                              </tbody>
+                          </table>
+                            <table id = "orderBook_ETH_bid" class ="orderBookTitle">
+                                <thead>
+                                <tr>
+                                    <td>가격</td>
+                                    <td>매수 잔량</td>
+                                </tr>
+                                </thead>
+                                <tbody id = "eth_bid">
+                            
+                                </tbody>
+                            </table>
+                            <div class = "bottom_line"></div>
+                            <div class="gray_font flex flex-a-center margin-tb-8 description">체결 내역</div> 
+                            <table class ="transactionTitle">
+                              <thead>
+                                <tr>
+                                  <td>시간</td>
+                                  <td>가격</td>
+                                  <td>수량</td>
+                                </tr>
+                              </thead>
+                              <tbody id = "ETH_transaction">
+
+                              </tbody>
+                            </table>
+                            
+                        </div>
+                    </div>
+                    </div>
+                    <div class="vertical-double-box">
+                        <div class="small-card not-detail-card margin-r-12">
+                            <div class="work_info_card padding-a-16">
+                                <div class="card_title font-14b background-font-color margin-b-8">리플/XRP
+                                  <div id = "xrp_chart" class="chart_open font-12n margin-l-4 flex flex-a-center">일봉 차트</div>
+                                </div>
+                                <div class = "flex margin-b-4" >
+                                    <div id = "bithumb_XRP_krw" class="card_title font-20b  flex flex-a-center"></div>
+                                    <div id = "bithumb_XRP_signed_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
+                                </div>
+                                <div class="gray_font flex flex-a-center description">24시간 거래량
+                                  <p id = "bithumb_XRP_acc_trade_volume_24h" class = "black_font  margin-l-8" ></p>
+                                </div> 
+                                <div class = "bottom_line"></div>
+                                <div class="gray_font flex flex-a-center margin-r-4 description">24시간 거래금액
+                                  <p id = "bithumb_XRP_acc_trade_value_24h" class = "black_font margin-l-8"></p>
+                                </div> 
+                                <div class = "bottom_line"></div>
+                                <div class="gray_font flex flex-a-center margin-r-4 description">체결 강도
+                                  <p id = "bithumb_XRP_acc_trade_volumePower_24h" class = "black_font margin-l-8"></p>
+                                </div> 
+                                <div id="container_XRP" class = "margin-l-4"></div>
+                                <div class="gray_font flex flex-a-center margin-tb-8 description">오더북</div> 
+                                <table id = "orderBook_XRP_ask" class ="orderBookTitle">
+                                  <thead>
+                                  <tr>
+                                      <td>가격</td>
+                                      <td>매도 잔량</td>
+                                  </tr>
+                                  </thead>
+                                  <tbody id = "xrp_ask">
+    
+                                  </tbody>
+                              </table>
+                                <table id = "orderBook_XRP_bid" class ="orderBookTitle">
+                                    <thead>
+                                    <tr>
+                                        <td>가격</td>
+                                        <td>매수 잔량</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id = "xrp_bid">
+                                
+                                    </tbody>
+                                </table>
+                                <div class = "bottom_line"></div>
+                                <div class="gray_font flex flex-a-center margin-tb-8 description">체결 내역</div> 
+                                <table class ="transactionTitle">
+                                  <thead>
+                                    <tr>
+                                      <td>시간</td>
+                                      <td>가격</td>
+                                      <td>수량</td>
+                                    </tr>
+                                  </thead>
+                                  <tbody id = "XRP_transaction">
+
+                                  </tbody>
+                                </table>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="vertical-double-box">
+                      <div class="small-card not-detail-card margin-r-12">
+                          <div class="work_info_card padding-a-16">
+                              <div class="card_title font-14b background-font-color margin-b-8">비트코인캐시/BCH
+                                <div id = "bch_chart" class="chart_open font-12n margin-l-4 flex flex-a-center">일봉 차트</div>
+                              </div>
+                              <div class = "flex margin-b-4" >
+                                  <div id = "bithumb_BCH_krw" class="card_title font-20b  flex flex-a-center"></div>
+                                  <div id = "bithumb_BCH_signed_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
+                              </div>
+                              <div class="gray_font flex flex-a-center description">24시간 거래량
+                                <p id = "bithumb_BCH_acc_trade_volume_24h" class = "black_font  margin-l-8" ></p>
+                              </div> 
+                              <div class = "bottom_line"></div>
+                              <div class="gray_font flex flex-a-center margin-r-4 description">24시간 거래금액
+                                <p id = "bithumb_BCH_acc_trade_value_24h" class = "black_font margin-l-8"></p>
+                              </div> 
+                              <div class = "bottom_line"></div>
+                              <div class="gray_font flex flex-a-center margin-r-4 description">체결 강도
+                                <p id = "bithumb_BCH_acc_trade_volumePower_24h" class = "black_font margin-l-8"></p>
+                              </div> 
+                              <div id="container_BCH" class = "margin-l-4"></div>
+                              <div class="gray_font flex flex-a-center margin-tb-8 description">오더북</div> 
+                              <table id = "orderBook_BCH_ask" class ="orderBookTitle">
+                                <thead>
+                                <tr>
+                                    <td>가격</td>
+                                    <td>매도 잔량</td>
+                                </tr>
+                                </thead>
+                                <tbody id = "bch_ask">
+  
+                                </tbody>
+                            </table>
+                              <table id = "orderBook_BCH_bid" class ="orderBookTitle">
+                                  <thead>
+                                  <tr>
+                                      <td>가격</td>
+                                      <td>매수 잔량</td>
+                                  </tr>
+                                  </thead>
+                                  <tbody id = "bch_bid">
+                              
+                                  </tbody>
+                              </table>
+                              <div class = "bottom_line"></div>
+                              <div class="gray_font flex flex-a-center margin-tb-8 description">체결 내역</div>
+                              <table class ="transactionTitle">
+                                <thead>
+                                  <tr>
+                                    <td>시간</td>
+                                    <td>가격</td>
+                                    <td>수량</td>
+                                  </tr>
+                                </thead>
+                                <tbody id = "BCH_transaction">
+
+                                </tbody>
+                              </table>btc_chart
+                            </div>
+                      </div>
+                  </div>
+                  <div class="vertical-double-box"> -->
+    <!-- <div class="small-card not-detail-card margin-r-12"> -->
+    <!-- <div class="work_info_card padding-a-16"> -->
+    <!-- <div class="card_title font-14b background-font-color margin-b-8">폴리곤/MATIC
+                              <div id = "matic_chart" class="chart_open font-12n margin-l-4 flex flex-a-center">일봉 차트</div>
+                            </div>
+                            <div class = "flex margin-b-4" >
+                                <div id = "bithumb_MATIC_krw" class="card_title font-20b  flex flex-a-center"></div>
+                                <div id = "bithumb_MATIC_signed_change_rate" class="font-12n margin-l-4 flex flex-a-center"></div>
+                            </div>
+                            <div class="gray_font flex flex-a-center description">24시간 거래량
+                              <p id = "bithumb_MATIC_acc_trade_volume_24h" class = "black_font  margin-l-8" ></p>
+                            </div> 
+                            <div class = "bottom_line"></div>
+                            <div class="gray_font flex flex-a-center margin-r-4 description">24시간 거래금액
+                              <p id = "bithumb_MATIC_acc_trade_value_24h" class = "black_font margin-l-8"></p>
+                            </div> 
+                            <div class = "bottom_line"></div>
+                            <div class="gray_font flex flex-a-center margin-r-4 description">체결 강도
+                              <p id = "bithumb_MATIC_acc_trade_volumePower_24h" class = "black_font margin-l-8"></p>
+                            </div> 
+                            <div id="container_MATIC" class = "margin-l-4"></div>
+                            <div class="gray_font flex flex-a-center margin-tb-8 description">오더북</div> 
+                            <table id = "orderBook_MATIC_ask" class ="orderBookTitle">
+                              <thead>
+                              <tr>
+                                  <td>가격</td>
+                                  <td>매도 잔량</td>
+                              </tr>
+                              </thead>
+                              <tbody id = "matic_ask">
+
+                              </tbody>
+                          </table>
+                            <table id = "orderBook_MATIC_bid" class ="orderBookTitle">
+                                <thead>
+                                <tr>
+                                    <td>가격</td>
+                                    <td>매수 잔량</td>
+                                </tr>
+                                </thead>
+                                <tbody id = "matic_bid">
+                            
+                                </tbody>
+                            </table>
+                            <div class = "bottom_line"></div>
+                            <div class="gray_font flex flex-a-center margin-tb-8 description">체결 내역</div> 
+                            <table class ="transactionTitle">
+                              <thead>
+                                <tr>
+                                  <td>시간</td>
+                                  <td>가격</td>
+                                  <td>수량</td>
+                                </tr>
+                              </thead>
+                              <tbody id = "MATIC_transaction">
+
+                              </tbody>
+                            </table>
+                        </div> -->
+  </div>
+  </div>
+  </div>
+
+</body>
+
+</html>

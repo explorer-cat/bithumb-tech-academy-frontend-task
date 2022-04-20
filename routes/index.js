@@ -52,8 +52,10 @@ router.post('/api/transaction', async function(req, res, next) {
 
 router.post('/api/candlestick', async function(req, res, next) {
   try {
+    console.log("dgdgdzzz")
     let {order,payment} = req.body//${order}
-    let result = await axios.request({ method: 'GET', url: `https://api.bithumb.com/public/candlestick/["BTC_KRW"]/10m`, headers: {'Content-Type': 'application/json'} });
+    let result = await axios.request({ method: 'GET', url: `https://api.bithumb.com/public/candlestick/${order}/10m`, headers: {'Content-Type': 'application/json'} });
+    console.log("result",result)
     res.send(result.data);
   } catch(e) {
 

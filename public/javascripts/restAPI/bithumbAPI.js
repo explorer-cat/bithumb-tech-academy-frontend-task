@@ -44,7 +44,6 @@ const setTickerAPI = async (page, order, payment) => {
         initCryptoListComponent(request.data.data);
 
 
-
         let dom = {
             "KRW": document.getElementById('tr_krw'),
             "RATE": document.getElementById('tr_change_rate'),
@@ -204,8 +203,7 @@ const setOrderBookAPI = async (page, order, payment, ticker) => {
             price = document.createElement("td")
             percent = document.createElement("td")
             count = document.createElement("td")
-
-
+            
            price.innerHTML = Number(bids.price).toLocaleString();
 
            percent.innerHTML = `${((Number(bids.price) - Number(ticker.prev_closing_price)) / Number(bids.price) * 100).toFixed(2)} %`
@@ -237,6 +235,7 @@ const setOrderBookAPI = async (page, order, payment, ticker) => {
 
 
 const setCandleStick = async(page,order) => {
+    console.log("gdgd")
     let result = {
         success: false,
     }
