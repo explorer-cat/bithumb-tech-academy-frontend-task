@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>codestates-bithumb-frontend</title>
+    <!--css 초기화-->
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/palette.css' />
+    <link rel='stylesheet' href='/stylesheets/mainView.css' />
+    <link rel='stylesheet' href='/stylesheets/common.css' />
+    <link rel='stylesheet' href='/stylesheets/aside.css' />
+    <link rel='stylesheet' href='/stylesheets/blank.css' />
+    <link rel='stylesheet' href='/stylesheets/font.css' />
+
+    <!--font 초기화-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
+
+    <!--highcharts-->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/annotations.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <!--library-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery/1.12.4/jquery.min.js"></script>
+
+    <!--apexcharts-->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script>
+
+
+    <!--javascript -->
+    <script src="/javascripts/mainView.js"></script>
+    <script src="/javascripts/restAPI/bithumbAPI.js"></script>
+    <script src="/javascripts/eventHandler.js"></script>
+    <script src="/javascripts/webSocket.js"></script>
+    <script src="/javascripts/chart.js"></script>
+    <script src="/javascripts/utils.js"></script>
+    <script src="/javascripts/apexChart.js"></script>
+
+
+</head>
+
+<body>
+<div class="public_contents_div">
+
+
+    <div class="wrap_left_aside" id="left_aside_menu">
+        <div class="aside_title flex flex-j-center flex-a-center">
+            <div class="logo">
+            </div>
+        </div>
+        <div class="aside_menu">
+            <table class="aside_public_table" id="clovine_app_categori">
+                <thead></thead>
+                <tbody>
+                <tr class="font-14b">
+                    <td class="font-14b">거래소</td>
+                </tr>
+                <tr class="font-14b">
+                    <td class="font-14b">트레이딩</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="main_view_public_div">
+        <div class = "main_crypto_info_div">
+            <div class = "slide_title_div">
+                <p>마켓 변동률</p>
+                <div>toggle</div>
+            </div>
+            <div class = "slide_card">
+                <div class = "slide1">
+                    <p class = "title">갈라</p>
+                    <p class = "price up_red_color">242.2</p>
+                    <p class = "percent up_red_color">+32.46%</p>
+                    <div class = "mini_chart" id = "container_BTC_KRW"></div>
+                </div>
+                <div class = "slide1">
+                    <p class = "title">이더리움</p>
+                    <p class = "price up_red_color">4,232,100</p>
+                    <p class = "percent up_red_color">+14.23%</p>
+                    <div class = "mini_chart" id = "container_ETH_KRW"></div>
+                </div>
+                <div class = "slide1">
+                    <p class = "title">스포티움</p>
+                    <p class = "price up_red_color">1,342</p>
+                    <p class = "percent up_red_color">+5.80%</p>
+                    <div class = "mini_chart" id = "container_XRP_KRW"></div>
+                </div>
+                <div class = "slide1">
+                    <p class = "title">폴리곤</p>
+                    <p class = "price up_red_color">1,210</p>
+                    <p class = "percent up_red_color">+3.22%</p>
+                    <div class = "mini_chart" id = "container_BCH_KRW"></div>
+                </div>
+                <div class = "slide1">
+                    <p class = "title">비트코인캐시</p>
+                    <p class = "price up_red_color">427,900</p>
+                    <p class = "percent up_red_color">+1.24%</p>
+                    <div class = "mini_chart" id = "container_MATIC_KRW"></div>
+                </div>
+            </div>
+            <!-- 코인 리스트 컨텐츠 -->
+            <div class = "main_crpyto_list_div">
+                    <div class = "crypto_category">
+                        <ul>
+                            <li title="원화마켓" class="flex tab_selected padding-a-16" id = "korea_market_cap">
+                                원화마켓
+                            </li>
+                            <li title="즐겨찾기" class="flex padding-a-16" id = "favorite_crpyto">
+                                즐겨찾기
+                            </li>
+                        </ul>
+                        <table class ="crypto_list_set" id = "crypto_list_table">
+                            <thead>
+                            <tr class = "list_title">
+                                <td style = "margin-top: 8px;">가상자산명</td>
+                                <td style = "margin-top: 8px;">현재가</td>
+                                <td style = "margin-top: 8px">변동률</td>
+                                <td style = "margin-top: 8px">거래대금</td>
+                                <td style = "margin-top: 8px">시가총액</td>
+                            </tr>
+                            <tbody>
+                            <tr>
+                                <td>비트코인
+                                    <p>BTC/KRW</p>
+                                </td>
+                                <td>58,222,000</td>
+                                <td>-3.2%</td>
+                                <td>2992억</td>
+                                <td>1200조 230억</td>
+                            </tr>
+                            <tr>
+                                <td>이더리움
+                                    <p>ETH/KRW</p>
+                                </td>
+                                <td>3,452,000</td>
+                                <td>+1.48%</td>
+                                <td>492억</td>
+                                <td>680조 1750억</td>
+                            </tr>
+                            </tbody>
+                            </thead>
+
+                        </table>
+                    </div>
+                </div>
+        </div>
+
+
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

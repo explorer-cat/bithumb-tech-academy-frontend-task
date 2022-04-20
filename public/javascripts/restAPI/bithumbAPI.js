@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * @param {*} page : view 를 구성해주기 위한 현재 페이지 정보
  * @param {*} order  : 주문 통화(코인), ALL(전체), 기본값 : BTC
  * @param {*} payment : 결제 통화(마켓), 입력값 : KRW 혹은 BTC
@@ -15,7 +15,7 @@ const setTickerAPI = async (page, order, payment) => {
             url: `api/ticker`,
             headers: { 'Content-Type': 'application/json' },
             data : {
-                order : order,
+                order : "All",
                 payment : payment,
             }
         })
@@ -24,11 +24,27 @@ const setTickerAPI = async (page, order, payment) => {
     try {
         if(!request.data.data)return
 
-        let tkData = request.data.data;
-        console.log("tkData", tkData)
-        bitcoin_global_price = tkData.prev_closing_price;
+        //메인페이지 일경우 전체 다 보여줘야 함으로 전체 정보를 바로 리턴해서 메인뷰에서 다 처리.
+        if(page === "mainView") {
+            return request.data.data;
+        }
 
-        console.log("bitcoin_global_price",bitcoin_global_price)
+
+
+
+        //코인리스트 컴포넌트 세팅
+
+        let tkData = request.data.data[`${order}`];
+   //     console.log("tkData", tkData[`${order}`])
+
+        //실시간 정보를 받아서 우측 리스트박스 세팅 리스트는 전체 정보를 다보내줘서 처리
+        bitcoin_global_price = request.data.data.BTC.prev_closing_price;
+        eth_global_price =  request.data.data.ETH.prev_closing_price;
+
+        initCryptoListComponent(request.data.data);
+
+
+
         let dom = {
             "KRW": document.getElementById('tr_krw'),
             "RATE": document.getElementById('tr_change_rate'),
@@ -42,13 +58,31 @@ const setTickerAPI = async (page, order, payment) => {
 
         // div : crypto_content_info_box
         dom.KRW.innerHTML = `${numberToKorean(Number(tkData.closing_price))}원`;
-        dom.RATE.innerHTML = `24시간 ${Number(tkData.fluctate_rate_24H)} %`;
-        dom.VOLUME.innerHTML = `${Number(tkData.units_traded_24H).toFixed(2)} BTC`;
-        dom.VALUE.innerHTML = `${numberToKorean(Number(tkData.acc_trade_value_24H).toFixed(0))} BTC`;
+        // dom.RATE.innerHTML = `${Number(tkData.fluctate_rate_24H)} %`;
+        dom.VOLUME.innerHTML = `${Number(tkData.units_traded_24H).toFixed(2)} ${getCookie("order")}`;
+        dom.VALUE.innerHTML = `${numberToKorean(Number(tkData.acc_trade_value_24H).toFixed(0))}원`;
         dom.POWER.innerHTML = `${Number()}`;
         dom.LOW.innerHTML = `${numberToKorean(Number(tkData.min_price))}`;
         dom.HIGH.innerHTML = `${numberToKorean(Number(tkData.max_price))}`;
         dom.FINISH.innerHTML = `${numberToKorean(Number(tkData.prev_closing_price))}`;
+
+        if (tkData.prev_closing_price > tkData.closing_price) {
+            setChangeToColor("down", dom.KRW)
+            setChangeToColor("down", dom.RATE)
+
+            dom.RATE.innerHTML = `-${tkData.fluctate_rate_24H}%`;
+            document.getElementById("tr_change_rate").classList.add("bg_down");
+
+        } else {
+            setChangeToColor("up", dom.KRW)
+            setChangeToColor("up", dom.RATE)
+
+            dom.RATE.innerHTML = `+${tkData.fluctate_rate_24H}%`;
+
+            document.getElementById("tr_change_rate").classList.add("bg_up");
+        }
+
+
 
         return request.data.data;
     } catch (e) {
@@ -79,28 +113,28 @@ const setTransactionAPI = async (page, order, payment) => {
         for (const trData of res) {
             const time = new Date(trData.transaction_date);
             const type = trData.type;
-        
+
             let target = document.getElementById("BTC_transaction")
-        
+
             let tr = document.createElement("tr")
             tr.classList.add("transactionContent")
             tr.id = "BTC_transaction"
-        
-        
+
+
             type === "bid" ? tr.style.color = "#f75467 " : tr.style.color = "#4386f9";
-        
+
             let transactionTime = document.createElement("td")
             transactionTime.innerHTML = time.toLocaleTimeString();
             tr.appendChild(transactionTime)
-        
+
             let transactionPrice = document.createElement("td")
             transactionPrice.innerHTML = `${Number(trData.price).toLocaleString()}원`;
             tr.appendChild(transactionPrice);
-        
+
             let transactionCount = document.createElement("td")
             transactionCount.innerHTML = `${Number(trData.units_traded).toFixed(3)}개`;
             tr.appendChild(transactionCount)
-        
+
             target.prepend(tr)
         }
     } catch (e) {
@@ -133,6 +167,8 @@ const setOrderBookAPI = async (page, order, payment, ticker) => {
         let tr;
         let price;
         let count;
+        let bg;
+
 
 
 
@@ -142,19 +178,23 @@ const setOrderBookAPI = async (page, order, payment, ticker) => {
             price = document.createElement("td")
             count = document.createElement("td")
             percent = document.createElement("td")
+            bg = document.createElement("p");
 
            price.innerHTML = Number(asks.price).toLocaleString();
            percent.innerHTML = `${((Number(asks.price) - Number(ticker.prev_closing_price)) / Number(asks.price) * 100).toFixed(2)} %`
            count.innerHTML = Number(asks.quantity).toFixed(4)
 
+           bg.classList.add("count_bg")
+
            tr.style.backgroundColor = "#eef6ff"
             console.log("push!!")
+            count.appendChild(bg)
 
 
            tr.appendChild(price);
            tr.appendChild(percent);
            tr.appendChild(count);
-        
+
            bit_ask.prepend(tr);
         }
 
@@ -164,6 +204,7 @@ const setOrderBookAPI = async (page, order, payment, ticker) => {
             price = document.createElement("td")
             percent = document.createElement("td")
             count = document.createElement("td")
+
 
            price.innerHTML = Number(bids.price).toLocaleString();
 
@@ -177,7 +218,7 @@ const setOrderBookAPI = async (page, order, payment, ticker) => {
            tr.appendChild(count);
            bit_ask.appendChild(tr);
 
-           
+
 
         }
 
@@ -195,8 +236,7 @@ const setOrderBookAPI = async (page, order, payment, ticker) => {
 }
 
 
-const setCandleStick = async(page,order,payment) => {
-    console.log(this)
+const setCandleStick = async(page,order) => {
     let result = {
         success: false,
     }
@@ -208,7 +248,6 @@ const setCandleStick = async(page,order,payment) => {
             headers: { 'Content-Type': 'application/json' },
             data : {
                 order : order,
-                payment : payment,
             }
         });
 
@@ -216,6 +255,13 @@ const setCandleStick = async(page,order,payment) => {
         if(!request.data.data)return
 
         let obData = request.data.data;
+
+
+        if(page === "mainView") {
+            console.log("request.data.data",request.data)
+            return obData;
+        }
+
 
         if(page === "tradeView") {
             //미니차트를 그리기 위한 최근 1500분간  10분단위의 거래 내역
@@ -229,7 +275,7 @@ const setCandleStick = async(page,order,payment) => {
             let chart = document.createElement("div")
             chart.id = "container_BTC"
             target.appendChild(chart)
-            getMiniChart("container_BTC", miniChartData)
+            getTradeMiniChart("container_BTC", miniChartData)
         }
     } catch (e) {
 

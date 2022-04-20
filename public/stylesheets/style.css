@@ -2,7 +2,7 @@ body {
     /*background-color: var(--basic-background);*/
     padding: 50px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-    background-image: url("../images/bg_main.png")
+    /* background-image: url("../images/bg_main.png") */
 }
 
 a  {
@@ -93,7 +93,7 @@ table {
 }
 
 .public_contents_div {
-    min-width: 1690px;
+    min-width: 1024px;
     width: 100%;
     height: 100%;
 }

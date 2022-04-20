@@ -1,6 +1,3 @@
-body {
-    background-color: var(--background-font-color);
-}
 
 .first-line{
     height: 100%;
@@ -15,22 +12,21 @@ body {
 }
 
 .main_body_content{
-    width: calc(100% - 294px);
+    width: calc(100% - 75px);
     height: calc(100% - 24px);
-    margin-top: 24px;
     box-sizing: border-box;
-    padding: 24px;
-    background-color: #fafbfe;
+    background-color: rgb(234, 234, 234);
     float: right;
     overflow: auto;
-    border-top-left-radius: 20px;
 }
 
 
 
 .content-card {
+    padding :12px;
     width: 100%;
     height: 100%;
+    overflow: auto;
     /* background: rgb(255, 255, 255);
     box-shadow: rgb(222 225 231) 2px 2px 2px 4px;
     border-top: 4px solid #fe9601;
@@ -83,9 +79,23 @@ body {
     font-size: 13px;
 }
 
+#tr_change_rate {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 5px;
+    color:white;
+    font-weight: bold;
+}
+.bg_down {
+    background-color: #4386f9;
+}
+
+.bg_up {
+    background-color: #f75467;
+}
 
 .vertical-double-box {
-    display: inline-grid;
+    display: flex;
     height: 100%;
     width: 100%;
 }
@@ -169,7 +179,7 @@ body {
     width: 400px;
     height: 170px;
     overflow: auto;
-    border-top: solid 1px #ebebeb; 
+    border-top: solid 1px #ebebeb;
 }
 
 .highcharts-data-table table {
@@ -258,6 +268,7 @@ body {
 
 .orderBookTitle > tbody > tr {
     display: flex;
+    position : relative;
     justify-content: space-around;
     font-size: 13px;
     padding: 2px 0px;
@@ -268,7 +279,7 @@ body {
 }
 
 .transactionTitle > tbody > tr > td:nth-child(2) {
-    width: 31%;
+    width: 20%;
 }
 
 .transactionTitle > tbody > tr > td:nth-child(3) {
@@ -300,7 +311,7 @@ body {
     left: 0;
     top: 0;
     width: 50%;
-    height: 50%;
+    height: 50%;f.crypto_content_info_layount
     overflow: hidden;
 } */
 
@@ -314,17 +325,21 @@ body {
     display: flex;
     width: 400px;
     height: 100%;
+    margin-right:18px;
 }
 
 .crypto_orderbook_info_layout {
+    margin-left:8px;
+    margin-right:8px;
+    margin-bottom:8px;
     width: 300px;
-    height: 100%;
+    height: calc(100% - 40px);
 }
 
 .crypto_order_info_layout {
     display: flex;
-    width: 400px;
-    height: 100%;
+    width: 500px;
+    height: calc(100% + 24px);
 }
 
 .left_info_table > tbody > tr {
@@ -382,8 +397,11 @@ body {
 
 }
 #bit_ask > tr > td:nth-child(3) {
+    position:relative;
+    display: flex;
     width: 30%;
-    margin-right: 24px;
+    left:24px;
+    margin-right: 12px;
     text-align: right;
 }
 
@@ -395,9 +413,11 @@ body {
 
 .crpto_list_box{
     width: 100%;
+    height: 100%;
     /* display: flex; */
     display: flex;
     flex-direction: column;
+    background-color: white;
 }
 
 .crpyto_list_search_box{
@@ -427,7 +447,6 @@ body {
 .crypto_list_set > thead > tr > td:nth-child(5) {
     text-align: center;
     height: 40px;
-    background: #EFEFEF;
     margin-bottom: 8px;
 }
 
@@ -435,7 +454,6 @@ body {
     text-align: center;
     width: 10%;
     height: 40px;
-    background: #EFEFEF;
     margin-bottom: 8px;
 }
 
@@ -443,7 +461,7 @@ body {
 
 .crypto_list_set > tbody > tr {
     text-align: center;
-    height: 40px;
+    height: 50px;
     margin-bottom: 8px;
     border: solid 1px #eee;
 }
@@ -451,4 +469,79 @@ body {
 .crypto_list_set > tbody > tr:hover {
     cursor: pointer;
     background-color: #f8f8f8;
+}
+
+.up_box {
+    border : 1px solid #f75467!important;
+    box-sizing: border-box;
+}
+
+.down_box {
+    box-sizing: border-box;
+    border : 1px solid #4386f9!important;
+}
+
+.slide_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    background-color: rgba(83, 75, 75, 0.16);
+    box-shadow: 3px 2px 6px 0 rgba(83, 75, 75, 0.16);
+}
+
+.crpyto_title{
+    padding:12px;
+    margin : 8px 0px;
+    background-color: white;
+    border-radius: 6px;
+}
+
+.crypto_info_box{
+    padding:8px;
+    margin-bottom:8px;
+    background-color: white;
+    border-radius: 6px;
+}
+
+.star_fill {
+    margin-top: 12px;
+    margin-left:12px;
+    content: url("../images/star_fill.png");
+    width: 24px;
+    height: 24px;
+}
+
+.star_full {
+    margin-top: 12px;
+    margin-left:12px;
+    content: url("../images/star_full.png");
+    width: 24px;
+    height: 24px;
+}
+
+.count_bg_up {
+    position:absolute;
+    align-items: center;
+    right: 45px;
+    height: 100%;
+    width: 50%;
+    top:0;
+    left:0;
+    opacity: 0.5;
+    background-color: #fdd2d7 !important
+}
+
+
+
+.count_bg_down {
+    position:absolute;
+    align-items: center;
+    right: 45px;
+    height: 100%;
+    width: 50%;
+    top:0;
+    left:0;
+    opacity: 0.5;
+    background-color: #cde0fe !important
 }
