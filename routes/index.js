@@ -13,7 +13,7 @@ router.get('/', function(req, res, next) {
 
 /* GET home page. */
 router.get('/trade', function(req, res, next) {
-  res.render('tradeView', { title: '빗썸!' });
+  res.render('tradeView', { title: '빗썸' });
 });
 
 router.post('/api/orderbook', async function(req, res, next) {
