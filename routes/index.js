@@ -7,13 +7,13 @@ const axios = require("axios");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('tradeView', { title: 'Express' });
+  res.render('mainView', { title: 'Express' });
 });
 
 
 /* GET home page. */
-router.get('/main', function(req, res, next) {
-  res.render('mainView', { title: '빗썸!' });
+router.get('/trade', function(req, res, next) {
+  res.render('tradeView', { title: '빗썸!' });
 });
 
 router.post('/api/orderbook', async function(req, res, next) {
