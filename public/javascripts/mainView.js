@@ -1,5 +1,11 @@
 
 window.onload = async function () {
+    document.getElementById("main-page").addEventListener("click", clickAsideCategory)
+    document.getElementById("trade-page").addEventListener("click", clickAsideCategory)
+
+
+    document.querySelector(".list_title > td:nth-child(2)").addEventListener("click", sortTable)
+
     initMainView();
 }
 
@@ -49,7 +55,6 @@ const setRestAPIMainView = async (callback) => {
         key = Object.keys(tickerInfo)[i];
         //value = close_rate; 
         value = Object.values(tickerInfo)[i].fluctate_rate_24H; //Object.values(tickerInfo)[i].fluctate_rate_24H;
-
         rankMap.set(key, value)
         test.push(key)
     }
@@ -63,6 +68,7 @@ const setRestAPIMainView = async (callback) => {
 
     //뒤에서 부터 제일 상승이 큰 코인인데 2부터 시작하는 이유는 맨뒤에 DATE 값이 undefined로 날라옴..
     let keyCheckNum = 1;
+
     const rankdiv = document.querySelector(".slide_card")
     let rankTitle = rankdiv.querySelectorAll(".slide1 > .title")
     let rankPrice = rankdiv.querySelectorAll(".slide1 > .price")
@@ -153,6 +159,10 @@ const initMarketListTable = async (data) => {
     let data_key;
     let length = Object.keys(data.data).length;
 
+
+    data_key = Object.keys(data.data)
+    data_value = Object.values(data.data)
+
     for (let i = 0; i < length; i++) {
         let tr = document.createElement("tr");
         let favorite = document.createElement("td");
@@ -163,8 +173,8 @@ const initMarketListTable = async (data) => {
         let volume = document.createElement("td");
         let value = document.createElement("td");
 
-        data_key = Object.keys(data.data)
-        data_value = Object.values(data.data)
+
+
 
         favorite.classList.add("favorite")
         favorite.classList.add("star_fill")
@@ -172,7 +182,8 @@ const initMarketListTable = async (data) => {
 
         //제목
         title.classList.add("title")
-        title.innerHTML = "코인이름"
+        title.innerHTML = data_key[i]
+        title.style.fontWeight = "800"
         symbol.innerHTML = data_key[i] + "_KRW"
         symbol.classList.add(data_key[i] + "_KRW")
         symbol.name = data_key[i] + "_KRW"
@@ -194,27 +205,43 @@ const initMarketListTable = async (data) => {
         volume.innerHTML = Number(data_value[i].acc_trade_value_24H).toLocaleString() + "원";
         tr.appendChild(volume)
 
-        value.classList.add("value")
-        value.innerHTML = "시가총액"
+        value.classList.add("chart")
+        value.id = data_key[i] + "_table_chart"
+        // value.innerHTML = "24시간 추이"
         tr.appendChild(value)
 
+        //24시간 추이 차트 렌더시작
+
+        /* 즐겨찾기 된 코인과 안된코인을 분리해서 화면 나눠서 처리해줌*/
+        if (localStorage.getItem(data_key[i] + "_KRW")) {
+
+            //localstorage 에 즐겨찾기한 코인이 있을 경우 star_full 이미지로 변경
+            favorite.classList.remove("star_fill")
+            favorite.classList.add("star_full")
+            // 맨앞에 보이게
+            target.prepend(tr)
+        } else {
+            target.appendChild(tr)
+        }
 
         //24시 등락률이 0보다 클 경우 상승
         if (Number(data_value[i].fluctate_rate_24H) >= 0) {
             rate.classList.add("up_red_color")
+            //상승일 경우 테이블 차트 색상도 빨간색으로
         } else {
             rate.classList.add("down_blue_color")
         }
 
+
         /*즐겨찾기 클릭 이벤트*/
+
         favorite.addEventListener("click", function (event) {
             //현재 내가 클릭한 TD 를
             let target = this.parentNode;
             let targetName = target.querySelector(".title > p").innerHTML;
             console.log("targetName", targetName)
-            //td 부모인 tr 맨 앞으로 다시 넣기.
+            //td 부모인 tr 맨 앞으로 다시 넣기.ƒd
             let parentTarget = this.parentNode.parentNode;
-            parentTarget.prepend(target);
 
 
 
@@ -222,31 +249,54 @@ const initMarketListTable = async (data) => {
             if (favorite.classList.contains("star_fill")) {
                 favorite.classList.remove("star_fill")
                 favorite.classList.add("star_full")
+                parentTarget.prepend(target);
+                //localstorage 에 즐겨찾기한 코인 추가
+                localStorage.setItem(targetName, 'star')
 
-                if(favoriteCookie.indexOf(targetName) !== -1) {
-                    console.log("잇음!!")
-                } else {
-                    console.log("없음!!")
-                }
-                
             } else {
+                parentTarget.appendChild(target);
                 favorite.classList.add("star_fill")
                 favorite.classList.remove("star_full")
-            }
-
-            //쿠키에 즐겨찾기 한거 세팅.
-
-            if (!favoriteCookie) {
-                setCookie("favorite", ";" + targetName + ";")
-            } else {
-                setCookie("favorite", favoriteCookie + targetName + ";")
+                //localstorage 에 즐겨찾기한 코인 삭제
+                localStorage.removeItem(targetName)
             }
         })
 
 
-        target.appendChild(tr)
 
     }
 
+    for (let object of Object.keys(data.data)) {
+        let candleData =  await setCandleStick("mainView", object, "1h");
 
+        let status;
+        //상승중인 코인일 경우
+        if (document.getElementsByClassName("rate")[0].classList.contains("up_red_color")) {
+            status = "#d60000"
+        } else {
+            status = "#0051c7"
+        }
+
+        candleData = candleData.slice(candleData.length - 30, candleData.length);
+
+        getTableMiniChart(object + "_table_chart", candleData, status)
+        //24시간 추이 차트 렌더 종료
+    }
 }
+
+
+function sortTable() {
+    var table = document.getElementById('crypto_list_table');
+
+    console.log("table")
+    var rows = table.rows;
+    console.log("rows", rows)
+    for (var i = 1; i < (rows.length - 1); i++) {
+        var fCell = rows[i].cells[1];
+        var sCell = rows[i + 1].cells[1];
+        if (fCell.innerHTML.toLowerCase() > sCell.innerHTML.toLowerCase()) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        }
+    }
+}
+

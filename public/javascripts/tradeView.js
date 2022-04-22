@@ -71,6 +71,10 @@ async function initPage() {
     document.getElementById("crypto_info").removeEventListener("click", getCrpytoInfo);
     document.getElementById("crypto_info").addEventListener("click", getCrpytoInfo);
 
+    document.getElementById("main-page").addEventListener("click", clickAsideCategory)
+    
+
+
 
     connectWS(({ page, order, payment }), async function (result) {
         await getBithumbCryptoInfo(result);

@@ -12,7 +12,7 @@
 }
 
 .main_body_content{
-    width: calc(100% - 75px);
+    width: calc(100% - 81px);
     height: calc(100% - 24px);
     box-sizing: border-box;
     background-color: rgb(234, 234, 234);

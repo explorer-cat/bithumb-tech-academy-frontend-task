@@ -234,8 +234,7 @@ const setOrderBookAPI = async (page, order, payment, ticker) => {
 }
 
 
-const setCandleStick = async(page,order) => {
-    console.log("gdgd")
+const setCandleStick = async(page,order,time) => {
     let result = {
         success: false,
     }
@@ -247,6 +246,7 @@ const setCandleStick = async(page,order) => {
             headers: { 'Content-Type': 'application/json' },
             data : {
                 order : order,
+                time : time,
             }
         });
 

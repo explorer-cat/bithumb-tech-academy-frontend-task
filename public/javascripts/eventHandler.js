@@ -188,3 +188,13 @@ async function moveToPage() {
     }
 
 }
+
+const clickAsideCategory = (event) => {
+    let target = event.target;
+
+    if(target.id === "main-page" || target.parentNode.id === "main-page") {
+        window.location.href = '/';
+    } else if (target.id === "trade-page" || target.parentNode.id === "trade-page") {
+        window.location.href = '/trade';
+    }
+}
