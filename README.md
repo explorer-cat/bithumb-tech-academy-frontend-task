@@ -6,7 +6,7 @@
 -![ezgif com-gif-maker (1)](https://user-images.githubusercontent.com/55500077/161274613-697cb21e-77a3-4e12-aff8-33c0486db484.gif)
 
 배포링크
-https://explorer-cat.github.io/codestates-bithumb-frontend-publish/
+<!-- https://explorer-cat.github.io/codestates-bithumb-frontend-publish/ -->
 
 ## 프로젝트 실행 방법
 - npm install express.js  or npm install
