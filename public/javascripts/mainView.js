@@ -277,7 +277,7 @@ const initMarketListTable = async (data) => {
             status = "#0051c7"
         }
 
-        candleData = candleData.slice(candleData.length - 30, candleData.length);
+        candleData =  candleData.slice(candleData.length - 30, candleData.length);
 
         getTableMiniChart(object + "_table_chart", candleData, status)
         //24시간 추이 차트 렌더 종료
