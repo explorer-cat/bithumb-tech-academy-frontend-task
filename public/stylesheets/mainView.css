@@ -108,7 +108,7 @@
     font-weight: bold;
     float: left;
     min-width: 55px;
-    padding:4px;
+    padding:12px;
     height: 32px;
     text-align: center;
     color: black !important;
@@ -118,7 +118,7 @@
 }
 
 .crypto_category ul li.tab_selected {
-    margin-right: 16px;
+
     border-bottom: 3px solid black;
     font-weight: bold;
     cursor: pointer;
@@ -127,8 +127,12 @@
     height: 30px;
     padding:8px;
 }
+
+.crypto_list_set > tbody > tr  {
+    height: 68px;
+}
+
 .crypto_list_set > tbody > tr > td {
-    height: 30px;
     padding:8px;
 }
 .crypto_list_set > thead > tr  {
@@ -182,16 +186,9 @@
 }
 
 .crypto_list_set > tbody > tr > td:nth-child(6) {
-    padding : 5px 5px 8px 57px;
+    padding : 10px 30px 10px 70px;
 }
 
-
-
-
-
-.crypto_list_set{
-    margin-top:12px;
-}
 
 
 /* 미니차트 */
