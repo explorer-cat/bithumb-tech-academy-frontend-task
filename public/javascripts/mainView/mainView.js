@@ -166,16 +166,25 @@ const initMarketListTable = async (data) => {
 
     data_key = Object.keys(data.data)
     data_value = Object.values(data.data)
+    let tr
+    let favorite
+    let title
+    let symbol
+    let price
+    let rate
+    let volume
+    let value
+    let status
 
     for (let i = 0; i < length; i++) {
-        let tr = document.createElement("tr");
-        let favorite = document.createElement("td");
-        let title = document.createElement("td");
-        let symbol = document.createElement("p");
-        let price = document.createElement("td");
-        let rate = document.createElement("td");
-        let volume = document.createElement("td");
-        let value = document.createElement("td");
+         tr = document.createElement("tr");
+         favorite = document.createElement("td");
+         title = document.createElement("td");
+         symbol = document.createElement("p");
+         price = document.createElement("td");
+         rate = document.createElement("td");
+         volume = document.createElement("td");
+         value = document.createElement("td");
 
 
 
@@ -277,18 +286,18 @@ const initMarketListTable = async (data) => {
 
 
 
+        if (rate.classList.contains("up_red_color")) {
+            status = "#d60000"
+        } else {
+            status = "#0051c7"
+        }
+    
+
     }
 
     for (let object of Object.keys(data.data)) {
         let candleData = await setCandleStick("mainView", object, "30m");
 
-        let status;
-        //상승중인 코인일 경우
-        if (document.getElementsByClassName("rate")[0].classList.contains("up_red_color")) {
-            status = "#d60000"
-        } else {
-            status = "#0051c7"
-        }
 
         candleData = candleData.slice(candleData.length - 100, candleData.length);
 
