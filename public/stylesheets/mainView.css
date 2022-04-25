@@ -204,7 +204,7 @@
 
 .star_fill {
     content: url("../images/star_fill.png");
-    margin-top:8px;
+    margin-top:18px;
     margin-left:4px;
     width: 20px !important;
     height: 20px !important;
@@ -212,7 +212,7 @@
 
 .star_full {
     content: url("../images/star_full.png");
-    margin-top:8px;
+    margin-top:18px;
     margin-left:4px;
     width: 20px !important;
     height: 20px !important;

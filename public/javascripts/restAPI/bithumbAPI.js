@@ -35,7 +35,6 @@ const setTickerAPI = async (page, order, payment) => {
         //코인리스트 컴포넌트 세팅
 
         let tkData = request.data.data[`${order}`];
-   //     console.log("tkData", tkData[`${order}`])
 
         //실시간 정보를 받아서 우측 리스트박스 세팅 리스트는 전체 정보를 다보내줘서 처리
         bitcoin_global_price = request.data.data.BTC.prev_closing_price;
@@ -161,7 +160,6 @@ const setOrderBookAPI = async (page, order, payment, ticker) => {
     try {
         if(!request.data.data)return
 
-        console.log("ticker", ticker)
         let obData = request.data.data;
         let tr;
         let price;
@@ -186,7 +184,6 @@ const setOrderBookAPI = async (page, order, payment, ticker) => {
            bg.classList.add("count_bg")
 
            tr.style.backgroundColor = "#eef6ff"
-            console.log("push!!")
             count.appendChild(bg)
 
 
@@ -223,7 +220,6 @@ const setOrderBookAPI = async (page, order, payment, ticker) => {
 
         const special= document.getElementById("bit_ask");
 
-        console.log("special" , special.offsetHeight)
         //23px 짜리 td 가 40개니까 - margin padding 빼기
         special.scrollTo( 0, 900/2 );
 
@@ -257,7 +253,6 @@ const setCandleStick = async(page,order,time) => {
 
 
         if(page === "mainView") {
-            console.log("request.data.data",request.data)
             return obData;
         }
 
@@ -265,10 +260,6 @@ const setCandleStick = async(page,order,time) => {
         if(page === "tradeView") {
             //미니차트를 그리기 위한 최근 1500분간  10분단위의 거래 내역
             let miniChartData = obData.slice( obData.length - 150, obData.length);
-
-            console.log("miniChartData", new Date(miniChartData[0][0]).toLocaleTimeString())
-            console.log("miniChartData", new Date(miniChartData[19][0]).toLocaleTimeString())
-
 
             let target = document.getElementsByClassName("chart_info_category")[0];
             let chart = document.createElement("div")

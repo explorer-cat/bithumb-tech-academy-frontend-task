@@ -74,8 +74,6 @@ async function initPage() {
     document.getElementById("main-page").addEventListener("click", clickAsideCategory)
     
 
-
-
     connectWS(({ page, order, payment }), async function (result) {
         await getBithumbCryptoInfo(result);
     });
@@ -150,7 +148,7 @@ const setTickerData = (data, el) => {
 
 
         //현재(종가)가격이 시가 보다 낮은 경우
-        console.log("resTicker", resTicker)
+
         if (resTicker.prevClosePrice > resTicker.closePrice) {
             setChangeToColor("down", element.bithumbBTC.KRW)
             setChangeToColor("down", element.bithumbBTC.RATE)
@@ -219,8 +217,6 @@ const setOrderBookDepthData = (data, ticker) => {
     let bitcoin_price;
 
     list = data.content.list;
-
-    console.log("list", list)
 
     let status = `${getCookie("order")}_${getCookie("payment")}`
     //페이지 쿠키와 동일한 정보만 가져와
@@ -346,129 +342,119 @@ const setOrderBookDepthData = (data, ticker) => {
 /* 초기 코인 리스트 정적 */
 const initCryptoListComponent = (data) => {
 
-    let target_btc = document.querySelector("#btc_info")
-    let target_eth = document.querySelector("#eth_info")
 
+    let key;
+    let value;
+
+    //전일 기준 , 24시간 기준아님 xs
+    let close_rate;
+    let test = [];
     let btc_append = "";
-    let eth_append = ""
-    // console.log("data" ,data[`${getCookie("order")}`])
+    let listTarget = document.querySelector("#crypto_list_table > tbody")
+    
+    for (let i = 0; i < Object.keys(data).length; i++) {
+        console.log("11?")
+        //close_rate = (Object.values(tickerInfo)[i].closing_price - Object.values(tickerInfo)[i].prev_closing_price) / Object.values(tickerInfo)[i].prev_closing_price * 100
+        key = Object.keys(data)[i];
+        //value = close_rate; 
+        value = Object.values(data)[i].fluctate_rate_24H; //Object.values(tickerInfo)[i].fluctate_rate_24H;
+        
+      //  rankMap.set(key, value)
+        test.push(key)
+        btc_append += `<tr id = "${key}_info">`
+        btc_append += `<td class = "star_fill"></td>`
+        btc_append += `<td>${key}</td>`
+        if(data.BTC.closing_price > data[key].prev_closing_price) {
+            btc_append += `<td class ="up_red_color">${Number(data[key].closing_price).toLocaleString()}</td>`
+            btc_append += `<td class ="up_red_color">+${data[key].fluctate_rate_24H}%</td>`
+        } else {
+            btc_append += `<td class = "down_blue_color">${Number(data[key].closing_price).toLocaleString()}</td>`
+            btc_append += `<td class ="down_blue_color">${data[key].fluctate_rate_24H}%</td>`
+        }
+          btc_append += `<td>${numberToKorean(Number(data[key].acc_trade_value_24H).toFixed(0))}</td>`
+          btc_append += `</tr>`
+          listTarget.innerHTML = btc_append   
 
-    btc_append += '<td class = "star_fill"></td>'
-    btc_append += '<td>비트코인 </td>'
-    console.log("data123123", data.BTC)
-    if(data.BTC.closing_price > data.BTC.prev_closing_price) {
-        btc_append += `<td class ="up_red_color">${Number(data.BTC.closing_price).toLocaleString()}</td>`
-        btc_append += `<td class ="up_red_color">+${data.BTC.fluctate_rate_24H}%</td>`
-    } else {
-        btc_append += `<td class = "down_blue_color">${Number(data.BTC.closing_price).toLocaleString()}</td>`
-        btc_append += `<td class ="down_blue_color">${data.BTC.fluctate_rate_24H}%</td>`
+        document.getElementById(`${key}_info`).addEventListener("click", moveToPage);
+    
     }
-      btc_append += `<td>${numberToKorean(Number(data.BTC.acc_trade_value_24H).toFixed(0))}</td>`
-
-    target_btc.innerHTML = btc_append
-
-    eth_append += '<td class = "star_fill"></td>'
-    eth_append += '<td>이더리움 </td>'
-    if(data.ETH.closing_price > data.ETH.prev_closing_price) {
-        eth_append += `<td class ="up_red_color ">${Number(data.ETH.closing_price).toLocaleString()}</td>`
-        eth_append += `<td class ="up_red_color">+${data.ETH.fluctate_rate_24H}%</td>`
-    } else {
-        eth_append += `<td class = "down_blue_color">${Number(data.ETH.closing_price).toLocaleString()}</td>`
-        eth_append += `<td class ="down_blue_color">-${data.ETH.fluctate_rate_24H}%</td>`
-    }
-    eth_append += `<td>${numberToKorean(Number(data.ETH.acc_trade_value_24H).toFixed(0))}</td>`
-    target_eth.innerHTML = eth_append
-
-    document.getElementById("btc_info").removeEventListener("click", moveToPage);
-    document.getElementById("btc_info").addEventListener("click", moveToPage);
-
-    document.getElementById("eth_info").removeEventListener("click", moveToPage);
-    document.getElementById("eth_info").addEventListener("click", moveToPage);
-
 }
 
 /* 초기 코인 리스트 정적 */
 const setCryptoListComponent = (data) => {
 
-    let target_btc = document.querySelector("#btc_info")
-    let target_eth = document.querySelector("#eth_info")
+    // let target_btc = document.querySelector("#btc_info")
+    // let target_eth = document.querySelector("#eth_info")
 
-    let btc_append = "";
-    let eth_append = ""
+    // let btc_append = "";
+    // let eth_append = ""
 
-    console.log("data", data)
-    // console.log("data" ,data[`${getCookie("order")}`])
-    if(data.symbol === "BTC_KRW") {
-        console.log("bit?")
-        console.log("data.prevClosePrice",data.closePrice)
-        btc_append += '<td class="star_fill"></td>'
-        btc_append += '<td>비트코인 </td>'
-        if(data.closePrice >= data.prevClosePrice) {
-            btc_append += `<td class ="up_red_color up_box">${Number(data.closePrice).toLocaleString()}</td>`
-            btc_append += `<td class ="up_red_color">+${data.chgRate}%</td>`
+    // console.log("data", data)
+    // // console.log("data" ,data[`${getCookie("order")}`])
+    // if(data.symbol === "BTC_KRW") {
+    //     console.log("bit?")
+    //     console.log("data.prevClosePrice",data.closePrice)
+    //     btc_append += '<td class="star_fill"></td>'
+    //     btc_append += '<td>비트코인 </td>'
+    //     if(data.closePrice >= data.prevClosePrice) {
+    //         btc_append += `<td class ="up_red_color up_box">${Number(data.closePrice).toLocaleString()}</td>`
+    //         btc_append += `<td class ="up_red_color">+${data.chgRate}%</td>`
 
-        } else {
-            btc_append += `<td class = "down_blue_color down_box">${Number(data.closePrice).toLocaleString()}</td>`
-            btc_append += `<td class ="down_blue_color">${data.chgRate}%</td>`
-        }
-        btc_append += `<td>${numberToKorean(Number(data.value).toFixed(0))}</td>`
-        target_btc.innerHTML = btc_append
+    //     } else {
+    //         btc_append += `<td class = "down_blue_color down_box">${Number(data.closePrice).toLocaleString()}</td>`
+    //         btc_append += `<td class ="down_blue_color">${data.chgRate}%</td>`
+    //     }
+    //     btc_append += `<td>${numberToKorean(Number(data.value).toFixed(0))}</td>`
+    //     target_btc.innerHTML = btc_append
 
-        setTimeout(function() {
-            if( target_btc.getElementsByClassName("up_box")[0]) {
-                target_btc.getElementsByClassName("up_box")[0].classList.remove("up_box");
-            }
+    //     setTimeout(function() {
+    //         if( target_btc.getElementsByClassName("up_box")[0]) {
+    //             target_btc.getElementsByClassName("up_box")[0].classList.remove("up_box");
+    //         }
 
-            if(target_btc.getElementsByClassName("down_box")[0]) {
-                target_btc.getElementsByClassName("down_box")[0].classList.remove("down_box");
-            }
-        }, 300);
-
-
-        // for (const down of animation_down) {
-        //     console.log("down",down)
-        //    // down.classList.remove("down_box")
-        // }
-        //  animation_down[0].classList.remove("down_box");
-        //  animation_down[1].classList.remove("down_box");
-    }
-    //chgRate
-
-    if(data.symbol === "ETH_KRW") {
-        eth_append += '<td class = "star_fill"></td>'
-        eth_append += '<td>이더리움 </td>'
-        if(data.closePrice >= data.prevClosePrice) {
-            eth_append += `<td class = "up_red_color up_box"> ${Number(data.closePrice).toLocaleString()}</td>`
-            eth_append += `<td class ="up_red_color" down_box>+${data.chgRate}%</td>`
-        } else {
-            eth_append += `<td class = "down_blue_color"> ${Number(data.closePrice).toLocaleString()}</td>`
-            eth_append += `<td class ="down_blue_color">-${data.chgRate}%</td>`
-        }
-        eth_append += `<td>${numberToKorean(Number(data.value).toFixed(0))}</td>`
-        target_eth.innerHTML = eth_append
+    //         if(target_btc.getElementsByClassName("down_box")[0]) {
+    //             target_btc.getElementsByClassName("down_box")[0].classList.remove("down_box");
+    //         }
+    //     }, 300);
 
 
+    //     // for (const down of animation_down) {
+    //     //     console.log("down",down)
+    //     //    // down.classList.remove("down_box")
+    //     // }
+    //     //  animation_down[0].classList.remove("down_box");
+    //     //  animation_down[1].classList.remove("down_box");
+    // }
+    // //chgRate
 
-        setTimeout(function() {
-            if( target_eth.getElementsByClassName("up_box")[0]) {
-                target_eth.getElementsByClassName("up_box")[0].classList.remove("up_box");
-            }
-
-            if(target_eth.getElementsByClassName("down_box")[0]) {
-                target_eth.getElementsByClassName("down_box")[0].classList.remove("down_box");
-            }
-        }, 300);
-
-
-    }
+    // if(data.symbol === "ETH_KRW") {
+    //     eth_append += '<td class = "star_fill"></td>'
+    //     eth_append += '<td>이더리움 </td>'
+    //     if(data.closePrice >= data.prevClosePrice) {
+    //         eth_append += `<td class = "up_red_color up_box"> ${Number(data.closePrice).toLocaleString()}</td>`
+    //         eth_append += `<td class ="up_red_color" down_box>+${data.chgRate}%</td>`
+    //     } else {
+    //         eth_append += `<td class = "down_blue_color"> ${Number(data.closePrice).toLocaleString()}</td>`
+    //         eth_append += `<td class ="down_blue_color">-${data.chgRate}%</td>`
+    //     }
+    //     eth_append += `<td>${numberToKorean(Number(data.value).toFixed(0))}</td>`
+    //     target_eth.innerHTML = eth_append
 
 
 
+    //     setTimeout(function() {
+    //         if( target_eth.getElementsByClassName("up_box")[0]) {
+    //             target_eth.getElementsByClassName("up_box")[0].classList.remove("up_box");
+    //         }
 
-    document.getElementById("btc_info").removeEventListener("click", moveToPage);
-    document.getElementById("btc_info").addEventListener("click", moveToPage);
+    //         if(target_eth.getElementsByClassName("down_box")[0]) {
+    //             target_eth.getElementsByClassName("down_box")[0].classList.remove("down_box");
+    //         }
+    //     }, 300);
 
-    document.getElementById("eth_info").removeEventListener("click", moveToPage);
-    document.getElementById("eth_info").addEventListener("click", moveToPage);
+
+    // }
+
+
 
 }
