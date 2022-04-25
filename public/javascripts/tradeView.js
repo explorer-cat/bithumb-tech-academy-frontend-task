@@ -51,7 +51,7 @@ async function initPage() {
     let tickerInfo = await setTickerAPI(page, order, payment)
 
     setTransactionAPI(page, order, payment)
-    setCandleStick(page, `${order+"_"+payment}`)
+    setCandleStick(page, `${order + "_" + payment}`)
     // setOrderBookAPI(page,order,payment ,tickerInfo)
 
 
@@ -72,7 +72,7 @@ async function initPage() {
     document.getElementById("crypto_info").addEventListener("click", getCrpytoInfo);
 
     document.getElementById("main-page").addEventListener("click", clickAsideCategory)
-    
+
 
     connectWS(({ page, order, payment }), async function (result) {
         await getBithumbCryptoInfo(result);
@@ -118,21 +118,18 @@ const setTickerData = (data, el) => {
 
     let status = `${getCookie("order")}_${getCookie("payment")}`
 
-    //페이지 쿠키와 동일한 정보만 가져와
+    //페이지 쿠키와 동일한 정보만 가져
 
-    console.log("ticker", resTicker)
+    switch (resTicker.symbol) {
+        case "BTC_KRW":
+            bitcoin_global_price = resTicker.prevClosePrice;
+            break;
+        case "ETH_KRW":
+            eth_global_price = resTicker.prevClosePrice;
+            break;
+    }
 
-
-    switch(resTicker.symbol) {
-        case "BTC_KRW" :
-           bitcoin_global_price = resTicker.prevClosePrice;
-           break;
-       case "ETH_KRW":
-           eth_global_price = resTicker.prevClosePrice;
-           break;
-       }
-
-           //실시간 정보를 받아서 우측 리스트박스 세팅
+    //실시간 정보를 받아서 우측 리스트박스 세팅
     setCryptoListComponent(resTicker);
 
 
@@ -257,7 +254,7 @@ const setOrderBookDepthData = (data, ticker) => {
 
                 let width;
 
-                if(getCookie("order") === "BTC") {
+                if (getCookie("order") === "BTC") {
                     percent.innerHTML = `${((Number(key) - Number(bitcoin_global_price)) / Number(key) * 100).toFixed(2)} %`
                     width = (Number(value).toFixed(4) / 10) * 10 + 1;
                 } else if (getCookie("order") === "ETH") {
@@ -308,7 +305,7 @@ const setOrderBookDepthData = (data, ticker) => {
 
                 let width;
 
-                if(getCookie("order") === "BTC") {
+                if (getCookie("order") === "BTC") {
                     percent.innerHTML = `${((Number(key) - Number(bitcoin_global_price)) / Number(key) * 100).toFixed(2)} %`
                     width = (Number(value).toFixed(4) / 10) * 10 + 1;
                 } else if (getCookie("order") === "ETH") {
@@ -340,121 +337,85 @@ const setOrderBookDepthData = (data, ticker) => {
 }
 
 /* 초기 코인 리스트 정적 */
-const initCryptoListComponent = (data) => {
+const initCryptoListComponent = async (data) => {
 
-
-    let key;
-    let value;
 
     //전일 기준 , 24시간 기준아님 xs
-    let close_rate;
-    let test = [];
-    let btc_append = "";
+    let keyTemp = [];
+    let append = "";
     let listTarget = document.querySelector("#crypto_list_table > tbody")
-    
-    for (let i = 0; i < Object.keys(data).length; i++) {
-        console.log("11?")
-        //close_rate = (Object.values(tickerInfo)[i].closing_price - Object.values(tickerInfo)[i].prev_closing_price) / Object.values(tickerInfo)[i].prev_closing_price * 100
-        key = Object.keys(data)[i];
-        //value = close_rate; 
-        value = Object.values(data)[i].fluctate_rate_24H; //Object.values(tickerInfo)[i].fluctate_rate_24H;
-        
-      //  rankMap.set(key, value)
-        test.push(key)
-        btc_append += `<tr id = "${key}_info">`
-        btc_append += `<td class = "star_fill"></td>`
-        btc_append += `<td>${key}</td>`
-        if(data.BTC.closing_price > data[key].prev_closing_price) {
-            btc_append += `<td class ="up_red_color">${Number(data[key].closing_price).toLocaleString()}</td>`
-            btc_append += `<td class ="up_red_color">+${data[key].fluctate_rate_24H}%</td>`
-        } else {
-            btc_append += `<td class = "down_blue_color">${Number(data[key].closing_price).toLocaleString()}</td>`
-            btc_append += `<td class ="down_blue_color">${data[key].fluctate_rate_24H}%</td>`
-        }
-          btc_append += `<td>${numberToKorean(Number(data[key].acc_trade_value_24H).toFixed(0))}</td>`
-          btc_append += `</tr>`
-          listTarget.innerHTML = btc_append   
 
-        document.getElementById(`${key}_info`).addEventListener("click", moveToPage);
-    
+    for await (let key of Object.keys(data)) {
+
+        //value = close_rate; 
+        //value = Object.values(data)[i].fluctate_rate_24H; //Object.values(tickerInfo)[i].fluctate_rate_24H;
+
+        //  rankMap.set(key, value)
+        keyTemp.push(key)
+        append += `<tr id = "${key}_info">`
+        append += `<td class = "star_fill"></td>`
+        append += `<td>${key}</td>`
+
+        if (data[key].closing_price > data[key].prev_closing_price) {
+            append += `<td class ="up_red_color">${Number(data[key].closing_price).toLocaleString()}</td>`
+            append += `<td class ="up_red_color">+${data[key].fluctate_rate_24H}%</td>`
+        } else {
+            append += `<td class = "down_blue_color">${Number(data[key].closing_price).toLocaleString()}</td>`
+            append += `<td class ="down_blue_color">${data[key].fluctate_rate_24H}%</td>`
+        }
+        append += `<td>${numberToKorean(Number(data[key].acc_trade_value_24H).toFixed(0))}</td>`
+        append += `</tr>`
+
+        listTarget.innerHTML = append
     }
+
+    for (let j = 0; j < keyTemp.length; j++) {
+        console.log(document.getElementById(keyTemp[j] + "_info"))
+        document.getElementById(keyTemp[j] + "_info").addEventListener("click", moveToPage);
+    }
+
 }
 
 /* 초기 코인 리스트 정적 */
 const setCryptoListComponent = (data) => {
 
-    // let target_btc = document.querySelector("#btc_info")
-    // let target_eth = document.querySelector("#eth_info")
-
-    // let btc_append = "";
-    // let eth_append = ""
-
-    // console.log("data", data)
-    // // console.log("data" ,data[`${getCookie("order")}`])
-    // if(data.symbol === "BTC_KRW") {
-    //     console.log("bit?")
-    //     console.log("data.prevClosePrice",data.closePrice)
-    //     btc_append += '<td class="star_fill"></td>'
-    //     btc_append += '<td>비트코인 </td>'
-    //     if(data.closePrice >= data.prevClosePrice) {
-    //         btc_append += `<td class ="up_red_color up_box">${Number(data.closePrice).toLocaleString()}</td>`
-    //         btc_append += `<td class ="up_red_color">+${data.chgRate}%</td>`
-
-    //     } else {
-    //         btc_append += `<td class = "down_blue_color down_box">${Number(data.closePrice).toLocaleString()}</td>`
-    //         btc_append += `<td class ="down_blue_color">${data.chgRate}%</td>`
-    //     }
-    //     btc_append += `<td>${numberToKorean(Number(data.value).toFixed(0))}</td>`
-    //     target_btc.innerHTML = btc_append
-
-    //     setTimeout(function() {
-    //         if( target_btc.getElementsByClassName("up_box")[0]) {
-    //             target_btc.getElementsByClassName("up_box")[0].classList.remove("up_box");
-    //         }
-
-    //         if(target_btc.getElementsByClassName("down_box")[0]) {
-    //             target_btc.getElementsByClassName("down_box")[0].classList.remove("down_box");
-    //         }
-    //     }, 300);
+    let append = "";
 
 
-    //     // for (const down of animation_down) {
-    //     //     console.log("down",down)
-    //     //    // down.classList.remove("down_box")
-    //     // }
-    //     //  animation_down[0].classList.remove("down_box");
-    //     //  animation_down[1].classList.remove("down_box");
-    // }
-    // //chgRate
+    console.log("data", data)
+    // console.log("data" ,data[`${getCookie("order")}`])
+    let key = data.symbol.replace("_KRW", "")
+    let listTarget = document.getElementById(`${key}_info`);
 
-    // if(data.symbol === "ETH_KRW") {
-    //     eth_append += '<td class = "star_fill"></td>'
-    //     eth_append += '<td>이더리움 </td>'
-    //     if(data.closePrice >= data.prevClosePrice) {
-    //         eth_append += `<td class = "up_red_color up_box"> ${Number(data.closePrice).toLocaleString()}</td>`
-    //         eth_append += `<td class ="up_red_color" down_box>+${data.chgRate}%</td>`
-    //     } else {
-    //         eth_append += `<td class = "down_blue_color"> ${Number(data.closePrice).toLocaleString()}</td>`
-    //         eth_append += `<td class ="down_blue_color">-${data.chgRate}%</td>`
-    //     }
-    //     eth_append += `<td>${numberToKorean(Number(data.value).toFixed(0))}</td>`
-    //     target_eth.innerHTML = eth_append
+    console.log("")
+    if (!listTarget) {
+        return;
+    }
+    append += `<td class = "star_fill"></td>`
+    append += `<td>${key}</td>`
+    if (data.closePrice > data.prevClosePrice) {
+        append += `<td class ="up_red_color up_box">${Number(data.closePrice).toLocaleString()}</td>`
+        append += `<td class ="up_red_color">+${data.chgRate}%</td>`
+    } else {
+        append += `<td class = "down_blue_color down_box">${Number(data.closePrice).toLocaleString()}</td>`
+        append += `<td class ="down_blue_color">${data.chgRate}%</td>`
+    }
+    append += `<td>${numberToKorean(Number(data.value).toFixed(0))}</td>`
 
-
-
-    //     setTimeout(function() {
-    //         if( target_eth.getElementsByClassName("up_box")[0]) {
-    //             target_eth.getElementsByClassName("up_box")[0].classList.remove("up_box");
-    //         }
-
-    //         if(target_eth.getElementsByClassName("down_box")[0]) {
-    //             target_eth.getElementsByClassName("down_box")[0].classList.remove("down_box");
-    //         }
-    //     }, 300);
+    listTarget.innerHTML = append
 
 
-    // }
+    console.log(listTarget.getElementsByClassName("up_box")[0])
 
+    setTimeout(function () {
+        if (listTarget.getElementsByClassName("up_box")[0]) {
+            listTarget.getElementsByClassName("up_box")[0].classList.remove("up_box");
+        }
+
+        if (listTarget.getElementsByClassName("down_box")[0]) {
+            listTarget.getElementsByClassName("down_box")[0].classList.remove("down_box");
+        }
+    }, 300);
 
 
 }
