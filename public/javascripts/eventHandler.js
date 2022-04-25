@@ -157,7 +157,9 @@ const getCrpytoInfo = (event) => {
       }
 }
 
-async function moveToPage() {
+async function moveToPage(event) {
+
+    console.log("tdtdt")
 
     let AskTR = document.querySelectorAll("#bit_ask > tr");
 
@@ -171,21 +173,14 @@ async function moveToPage() {
     closeWS();
 
     let targetId = event.target.parentNode.id;
+    targetId = targetId.replaceAll("_info", "");
+    console.log("targetId", targetId)
 
-    switch(targetId) {
-        case "btc_info":
-            setCookie("page","tradeView","1")
-            setCookie("order","BTC","1")
-            setCookie("payment","KRW","1")
-            initPage();
-            break;
-        case "eth_info":
-            setCookie("page","tradeView","1")
-            setCookie("order","ETH","1")
-            setCookie("payment","KRW","1")
-            initPage();
-            break;
-    }
+    setCookie("page", "tradeView", "1")
+    setCookie("order", targetId, "1")
+    setCookie("payment", "KRW", "1")
+    initPage();
+
 
 }
 

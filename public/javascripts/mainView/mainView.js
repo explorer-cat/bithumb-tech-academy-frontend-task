@@ -54,6 +54,7 @@ const setRestAPIMainView = async (callback) => {
     //전일 기준 , 24시간 기준아님 
     let close_rate;
     let test = [];
+    
     for (let i = 0; i < Object.keys(tickerInfo).length; i++) {
         //close_rate = (Object.values(tickerInfo)[i].closing_price - Object.values(tickerInfo)[i].prev_closing_price) / Object.values(tickerInfo)[i].prev_closing_price * 100
         key = Object.keys(tickerInfo)[i];
@@ -158,7 +159,6 @@ const setSocketView = (data, rankKey) => {
 const initMarketListTable = async (data) => {
     let target = document.querySelector("#crypto_list_table > tbody");
     let favoriteCookie = getCookie("favorite");
-    console.log("favoriteCookie", favoriteCookie)
     let data_value;
     let data_key;
     let length = Object.keys(data.data).length;
@@ -166,17 +166,22 @@ const initMarketListTable = async (data) => {
 
     data_key = Object.keys(data.data)
     data_value = Object.values(data.data)
-    let tr
-    let favorite
-    let title
-    let symbol
-    let price
-    let rate
-    let volume
-    let value
+
+
     let status
 
     for (let i = 0; i < length; i++) {
+
+        let tr
+        let favorite
+        let title
+        let symbol
+        let price
+        let rate
+        let volume
+        let value
+
+        
          tr = document.createElement("tr");
          favorite = document.createElement("td");
          title = document.createElement("td");
@@ -227,7 +232,6 @@ const initMarketListTable = async (data) => {
 
         /* 즐겨찾기 된 코인과 안된코인을 분리해서 화면 나눠서 처리해줌*/
         if (localStorage.getItem(data_key[i] + "_KRW")) {
-
             //localstorage 에 즐겨찾기한 코인이 있을 경우 star_full 이미지로 변경
             favorite.classList.remove("star_fill")
             favorite.classList.add("star_full")
@@ -247,6 +251,15 @@ const initMarketListTable = async (data) => {
 
 
         /*즐겨찾기 클릭 이벤트*/
+
+
+
+
+        if (rate.classList.contains("up_red_color")) {
+            status = "#d60000"
+        } else {
+            status = "#0051c7"
+        }
 
         favorite.addEventListener("click", function (event) {
             //현재 내가 클릭한 TD 를
@@ -272,38 +285,57 @@ const initMarketListTable = async (data) => {
                     //해당 코인 즐겨찾기 탭에서 안보이게하기
                     target.classList.add("display_none")
                 }
-
+                console.log("what!!", favorite)
                 favorite.classList.add("star_fill")
                 favorite.classList.remove("star_full")
 
-                //맨밑으로
+                // //맨밑으로
                 parentTarget.appendChild(target);
 
                 //localstorage 에 즐겨찾기한 코인 삭제
                 localStorage.removeItem(targetName)
             }
         })
-
-
-
-        if (rate.classList.contains("up_red_color")) {
-            status = "#d60000"
-        } else {
-            status = "#0051c7"
-        }
     
 
     }
 
-    for (let object of Object.keys(data.data)) {
-        let candleData = await setCandleStick("mainView", object, "30m");
+    /* 차트 생성 병렬처리.. */
+    const setChart = async (object,status) => {
+        let data = await setCandleStick("mainView",object,"30m")
 
-
-        candleData = candleData.slice(candleData.length - 100, candleData.length);
-
-        getTableMiniChart(object + "_table_chart", candleData, status)
-        //24시간 추이 차트 렌더 종료
+        data.slice(data.length - 100, data.length);
+        getTableMiniChart(object + "_table_chart", data, status)
     }
+
+    let cryptoType = [];
+
+    for (let object of Object.keys(data.data)) {
+        cryptoType.push(object);
+    }
+
+    const taskPromises = cryptoType.map(candle => setChart(candle,status))
+    await Promise.all(taskPromises);
+
+
+
+
+
+    //  console.log("test",test)
+    //  const promises = test.map(n => setCandleStick(n).then(console.log) );
+    //  Promise.all(promises).then(() => 
+    //  console.log("DONE!"));
+
+
+    // for (let object of Object.keys(data.data)) {
+    //     let candleData = await setCandleStick("mainView", object, "30m");
+
+
+    //     candleData = candleData.slice(candleData.length - 100, candleData.length);
+
+    //     getTableMiniChart(object + "_table_chart", candleData, status)
+    //     //24시간 추이 차트 렌더 종료
+    // }
 }
 
 
