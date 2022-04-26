@@ -1,12 +1,51 @@
-
 window.onload = async function () {
+
+
     /* aside event handler */
     document.getElementById("main-page").addEventListener("click", clickAsideCategory)
     document.getElementById("trade-page").addEventListener("click", clickAsideCategory)
     // document.querySelector(".list_title > td:nth-child(2)").addEventListener("click", sortTable)
 
     initMainView();
+
+    console.log("listing", listing)
+
+
+    document.getElementById("total_search").addEventListener("keyup",function() {
+        let searchText = this.value;
+        
+        //검색어를 다 지우거나 검색어가 없는경우.
+        if(searchText.length <= 0) {
+            //전체 테이블의 display를 보여줌.
+            let allTr = document.querySelectorAll("#crypto_list_table > tbody > tr");
+
+            for (let tr of allTr) {
+                tr.style.display = ""
+            }
+        } 
+        else {
+            //검색어가 있는 경우
+            let allTr = document.querySelectorAll("#crypto_list_table > tbody > tr");
+
+            //전체 테이블을 display none 처리하고.
+            for (let tr of allTr) {
+                tr.style.display = "none"
+            }
+            //검색어를 모두 대문자로 변경한 후
+            searchText = searchText.toUpperCase()
+    
+            //해당 검색어를 타이틀로 검색함.
+            let temp = document.querySelectorAll(`[title*="${searchText}"]`)
+    
+            //해당 검색어에 걸린 td 의 부모 tr 만 none 해제
+            for (let view of temp) {
+                view.parentNode.style.display = ""
+            }
+        }
+    })
+	
 }
+
 
 const initMainView = async () => {
     setRestAPIMainView(async function (result) {
@@ -99,6 +138,7 @@ const setRestAPIMainView = async (callback) => {
             //  callbackData.data.push(keys[keys.length - keyCheckNum]);
         }
     }
+    
     callbackData.data = tickerInfo
     callbackData.success = true;
     return callback(callbackData)
@@ -201,6 +241,7 @@ const initMarketListTable = async (data) => {
         //제목
         title.classList.add("title")
         title.innerHTML = data_key[i]
+        title.title = data_key[i]
         title.style.fontWeight = "800"
         symbol.innerHTML = data_key[i] + "_KRW"
         symbol.classList.add(data_key[i] + "_KRW")
@@ -302,40 +343,19 @@ const initMarketListTable = async (data) => {
 
     /* 차트 생성 병렬처리.. */
     const setChart = async (object,status) => {
-        let data = await setCandleStick("mainView",object,"30m")
-
-        data.slice(data.length - 100, data.length);
+        let data = await setCandleStick("mainView",object,"1h")
+        data.slice(data.length - 24, data.length);
         getTableMiniChart(object + "_table_chart", data, status)
     }
 
     let cryptoType = [];
 
-    for (let object of Object.keys(data.data)) {
+    for await(let object of Object.keys(data.data)) {
         cryptoType.push(object);
     }
 
     const taskPromises = cryptoType.map(candle => setChart(candle,status))
     await Promise.all(taskPromises);
-
-
-
-
-
-    //  console.log("test",test)
-    //  const promises = test.map(n => setCandleStick(n).then(console.log) );
-    //  Promise.all(promises).then(() => 
-    //  console.log("DONE!"));
-
-
-    // for (let object of Object.keys(data.data)) {
-    //     let candleData = await setCandleStick("mainView", object, "30m");
-
-
-    //     candleData = candleData.slice(candleData.length - 100, candleData.length);
-
-    //     getTableMiniChart(object + "_table_chart", candleData, status)
-    //     //24시간 추이 차트 렌더 종료
-    // }
 }
 
 

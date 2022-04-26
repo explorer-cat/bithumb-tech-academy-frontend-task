@@ -1,15 +1,18 @@
 var dataPoints1 = [],
 dataPoints2 = [],
 dataPoints3 = [];
+
+
+const tradeChart = (crpyto) => {
 let realTimeFlag = false;
 let TimeTemp;
 
-        //현재시간
-        let minTime = new Date().getTime();
-        //1분봉 표시 미니멈 시간
-        let maxTime = new Date().getTime();
+dataPoints1 = []
+dataPoints2 = []
+dataPoints3 = []
 
-const tradeChart = () => {
+    let minTime = new Date().getTime();
+    let maxTime = new Date().getTime();
     var stockChart = new CanvasJS.StockChart('chartContainer', {
         exportEnabled: false,
         theme: 'light2',
@@ -97,7 +100,7 @@ const tradeChart = () => {
             // },
             axisY2: {
                 // prefix: "BTC",
-                title: 'BTC/KRW',
+                title: `${crpyto}/KRW`,
             },
             legend: {
                 horizontalAlign: 'left',
@@ -105,7 +108,7 @@ const tradeChart = () => {
             data: [{
                 yValueFormatString: '#,###.##',
                 axisYType: 'secondary',
-                name: 'BTC/KRW',
+                name: `${crpyto}/KRW`,
                 dataPoints: dataPoints2,
             }],
         }],
@@ -124,7 +127,7 @@ const tradeChart = () => {
 
     });
     console.log("stockChart", new Date(2022, 04, 16, 11, 30))
-    $.getJSON('https://api.bithumb.com/public/candlestick/BTC_KRW/1m',  function(data) {
+    $.getJSON(`https://api.bithumb.com/public/candlestick/${crpyto}_KRW/1m`,  function(data) {
         let result = data.data;
 
         console.log("result",result)
@@ -156,22 +159,18 @@ const tradeChart = () => {
         stockChart.render();
     });
 
-
-
      setInterval(async function(){
-         await addData();
+         await addData(crpyto);
          await stockChart.render()
-        }, 60000);
+        }, 3000);
 } 
 
 
-const addData = () => {
-    $.getJSON('https://api.bithumb.com/public/candlestick/BTC_KRW/1m',  function(data) {
+const addData = (crpyto) => {
+
+    $.getJSON(`https://api.bithumb.com/public/candlestick/${crpyto}_KRW/1m`,  function(data) {
 
         let result = data.data[data.data.length - 1];
-        if(new Date(result[0]).getDate() === new Date(TimeTemp).getDate()) {
- 
-        } else {
             dataPoints1.push({
                 x: new Date(result[0]),
                 y: [Number(result[1]), Number(result[3]), Number(result[4]), Number(result[2])],
@@ -186,7 +185,6 @@ const addData = () => {
     
             dataPoints3.push({x: new Date(result[0]), y: Number(result[1])});
             console.log("puash!!",dataPoints1)
-        }
     });
 }
 

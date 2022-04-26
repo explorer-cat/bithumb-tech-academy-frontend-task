@@ -28,13 +28,14 @@
     <script src="https://cdn.jsdelivr.net/jquery/1.12.4/jquery.min.js"></script>
 
     <!--apexcharts-->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
 
-    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script>
+    <!-- <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script> -->
 
 
     <!--javascript -->
+    <script src="/javascripts/crpytoList.js"></script>
     <script src="/javascripts/mainView/mainView.js"></script>
     <script src="/javascripts/mainView/mainViewEventHandler.js"></script>
     <script src="/javascripts/restAPI/bithumbAPI.js"></script>
@@ -112,14 +113,19 @@
             <!-- 코인 리스트 컨텐츠 -->
             <div class = "main_crpyto_list_div">
                     <div class = "crypto_category">
-                        <ul>
-                            <li title="원화마켓" class="flex tab_selected padding-a-16" id = "korea_market_cap">
-                                원화마켓
-                            </li>
-                            <li title="" class="flex padding-a-16" id = "favorite_crpyto">
-                                즐겨찾기
-                            </li>
-                        </ul>
+                        <div class = "category_header">
+                            <ul>
+                                <li title="원화마켓" class="flex tab_selected padding-a-16" id = "korea_market_cap">
+                                    원화마켓
+                                </li>
+                                <li title="" class="flex padding-a-16" id = "favorite_crpyto">
+                                    즐겨찾기
+                                </li>
+                            </ul>
+                            <div class = "search_box" >
+                                <input type="text" id="total_search" placeholder="코인 검색">
+                            </div>
+                        </div>
                         <table class ="crypto_list_set" id = "crypto_list_table">
                             <thead>
                             <tr class = "list_title">

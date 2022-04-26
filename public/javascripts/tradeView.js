@@ -56,7 +56,7 @@ async function initPage() {
 
 
     //기본 차트
-    tradeChart();
+    tradeChart(order);
 
 
     if (document.getElementById("container_BTC")) {
@@ -158,7 +158,7 @@ const setTickerData = (data, el) => {
             setChangeToColor("up", element.bithumbBTC.KRW)
             setChangeToColor("up", element.bithumbBTC.RATE)
 
-            element.bithumbBTC.RATE.innerHTML = `+${resTicker.chgRate}%`;
+            element.bithumbBTC.RATE.innerHTML = `${resTicker.chgRate}%`;
 
             document.getElementById("tr_change_rate").classList.add("bg_up");
         }
@@ -358,7 +358,7 @@ const initCryptoListComponent = async (data) => {
 
         if (data[key].closing_price > data[key].prev_closing_price) {
             append += `<td class ="up_red_color">${Number(data[key].closing_price).toLocaleString()}</td>`
-            append += `<td class ="up_red_color">+${data[key].fluctate_rate_24H}%</td>`
+            append += `<td class ="up_red_color">${data[key].fluctate_rate_24H}%</td>`
         } else {
             append += `<td class = "down_blue_color">${Number(data[key].closing_price).toLocaleString()}</td>`
             append += `<td class ="down_blue_color">${data[key].fluctate_rate_24H}%</td>`
@@ -395,7 +395,7 @@ const setCryptoListComponent = (data) => {
     append += `<td>${key}</td>`
     if (data.closePrice > data.prevClosePrice) {
         append += `<td class ="up_red_color up_box">${Number(data.closePrice).toLocaleString()}</td>`
-        append += `<td class ="up_red_color">+${data.chgRate}%</td>`
+        append += `<td class ="up_red_color">${data.chgRate}%</td>`
     } else {
         append += `<td class = "down_blue_color down_box">${Number(data.closePrice).toLocaleString()}</td>`
         append += `<td class ="down_blue_color">${data.chgRate}%</td>`

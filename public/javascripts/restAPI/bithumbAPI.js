@@ -44,6 +44,7 @@ const setTickerAPI = async (page, order, payment) => {
 
 
         let dom = {
+            "TITLE" : document.getElementById('crypto_title'),
             "KRW": document.getElementById('tr_krw'),
             "RATE": document.getElementById('tr_change_rate'),
             "VOLUME": document.getElementById('tr_volume'),
@@ -53,8 +54,9 @@ const setTickerAPI = async (page, order, payment) => {
             "HIGH": document.getElementById('tr_high'),
             "FINISH": document.getElementById('tr_finish'),
         }
-
-        // div : crypto_content_info_box
+        console.log("tkdata", tkData)
+        // div : crypto_content_info_box 
+        dom.TITLE.innerHTML = `${getCookie("order")}`;
         dom.KRW.innerHTML = `${numberToKorean(Number(tkData.closing_price))}원`;
         // dom.RATE.innerHTML = `${Number(tkData.fluctate_rate_24H)} %`;
         dom.VOLUME.innerHTML = `${Number(tkData.units_traded_24H).toFixed(2)} ${getCookie("order")}`;
@@ -68,14 +70,14 @@ const setTickerAPI = async (page, order, payment) => {
             setChangeToColor("down", dom.KRW)
             setChangeToColor("down", dom.RATE)
 
-            dom.RATE.innerHTML = `-${tkData.fluctate_rate_24H}%`;
+            dom.RATE.innerHTML = `${tkData.fluctate_rate_24H}%`;
             document.getElementById("tr_change_rate").classList.add("bg_down");
 
         } else {
             setChangeToColor("up", dom.KRW)
             setChangeToColor("up", dom.RATE)
 
-            dom.RATE.innerHTML = `+${tkData.fluctate_rate_24H}%`;
+            dom.RATE.innerHTML = `${tkData.fluctate_rate_24H}%`;
 
             document.getElementById("tr_change_rate").classList.add("bg_up");
         }

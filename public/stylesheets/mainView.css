@@ -218,3 +218,31 @@
     height: 20px !important;
 
 }
+
+
+.category_header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.search_box{
+    width: 300px;
+    height: 83x;
+}
+
+.search_box > input {
+    width: 270px;
+    height: 16px;
+    border: 2px solid #EFEFEF;
+    border-radius: 12px;
+    margin-top: 30px;
+    padding: 12px;
+}
+
+.search_box > input:hover {
+    border: 2px solid #98a6ad;
+}
+
+.search_box > input:focus {
+    border: 2px solid #98a6ad;
+}
