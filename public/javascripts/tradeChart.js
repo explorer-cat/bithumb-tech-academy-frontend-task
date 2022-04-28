@@ -3,7 +3,7 @@ dataPoints2 = [],
 dataPoints3 = [];
 
 
-const tradeChart = (crpyto) => {
+const tradeChart = (crpyto,type,range) => {
 let realTimeFlag = false;
 let TimeTemp;
 
@@ -11,8 +11,9 @@ dataPoints1 = []
 dataPoints2 = []
 dataPoints3 = []
 
-    let minTime = new Date().getTime();
+    let minTime = new Date().getTime() - range;
     let maxTime = new Date().getTime();
+    
     var stockChart = new CanvasJS.StockChart('chartContainer', {
         exportEnabled: false,
         theme: 'light2',
@@ -29,8 +30,8 @@ dataPoints3 = []
             verticalAlign : "bottom",
             inputFields: {
                 enabled : false,
-                startValue: 7000,
-                endValue: 6000,
+                startValue: 1000,
+                endValue: 2000,
                 valueFormatString: '###0',
             },
             /*1일 봉 차트 클릭시 30일 기준 1일봉 차트를 보여줌*/
@@ -118,7 +119,7 @@ dataPoints3 = []
       dynamicUpdate: true,
       slider: {
         outlineInverted : false,
-        minimum: minTime - 5000000,
+        minimum: minTime,
         maximum: maxTime
         // minimum: new Date(1650001200000),
         // maximum: new Date(1650090000000)
@@ -126,8 +127,7 @@ dataPoints3 = []
     }
 
     });
-    console.log("stockChart", new Date(2022, 04, 16, 11, 30))
-    $.getJSON(`https://api.bithumb.com/public/candlestick/${crpyto}_KRW/1m`,  function(data) {
+    $.getJSON(`https://api.bithumb.com/public/candlestick/${crpyto}_KRW/${type}`,  function(data) {
         let result = data.data;
 
         console.log("result",result)
@@ -159,16 +159,16 @@ dataPoints3 = []
         stockChart.render();
     });
 
-     setInterval(async function(){
-         await addData(crpyto);
-         await stockChart.render()
-        }, 3000);
+    //  setInterval(async function(){
+    //      await addData(crpyto);
+    //      await stockChart.render()
+    //     }, 3000);
 } 
 
 
 const addData = (crpyto) => {
 
-    $.getJSON(`https://api.bithumb.com/public/candlestick/${crpyto}_KRW/1m`,  function(data) {
+    $.getJSON(`https://api.bithumb.com/public/candlestick/${crpyto}_KRW/24h`,  function(data) {
 
         let result = data.data[data.data.length - 1];
             dataPoints1.push({

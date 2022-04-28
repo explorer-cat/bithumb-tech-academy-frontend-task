@@ -232,10 +232,13 @@ const initMarketListTable = async (data) => {
          value = document.createElement("td");
 
 
+         favorite.classList.add("favorite")
 
-
-        favorite.classList.add("favorite")
-        favorite.classList.add("star_fill")
+         if (localStorage.getItem(data_key[i] + "_KRW")) {
+            favorite.classList.add("star_full")
+         } else {
+            favorite.classList.add("star_fill")
+         }
         tr.appendChild(favorite)
 
         //제목
@@ -273,9 +276,6 @@ const initMarketListTable = async (data) => {
 
         /* 즐겨찾기 된 코인과 안된코인을 분리해서 화면 나눠서 처리해줌*/
         if (localStorage.getItem(data_key[i] + "_KRW")) {
-            //localstorage 에 즐겨찾기한 코인이 있을 경우 star_full 이미지로 변경
-            favorite.classList.remove("star_fill")
-            favorite.classList.add("star_full")
             // 맨앞에 보이게
             target.prepend(tr)
         } else {
@@ -326,7 +326,6 @@ const initMarketListTable = async (data) => {
                     //해당 코인 즐겨찾기 탭에서 안보이게하기
                     target.classList.add("display_none")
                 }
-                console.log("what!!", favorite)
                 favorite.classList.add("star_fill")
                 favorite.classList.remove("star_full")
 

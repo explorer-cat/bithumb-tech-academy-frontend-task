@@ -56,7 +56,7 @@ async function initPage() {
 
 
     //기본 차트
-    tradeChart(order);
+    tradeChart(order,"3m",1000000000);
 
 
     if (document.getElementById("container_BTC")) {
@@ -68,10 +68,32 @@ async function initPage() {
     document.getElementById("mini_chart").removeEventListener("click", getTradeMiniChart);
     document.getElementById("mini_chart").addEventListener("click", getTradeMiniChart);
 
-    document.getElementById("crypto_info").removeEventListener("click", getCrpytoInfo);
-    document.getElementById("crypto_info").addEventListener("click", getCrpytoInfo);
-
     document.getElementById("main-page").addEventListener("click", clickAsideCategory)
+
+
+    /* 차트 시간 버튼 이벤트 */
+
+
+    document.getElementById("1m").addEventListener("click",function(event) {
+        event.preventDefault()
+        tradeChart(document.getElementById("crypto_title").innerHTML,"1m",60000000);
+    })
+
+    document.getElementById("3m").addEventListener("click",function(event) {
+        event.preventDefault()
+        tradeChart(document.getElementById("crypto_title").innerHTML,"3m",1800000000);
+    })
+
+
+    document.getElementById("1h").addEventListener("click",function(event) {
+        event.preventDefault() 
+        tradeChart(document.getElementById("crypto_title").innerHTML,"1h",10000000000);
+    })
+
+    document.getElementById("1day").addEventListener("click",function(event) {
+        event.preventDefault()
+        tradeChart(document.getElementById("crypto_title").innerHTML,"24h",30000000000);
+    })
 
 
     connectWS(({ page, order, payment }), async function (result) {
@@ -120,14 +142,14 @@ const setTickerData = (data, el) => {
 
     //페이지 쿠키와 동일한 정보만 가져
 
-    switch (resTicker.symbol) {
-        case "BTC_KRW":
-            bitcoin_global_price = resTicker.prevClosePrice;
-            break;
-        case "ETH_KRW":
-            eth_global_price = resTicker.prevClosePrice;
-            break;
-    }
+    // switch (resTicker.symbol) {
+    //     case "BTC_KRW":
+    //         bitcoin_global_price = resTicker.prevClosePrice;
+    //         break;
+    //     case "ETH_KRW":
+    //         eth_global_price = resTicker.prevClosePrice;
+    //         break;
+    // }
 
     //실시간 정보를 받아서 우측 리스트박스 세팅
     setCryptoListComponent(resTicker);
@@ -353,7 +375,7 @@ const initCryptoListComponent = async (data) => {
         //  rankMap.set(key, value)
         keyTemp.push(key)
         append += `<tr id = "${key}_info">`
-        append += `<td class = "star_fill"></td>`
+
         append += `<td>${key}</td>`
 
         if (data[key].closing_price > data[key].prev_closing_price) {
@@ -367,16 +389,56 @@ const initCryptoListComponent = async (data) => {
         append += `</tr>`
 
         listTarget.innerHTML = append
+
     }
 
+
     for (let j = 0; j < keyTemp.length; j++) {
-        console.log(document.getElementById(keyTemp[j] + "_info"))
         document.getElementById(keyTemp[j] + "_info").addEventListener("click", moveToPage);
+
+        // console.log("keyTemp",keyTemp)
+        // let favorite = document.getElementById(`${keyTemp[i]}_favorite`);
+
+        // favorite.addEventListener("click", function (event) {
+        //     console.log("favorite", favorite)
+        //     //현재 내가 클릭한 TD 를
+        //     let target = this.parentNode;
+        //     let targetName = target.querySelector(".title > p").innerHTML;
+        //     console.log("targetName", targetName)
+        //     //td 부모인 tr 맨 앞으로 다시 넣기.ƒd
+        //     let parentTarget = this.parentNode.parentNode;
+
+
+        //     //클릭하는 순간 최상단으로 올라와야함.
+        //     if (favorite.classList.contains("star_fill")) {
+        //         favorite.classList.remove("star_fill")
+        //         favorite.classList.add("star_full")
+        //         parentTarget.prepend(target);
+        //         //localstorage 에 즐겨찾기한 코인 추가
+        //         localStorage.setItem(targetName, 'star')
+
+        //     } else {
+        //         //즐겨찾기 탭에서 즐겨찾기를 해제할 경우 
+        //         if (document.getElementsByClassName("tab_selected")[0].id === "favorite_crpyto") {
+        //             //해당 코인 즐겨찾기 탭에서 안보이게하기
+        //             target.classList.add("display_none")
+        //         }
+        //         favorite.classList.add("star_fill")
+        //         favorite.classList.remove("star_full")
+
+        //         // //맨밑으로
+        //         parentTarget.appendChild(target);
+
+        //         //localstorage 에 즐겨찾기한 코인 삭제
+        //         localStorage.removeItem(targetName)
+        //     }
+        // })
+
     }
 
 }
 
-/* 초기 코인 리스트 정적 */
+/* 초기 코인 리스트  */
 const setCryptoListComponent = (data) => {
 
     let append = "";
@@ -387,11 +449,10 @@ const setCryptoListComponent = (data) => {
     let key = data.symbol.replace("_KRW", "")
     let listTarget = document.getElementById(`${key}_info`);
 
-    console.log("")
     if (!listTarget) {
         return;
     }
-    append += `<td class = "star_fill"></td>`
+
     append += `<td>${key}</td>`
     if (data.closePrice > data.prevClosePrice) {
         append += `<td class ="up_red_color up_box">${Number(data.closePrice).toLocaleString()}</td>`
