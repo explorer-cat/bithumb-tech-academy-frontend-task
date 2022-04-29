@@ -17,8 +17,8 @@
 - javascript
 - css3
 - websocket
-- apexcharts
 - highcharts.js
+- canvas.js
 
 ## 구현한 기능 목록 (Software Requirement Specification)
 > 공통 
