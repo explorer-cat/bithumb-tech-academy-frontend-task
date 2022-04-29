@@ -100,12 +100,12 @@ function getTradeMiniChart(id,data) {
 function getMainMiniChart(id,data) {
   let time = []
   let priceData = []
-  console.log("data.length",data)
 
   //그래프의 min max 를 구하기위해 최근 200분가 최저가와 최고가를 찾아야함.
 
   //시간과 거래량을 잘라낸 가격만 있는 순수 오브젝트
   let slicePriceData = []
+
 
   //기본적으로 첫번째 들어오는 값을 기본으로 세팅하고 반복돌면서 최저 최고값 찾을수있게.
   let min  = Number(data[0][4]);
@@ -198,10 +198,19 @@ function getMainMiniChart(id,data) {
 
 
 
-function getTableMiniChart(id,data,status) {
-  console.log("id",status)
+function getTableMiniChart(id,data,dd) {
   let time = []
   let priceData = []
+
+  let status = document.querySelector(`#${id}`)
+  let color
+
+  if(status.parentNode.querySelector(".up_red_color")) {
+    color = "#d60000"
+  } else {
+    color = "#0051c7"
+  }
+
 
   //그래프의 min max 를 구하기위해 최근 200분가 최저가와 최고가를 찾아야함.
 
@@ -289,7 +298,7 @@ function getTableMiniChart(id,data,status) {
     },
     series: [{
       data: priceData,
-      lineColor: status,
+      lineColor: color,
       color: "#FFFFFF",
       fillOpacity: 0,
       name: '종가',

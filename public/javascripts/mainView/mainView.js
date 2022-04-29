@@ -209,7 +209,7 @@ const initMarketListTable = async (data) => {
 
 
     let status
-
+    let rate
     for (let i = 0; i < length; i++) {
 
         let tr
@@ -217,7 +217,6 @@ const initMarketListTable = async (data) => {
         let title
         let symbol
         let price
-        let rate
         let volume
         let value
 
@@ -296,11 +295,7 @@ const initMarketListTable = async (data) => {
 
 
 
-        if (rate.classList.contains("up_red_color")) {
-            status = "#d60000"
-        } else {
-            status = "#0051c7"
-        }
+
 
         favorite.addEventListener("click", function (event) {
             //현재 내가 클릭한 TD 를
@@ -340,10 +335,19 @@ const initMarketListTable = async (data) => {
 
     }
 
+        //     if (rate.classList.contains("up_red_color")) {
+        //     status = "#d60000"
+        // } else {
+        //     status = "#0051c7"
+        // }
     /* 차트 생성 병렬처리.. */
     const setChart = async (object,status) => {
+
         let data = await setCandleStick("mainView",object,"1h")
         data.slice(data.length - 24, data.length);
+        console.log("object", object)
+        console.log("data", data)
+        console.log("status", status)
         getTableMiniChart(object + "_table_chart", data, status)
     }
 
