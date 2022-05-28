@@ -5,6 +5,8 @@
 >
 
 배포링크
+
+http://15.164.103.131:4000/
 <!-- https://explorer-cat.github.io/codestates-bithumb-frontend-publish/ -->
 
 ## 프로젝트 실행 방법
