@@ -7,7 +7,7 @@
 배포링크
 
 http://15.164.103.131:4000/
-<!-- https://explorer-cat.github.io/codestates-bithumb-frontend-publish/ -->
+배포환경 : AWS EC2 ubuntu , PM2
 
 ## 프로젝트 실행 방법
 - npm install express.js  or npm install
