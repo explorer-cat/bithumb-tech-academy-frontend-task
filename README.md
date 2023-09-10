@@ -5,8 +5,9 @@
 >
 
 배포링크
-http://explorer-cat-api.p-e.kr🔢000/
-배포환경 : AWS EC2 ubuntu , PM2
+http://explorer-cat-api.p-e.kr:4000/
+
+- 배포환경 : AWS EC2 ubuntu , PM2
 
 ## 프로젝트 실행 방법
 - npm install express.js  or npm install
